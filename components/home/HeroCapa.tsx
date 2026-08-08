@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { tipos } from "@/content/tipos";
+import { comMovimento, jaVisivel, gsap, DUR, EASE, STAGGER } from "@/lib/motion";
 
 /**
  * Capa da home. Três elementos, desenhados pelo desenvolvedor:
@@ -43,6 +44,7 @@ function assinarMovimento(aoMudar: () => void) {
 
 export function HeroCapa() {
   const [atual, setAtual] = useState(0);
+  const escadaRef = useRef<HTMLDivElement>(null);
 
   const semMovimento = useSyncExternalStore(
     assinarMovimento,
@@ -61,6 +63,38 @@ export function HeroCapa() {
     );
     return () => clearInterval(id);
   }, [semMovimento]);
+
+  /* A entrada da escada. Nenhum número é escolhido: a duração é piso mais
+     espelho (`DUR + STAGGER` = 0,46s) e o grupo escalona por um espelho
+     (`STAGGER` = 0,18s). Com 7 lajes são 6 intervalos, que dão 1,08s — o teto
+     de stagger que `lib/motion.ts` já documentava. A contagem vem do catálogo
+     e bateu com o teto sozinha.
+
+     O estado inicial é aplicado por JS, nunca por CSS (`DEC-018`): o HTML
+     estático já sai com a massa de pé, e só animamos se `jaVisivel` disser que
+     ninguém teve tempo de ler. Se o bundle demorar, a pessoa vê a escada
+     pronta em vez de vê-la sumir e voltar. */
+  useEffect(() => {
+    const el = escadaRef.current;
+    if (!el || jaVisivel(el)) return;
+
+    const mm = comMovimento(() => {
+      gsap.fromTo(
+        el.querySelectorAll(".capa-laje"),
+        { scaleY: 0, transformOrigin: "50% 100%" },
+        {
+          scaleY: 1,
+          duration: DUR + STAGGER,
+          ease: EASE,
+          stagger: { each: STAGGER, amount: STAGGER * 6 },
+        },
+      );
+    }, el);
+
+    return () => {
+      mm.revert();
+    };
+  }, []);
 
   const tipo = SLIDES[atual];
 
@@ -81,7 +115,7 @@ export function HeroCapa() {
           no mesmo `setInterval` — não entra relógio novo. O indicador é
           redundante por construção, porque a legenda do card nomeia o tipo em
           texto; por isso as lajes são `aria-hidden` sem perda de informação. */}
-      <div className="capa-escada" aria-hidden="true">
+      <div className="capa-escada" aria-hidden="true" ref={escadaRef}>
         {SLIDES.map((t, i) => (
           <span
             key={t.slug}
