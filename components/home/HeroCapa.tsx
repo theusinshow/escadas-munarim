@@ -75,13 +75,19 @@ export function HeroCapa() {
     >
       {/* A massa de concreto, primeiro filho de propósito: ela e o grid são os
           dois elementos posicionados da seção, e a ordem no DOM é o que faz o
-          grid pintar por cima sem precisar de `z-index`. */}
+          grid pintar por cima sem precisar de `z-index`.
+
+          As 7 lajes são os 7 tipos: a da vez acende junto com a troca do card,
+          no mesmo `setInterval` — não entra relógio novo. O indicador é
+          redundante por construção, porque a legenda do card nomeia o tipo em
+          texto; por isso as lajes são `aria-hidden` sem perda de informação. */}
       <div className="capa-escada" aria-hidden="true">
         {SLIDES.map((t, i) => (
           <span
             key={t.slug}
             aria-hidden="true"
             className="capa-laje"
+            data-vez={i === atual ? "true" : undefined}
             style={{ "--i": i } as React.CSSProperties}
           />
         ))}
