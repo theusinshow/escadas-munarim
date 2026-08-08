@@ -18,7 +18,8 @@
 - **O H1 novo é, literalmente:** `Segurança e design, na medida exata do seu vão.`
 - **`DEC-001`:** nenhum CTA de orçamento na capa. Não adicionar botão.
 - **`DEC-033`:** a tinta do wordmark fica ancorada em 100px das duas bordas no desktop, 24px no mobile. Qualquer deslocamento é regressão.
-- **`git`:** o projeto `escadas-minarum` está **inteiramente untracked** hoje (`git ls-files` retorna 0). Os passos de commit deste plano assumem que o desenvolvedor decidiu adicionar o projeto ao repositório antes de começar. **Se ele não decidiu, pular todos os passos de commit e avisá-lo ao fim** — não fazer `git add` do projeto por conta própria.
+- **`git`** (resolvido em 2026-08-08, antes da execução): o projeto ganhou **repositório próprio** — `origin` é `https://github.com/theusinshow/escadas-munarim`, ainda sem nenhum push. A baseline é o commit `6d0d83b` em `main` e o trabalho acontece na branch **`capa-aresta-em-escada`**. Os passos de commit deste plano valem normalmente. **Não fazer `git push`** — publicar é decisão do desenvolvedor, tomada ao fim.
+- **`docs/ai/referencias/` é git-ignored** por decisão do desenvolvedor: 72 achados de Pinterest/Google, vários com marca d'água de terceiro e nenhum com licença registrada. Não versionar, não mover, não citar como asset publicável.
 
 ---
 
