@@ -7,11 +7,12 @@ import { tipos } from "@/content/tipos";
 import { comMovimento, jaVisivel, gsap, DUR, EASE, STAGGER } from "@/lib/motion";
 
 /**
- * Capa da home. Três elementos, desenhados pelo desenvolvedor:
+ * Capa da home. Quatro elementos, desenhados pelo desenvolvedor:
  *
- *   card + legenda   alto à esquerda, recuado da margem
- *   texto            alto à direita
- *   ESCADAS MUNARIM  embaixo à esquerda, em corpo grande
+ *   massa de concreto  canto inferior direito, fronteira em escada (`DEC-041`)
+ *   card + legenda     alto à esquerda, recuado da margem
+ *   texto              alto à direita
+ *   lockup             embaixo à esquerda — nome, filete, descritor, linha de fatos
  *
  * **O fundo navy divide a dobra com uma massa de concreto claro, e a fronteira
  * entre as duas é uma escada** (`DEC-041`). São 7 lajes — uma por tipo — de
@@ -25,7 +26,9 @@ import { comMovimento, jaVisivel, gsap, DUR, EASE, STAGGER } from "@/lib/motion"
  *
  * **A troca no card é um crossfade e nada mais.** Ela é temporizada, não é
  * hover: sete fotos empilhadas, uma esmaece por cima da outra, e o card nunca
- * fica vazio. É o único movimento que a capa ainda tem.
+ * fica vazio. Já não é o único movimento da capa — a escada soma a entrada em
+ * degraus e o indicador de 4 segundos que acende junto com o card (`DEC-041`)
+ * — mas segue sendo o único movimento *dentro* do card em si.
  */
 
 const SLIDES = tipos.filter((t) => t.imagem);
@@ -119,7 +122,6 @@ export function HeroCapa() {
         {SLIDES.map((t, i) => (
           <span
             key={t.slug}
-            aria-hidden="true"
             className="capa-laje"
             data-vez={i === atual ? "true" : undefined}
             style={{ "--i": i } as React.CSSProperties}
@@ -129,12 +131,18 @@ export function HeroCapa() {
 
       {/* Sem `Container`: a capa sangra. O gutter volta como padding do grid,
           porque card e parágrafo continuam precisando de margem para serem
-          lidos — quem encosta na borda é o wordmark, e só ele.
+          lidos — quem encosta na borda são o wordmark e a massa de concreto
+          (`DEC-041`), mais ninguém.
           `min-h-svh` no grid e não na seção: `box-sizing: border-box` faz o
           padding caber dentro da altura, então a seção fecha em 100svh exatos. */}
       <div className="px-6 lg:px-10">
-        <div className="relative grid min-h-svh grid-cols-12 gap-x-6 pt-38 pb-0 lg:pt-44">
-          {/* Card, recuado da margem — o wordmark é que encosta nela.
+        {/* `gap-x-(--capa-gap)` e não `gap-x-6`: a largura da massa de
+            concreto (`.capa-escada`, `app/globals.css`) deriva algebricamente
+            deste gap, então os dois precisam do mesmo número sempre — daí o
+            token em vez de dois literais que podem divergir em silêncio. */}
+        <div className="relative grid min-h-svh grid-cols-12 gap-x-(--capa-gap) pt-38 pb-0 lg:pt-44">
+          {/* Card, recuado da margem — quem encosta nela são o wordmark e a
+              massa de concreto.
               A célula não mudou de lugar nem de tamanho: o `w-[70%]` está na
               moldura, então o card encolheu 30% ancorado no mesmo canto alto à
               esquerda. A legenda fica de fora do corte porque é `w-fit` e se
@@ -205,7 +213,9 @@ export function HeroCapa() {
               azul em vez de assinar o canto. No celular o recuo é o próprio
               gutter (24px), então os três alinham na mesma vertical.
               Em caixa alta não há perna descendente: a base da tinta é a linha
-              de base, ~0,065em acima da caixa de linha — 7px no corpo máximo. */}
+              de base, ~0,065em acima da caixa de linha — 5,7px no corpo
+              máximo (o corpo caiu de 104px para 88px no lockup abaixo; a
+              proporção é a mesma, o número em px não é). */}
           <div className="col-span-12 -ml-6 self-end pb-12 pl-6 lg:-ml-10 lg:pb-25 lg:pl-25">
             {/* O lockup (`DEC-041`). O nome deixou de vir sozinho: filete,
                 descritor e linha de fatos abaixo dele. O corpo caiu de 104px

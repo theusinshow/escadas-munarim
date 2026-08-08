@@ -1789,6 +1789,32 @@ massa abaixo de `lg` se não coubesse. Como a fórmula vale nos dois breakpoints
 media query, **o fallback não foi necessário e não foi implementado**; não há tratamento de mobile
 para manter.
 
+**A largura ganhou um teto depois que as cinco revisões de task já tinham aprovado a fórmula pura,
+e é a revisão final de branch que registra isto.** `calc((100% - 24px) / 2)` foi verificada em
+1440×900 e 390×844 — os dois viewports que a spec pedia — e passou limpo nos dois. O que nenhuma das
+cinco revisões de task cobriu foi tela **larga e baixa**: a altura da massa cresce com a **largura**
+da viewport (`altura = largura × 18/28`), mas o parágrafo de apoio do hero fica numa posição vertical
+fixa. Em 1920×900, 1600×820, 1366×768, 1440×789 e 1280×720 a laje 6 — a mais alta — subia por cima do
+texto, com sobreposição de até **57×22px** em 1920×900; a tinta ali é `--primary-fg-muted` sobre
+`--shade` (~1,35:1), então a palavra clipada não ficava cortada, ficava invisível. Os dois viewports
+que as revisões de task verificaram caíram, por acaso, do lado seguro do limiar — 900px de altura é
+alto o bastante para a massa nunca crescer o suficiente para colidir.
+
+O conserto trava a largura por um segundo termo no `min()`:
+`width: min(calc((100% - var(--capa-gap)) / 2), calc((100svh - var(--capa-teto)) * 28 / 18))`, com
+`--capa-teto: 478px` declarado em `.capa-escada`. Nenhum número aí é arbitrário: 478 é a banda
+vertical que o bloco título + parágrafo ocupa no pior wrap, mais folga — a base da tinta do
+parágrafo mede 358px em larguras ≥1440px, 385px entre 1280–1366px e 454px em 1024px (onde ele quebra
+em quatro linhas); 454 + 24px de folga = 478. Por álgebra, quando este teto vence o `min()`, o topo
+da massa cai em **478 mais o quanto a seção passar de `100svh`** — que é zero nas janelas de 900px de
+altura (topo exato em 478) e sobe até 84px na mais apertada da bateria de reteste, 1024×700 (topo em
+562), porque a seção é `min-h-svh` e cresce além do viewport quando o conteúdo não cabe no mínimo. O
+erro do modelo só soma folga, nunca subtrai. Reteste com o teto: **zero colisão** nas oito
+combinações de largura×altura (1920×900, 1600×820, 1366×768, 1440×789, 1280×720, 1440×900, 1024×700,
+390×844), medindo retângulo pintado por laje contra a tinta real do H1+parágrafo — nunca a bounding
+box de `.capa-escada`, que é vazia na parte de cima por a massa ser um perfil em escada. **Nenhuma
+breakpoint entrou**: continua sendo uma fórmula só, para qualquer largura.
+
 **A altura também não existe como número.** Ela sai de `aspect-ratio: 28 / 18` — piso e espelho
 reais do degrau, os mesmos que o `DEC-010` usa no motion. A razão medida bateu em **0,643 nos dois
 viewports**, e as 7 lajes ficaram em **14,3 · 28,6 · 42,9 · 57,1 · 71,4 · 85,7 · 100%** da altura da
@@ -1857,12 +1883,18 @@ era o script. O implementador **recusou afrouxar a asserção** e reportou a div
 mascará-la, que é o comportamento certo. A regra que fica: **`Range` só entrega tinta quando o
 conteúdo é inline** — no `DEC-040` funcionou porque os alvos eram um `<p>` e um `<h1>` de texto puro.
 
-**Pendência menor, nomeada porque é apertada:** no mobile a folga entre a tinta do lockup e o início
-da massa é de **10px** (tinta termina em x=197, a massa começa em x=207). Passa, e o
-`max-w-[183px]` do lockup existe justamente para conter esse risco — os 10px são o que sobra
-*depois* da trava, não folga de projeto. Qualquer mudança na largura da massa, no corpo do lockup no
-mobile ou no conteúdo das linhas `ESCADAS MUNARIM` / `SETE TIPOS · 15 ANOS` precisa **reconferir
-essa medição** antes de assumir que ainda cabe.
+**Pendência menor, nomeada porque é apertada — e o número mudou na revisão final de branch.** O
+`10px` acima veio de medir só o eixo horizontal (`x` da tinta contra `x` da massa), que é o eixo
+certo quando os dois blocos estão na mesma altura, mas não é a distância real se houver qualquer
+folga vertical. A revisão final rodou uma varredura 2D — distância mínima entre a tinta do lockup
+(`TreeWalker` sobre `.capa-lockup`) e qualquer laje **pintada** (não a bounding box de
+`.capa-escada`), nas duas dimensões — e mediu **33,2px em 390px de largura** e **21,5px em 344px**.
+Não é o **19,1px** que a própria revisão final cogitou antes de reconferir; o número que fica
+registrado é o que essa medição encontrou contra o código como ele está agora, não um valor copiado
+de outra rodada. Segue havendo folga positiva nos dois larguras — sem colisão —, e o `max-w-[183px]`
+do lockup continua sendo o que garante essa folga. Qualquer mudança na largura da massa, no corpo do
+lockup no mobile ou no conteúdo das linhas `ESCADAS MUNARIM` / `SETE TIPOS · 15 ANOS` precisa
+**reconferir essa medição** antes de assumir que ainda cabe.
 
 **Afeta:** `components/home/HeroCapa.tsx` · `app/globals.css` (`.capa-escada`, `.capa-laje`,
 `.capa-laje[data-vez="true"]`, `.capa-descritor`) · `docs/ai/DESIGN_SYSTEM.md` ·

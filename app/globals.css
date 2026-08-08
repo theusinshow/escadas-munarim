@@ -71,6 +71,13 @@
   /* razão real do degrau — governa o stagger (DEC-010) */
   --step-riser: 18;
   --step-tread: 28;
+
+  /* gap horizontal do grid da capa — `gap-x-(--capa-gap)` em
+     `HeroCapa.tsx`. A largura da massa de concreto em `.capa-escada`
+     (`DEC-041`) deriva desse número por álgebra ((100% − gap) / 2), então os
+     dois têm que ser sempre o mesmo valor; daí viver num token em vez de
+     repetido como literal nos dois lugares. */
+  --capa-gap: 24px;
 }
 
 @theme inline {
@@ -483,15 +490,44 @@
      do catálogo — cujo perfil é uma escada de degraus iguais.
 
      Nenhuma medida foi escolhida. A largura é a linha da coluna 7 do grid da
-     capa até a borda direita; com 12 colunas e gap de 24px essa conta resolve
-     para (100% − gap) / 2, e o gutter se cancela — por isso vale igual no
-     mobile e no desktop, sem valor de breakpoint. A altura sai da razão real
-     do degrau via `aspect-ratio`, então não existe altura escrita à mão. */
+     capa até a borda direita; com 12 colunas e gap de `--capa-gap` essa conta
+     resolve para (100% − gap) / 2, e o gutter se cancela — por isso vale
+     igual no mobile e no desktop, sem valor de breakpoint. A altura sai da
+     razão real do degrau via `aspect-ratio`, então não existe altura escrita
+     à mão.
+
+     A largura tem um teto, e ele não existia até a revisão final de branch
+     achar o defeito: a altura da massa cresce com a LARGURA da viewport
+     (altura = largura × 18/28), mas o parágrafo de apoio do hero fica numa
+     posição vertical fixa. Em telas largas e baixas a laje 6 — a mais alta —
+     sobe por cima do texto; a tinta ali é `--primary-fg-muted` sobre
+     `--shade`, contraste ~1,35:1, então a palavra clipada não fica cortada,
+     fica invisível. `--capa-teto: 478px` é a banda vertical que o bloco de
+     título + parágrafo ocupa no pior wrap, mais folga: a base da tinta do
+     parágrafo mede 358px em larguras ≥1440px, 385px entre 1280–1366px e
+     454px em 1024px (onde ele quebra em quatro linhas); 454 + 24px de folga
+     = 478.
+
+     Quando este teto vence o `min()`, o topo da massa NÃO cai sempre em
+     y=478 cravado — cai em 478 mais o quanto a seção passar de `100svh`.
+     A seção é `min-h-svh`: em janelas ≥900px de altura o conteúdo cabe
+     exato e a sobra é zero, então o topo bate 478 na régua. Em janelas mais
+     baixas (720–820px) o grid não cabe no espaço mínimo e a seção cresce
+     além do viewport — a massa, ancorada em `bottom: 0` da seção e não da
+     janela, desce junto, e o topo medido fica ACIMA de 478 (mais longe do
+     texto, nunca mais perto). Medido: sobra zero em 1920×900 e 1440×900
+     (topo em 478 exato); sobra de 8–84px nos demais, com o pior caso —
+     1024×700 — pousando em y=562. A colisão nunca acontece porque o erro
+     do modelo só soma folga, nunca subtrai. */
   .capa-escada {
+    --capa-teto: 478px;
     position: absolute;
     right: 0;
     bottom: 0;
-    width: calc((100% - 24px) / 2);
+    width: min(
+      calc((100% - var(--capa-gap)) / 2),
+      calc((100svh - var(--capa-teto)) * 28 / 18)
+    );
     aspect-ratio: 28 / 18;
     pointer-events: none;
   }
