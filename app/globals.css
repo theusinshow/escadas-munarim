@@ -1,0 +1,505 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Escadas Munarim — tokens
+   Fonte da verdade: /DESIGN.md e /docs/ai/DESIGN_SYSTEM.md
+   Cada cor nomeia um material que a fábrica manipula (DEC-005).
+   Light only — dark mode não serve a nenhum caso de uso deste site.
+   ========================================================================== */
+
+:root {
+  /* superfícies — três degraus de valor, nenhuma sombra */
+  --bg: #f1f2f3;              /* concreto polido claro */
+  --surface: #ffffff;
+  --shade: #e3e5e8;           /* concreto bruto — texto sobre ele 12,78:1 */
+
+  /* texto */
+  --text: #16222e;            /* tinta — 14,39:1 sobre --bg */
+  --muted: #5a6672;           /* 5,24:1 sobre --bg · 4,65:1 sobre --shade */
+  --border: #d3d7db;          /* concreto médio — GRÁFICO APENAS */
+
+  /* marca */
+  --primary: #2c445f;         /* navy Munarim — cor real do logo */
+  --primary-fg: #ffffff;      /* 10,0:1 sobre --primary */
+  --primary-fg-muted: #c4cbd2; /* secundário sobre navy — 6,11:1 ✓ AA */
+
+  /* acento — azulão de marcação (o giz que se estala na laje antes de cortar).
+     Ponto quente sem cor quente: teto de croma 0,08 na paleta, 0,176 aqui. */
+  --accent: #0f52ba;          /* branco sobre ela 7,15:1 · 6,38:1 sobre --bg */
+  --accent-hover: #0a3f91;    /* 9,85:1 com branco */
+  --accent-wash: #e2e9f6;     /* GRÁFICO APENAS */
+  --accent-on-primary: #ffffff; /* o CTA dentro da faixa navy inverte de valor */
+
+  /* interação */
+  --link: #35688c;            /* 5,34:1 sobre --bg · 4,74:1 sobre --shade */
+  --ring: #4a7fa8;            /* GRÁFICO APENAS — 3,83:1, passa em não-texto */
+  --inox: #b9c0c7;            /* GRÁFICO APENAS — traço de corrimão */
+
+  /* elevação — única sombra do sistema */
+  --shadow-float: 0 2px 8px rgb(22 34 46 / 0.12);
+
+  /* geometria */
+  --radius: 2px;              /* concreto pré-moldado tem chanfro, não arredondamento */
+  --container: 1280px;
+
+  /* tipografia — base 17px, razão 1,2 (Sistema Visual v3) */
+  --text-display: clamp(2.6rem, 5.6vw, 4.5rem);
+  --text-h1: 2.65rem;         /* 42px */
+  --text-h2: 2.2rem;          /* 35px */
+  --text-h3: 1.84rem;         /* 29px */
+  --text-h4: 1.53rem;         /* 24px */
+  --text-lead: 1.275rem;      /* 20px */
+  --text-body: 1.0625rem;     /* 17px — base declarada */
+  --text-small: 0.885rem;     /* 14px */
+  --text-eyebrow: 0.82rem;    /* 13px */
+
+  --lh-display: 0.94;  --lh-h1: 1.0;    --lh-h2: 1.08;
+  --lh-h3: 1.16;       --lh-h4: 1.25;   --lh-lead: 1.45;
+  --lh-body: 1.55;     --lh-small: 1.45; --lh-cota: 1.3;
+
+  --tr-display: -0.035em; --tr-h1: -0.03em;  --tr-h2: -0.025em;
+  --tr-h3: -0.02em;       --tr-h4: -0.015em; --tr-lead: -0.01em;
+  --tr-body: 0;           --tr-small: 0.005em;
+  --tr-eyebrow: 0.14em;   --tr-cota: 0.01em;
+
+  /* teto de croma do sistema: só o acento passa de 0,08 (declarativo) */
+  --chroma-max: 0.08;
+
+  --measure: 65ch;
+  --measure-display: 18ch;
+
+  /* razão real do degrau — governa o stagger (DEC-010) */
+  --step-riser: 18;
+  --step-tread: 28;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-shade: var(--shade);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-fg-muted: var(--primary-fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-wash: var(--accent-wash);
+  --color-accent-on-primary: var(--accent-on-primary);
+  --color-link: var(--link);
+  --color-ring: var(--ring);
+  --color-inox: var(--inox);
+
+  --font-display: var(--font-outfit), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-hanken), system-ui, "Segoe UI", sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, Menlo, monospace;
+
+  --radius-DEFAULT: var(--radius);
+  --container-content: var(--container);
+
+  --shadow-float: var(--shadow-float);
+
+  /* A mesma curva que o GSAP registra como CustomEase "degrau" (DEC-010).
+     Declarada aqui para que CSS e JS não possam divergir. */
+  --ease-degrau: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ritmo de seção — variável por intenção, nunca uniforme (U13) */
+  --spacing-section-dense: 64px;
+  --spacing-section: 96px;
+  --spacing-section-airy: 160px;
+}
+
+/* ---------- base ----------
+   Em `@layer base` de propósito: assim `.eyebrow` e as outras classes de
+   `@layer components` vencem o estilo de elemento, e um utilitário do
+   Tailwind vence os dois. Fora de camada, a regra de `h2` sobrescrevia
+   `.eyebrow` e estourava os títulos do rodapé. */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: var(--lh-body);
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Escala tipográfica: base 17px, razão 1,2 (Sistema Visual v3).
+     Line-height inverso ao tamanho. Tracking óptico no display.
+     A Outfit roda com um peso só (600): a diferença entre H1 e H2 é de
+     tamanho e de tracking, não de peso. */
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--lh-h1);
+    font-weight: 600;
+    letter-spacing: var(--tr-h1);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    font-weight: 600;
+    letter-spacing: var(--tr-h2);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--lh-h3);
+    font-weight: 600;
+    letter-spacing: var(--tr-h3);
+  }
+
+  /* A fronteira display/corpo fica entre H3 e H4: o H4 é subtítulo dentro de
+     texto, não título de seção, e por isso vira família de corpo. */
+  h4 {
+    font-size: var(--text-h4);
+    line-height: var(--lh-h4);
+    font-weight: 600;
+    letter-spacing: var(--tr-h4);
+  }
+
+  /* Tamanhos fixos precisam de um degrau no celular — o v3 não os torna
+     fluidos, então o breakpoint volta. */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.2rem;
+    }
+    h2 {
+      font-size: 1.84rem;
+    }
+    h3 {
+      font-size: 1.53rem;
+    }
+    h4 {
+      font-size: 1.275rem;
+    }
+  }
+
+  /* Prosa longa: evita a órfã de uma palavra no fim do parágrafo. Nos
+     títulos quem equilibra é `balance`, acima — são coisas diferentes. */
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  /* Foco: instantâneo, sem transição. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-fg);
+  }
+}
+
+/* ---------- classes do projeto ----------
+   Em `@layer components` de propósito: assim um utilitário do Tailwind
+   (`pr-20`, `max-w-none`, `text-lead`…) consegue sobrescrever pontualmente.
+   Fora de layer, CSS sem camada vence utilitário em camada — e a sobrescrita
+   falha em silêncio, que foi exatamente o que aconteceu com o `pr-20` do
+   rodapé na fase 04. */
+
+@layer components {
+  /* Medida travada — nenhum bloco de texto sem max-width (T6). */
+  .measure {
+    max-width: var(--measure, 65ch);
+  }
+
+  .measure-display {
+    max-width: var(--measure-display, 18ch);
+  }
+
+  .container-site {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-site {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Eyebrow — único lugar onde uppercase + tracking é permitido (T9).
+     Tracking em 0,14em: maiúscula geométrica é mais larga e mais fechada,
+     e precisa de mais ar para não virar bloco cinza (Sistema Visual v3). */
+  .eyebrow {
+    font-size: var(--text-eyebrow);
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: var(--tr-eyebrow);
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Display — o topo da escala declarada (base 17px, razão 1,2).
+     Existe para o hero ter um degrau acima de `h1` sem inventar tamanho
+     solto (T7). Usado uma vez no site. */
+  .type-display {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    line-height: var(--lh-display);
+    font-weight: 600;
+    letter-spacing: var(--tr-display);
+  }
+
+  /* Gatilho do menu: três linhas que viram três degraus.
+     As barras são os pisos e os dois espelhos crescem para conectá-las —
+     o mesmo motivo do degrau que já está no logo. Só `transform`, que é
+     animável em SVG em qualquer navegador (x1/x2 de <line> não são). */
+  .menu-icone rect {
+    transform-box: fill-box;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .menu-icone .piso {
+    transform-origin: left center;
+  }
+
+  .menu-icone .espelho {
+    transform-origin: bottom center;
+    transform: scaleY(0);
+  }
+
+  /* Cada piso vai de face a face do espelho que o encontra — é o que fecha o
+     canto. Por isso as escalas diferem: o piso do meio encosta em dois. */
+  .menu-gatilho:hover .piso-1,
+  .menu-gatilho:focus-visible .piso-1 {
+    transform: translate(12.2px, -1px) scaleX(0.433);
+  }
+  .menu-gatilho:hover .piso-2,
+  .menu-gatilho:focus-visible .piso-2 {
+    transform: translate(5.2px, 0.5px) scaleX(0.478);
+  }
+  .menu-gatilho:hover .piso-3,
+  .menu-gatilho:focus-visible .piso-3 {
+    transform: translate(-1px, 2px) scaleX(0.433);
+  }
+  .menu-gatilho:hover .espelho,
+  .menu-gatilho:focus-visible .espelho {
+    transform: scaleY(1);
+  }
+
+  /* Com `reduce`, a escada ainda se forma — só sem transição, na hora.
+     A preferência é por menos movimento, não por menos affordance: tirar o
+     estado de hover esconderia informação de quem já a recebe. */
+  @media (prefers-reduced-motion: reduce) {
+    .menu-icone rect {
+      transition: none;
+    }
+  }
+
+  /* Três classes viveram aqui e saíram com o mecanismo de cada uma:
+
+     `.capa-faixa` — a persiana de sete faixas do card. A troca virou crossfade,
+     que é `opacity` em utilitário do Tailwind e não precisa de classe de
+     projeto (`DEC-034`).
+
+     `.capa-janela` e `.capa-quadro` — a moldura que seguia o cursor e a foto
+     presa à seção por trás dela. A capa não tem mais foto atrás do navy nem
+     gesto de ponteiro, então as duas classes, as variáveis `--jx`/`--jy`/
+     `--secw`/`--sech` que as alimentavam e o branch de `reduce` delas saíram
+     juntos (`DEC-040`). */
+
+  /* ---------- Botão em degraus (DEC-038) ----------
+     O hover do botão é o `stepIn` aplicado a um alvo de 48px: sete lajes
+     verticais sobem da base em stagger e, no meio da transição, o perfil do
+     preenchimento é literalmente uma escada varrendo da esquerda para a
+     direita. Ao sair do hover ela desce na ordem inversa.
+
+     Nenhum número aqui é escolhido: a duração é piso + espelho (28 + 18, em
+     centésimos) e o stagger do grupo é um espelho inteiro dentro da duração,
+     repartido entre os seis intervalos das sete lajes — a mesma razão 18/28 de
+     `DEC-010`. Sete lajes porque são sete tipos de escada, não porque sete
+     ficou bonito.
+
+     CSS puro, sem GSAP e sem estado: `Button` continua Server Component e o
+     motion existe antes de qualquer bundle carregar. */
+
+  .btn-degrau {
+    --dur: calc((var(--step-riser) + var(--step-tread)) * 0.01s);
+    --stagger: calc(var(--dur) * var(--step-riser) / var(--step-tread) / 6);
+
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    transition:
+      background-color 150ms linear,
+      border-color 150ms linear,
+      /* o rótulo só troca de cor depois que a laje passou por baixo dele */
+        color calc(var(--dur) * 0.45) linear calc(var(--dur) * 0.5),
+      transform var(--dur) var(--ease-degrau);
+  }
+
+  /* O sistema é chapado: não há sombra para afundar no clique. O botão desce um
+     degrau — o mesmo piso/espelho da axonometria, na mesma direção em que os
+     desenhos descem. */
+  .btn-degrau:active {
+    transform: translate(
+      calc(var(--step-tread) * -0.1px),
+      calc(var(--step-riser) * 0.1px)
+    );
+  }
+
+  .btn-degrau-laje {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    /* +0,4%: sem a sobreposição o antialiasing deixa um fio do fundo entre as
+       lajes quando todas estão de pé */
+    width: calc(100% / 7 + 0.4%);
+    left: calc(var(--i) * 100% / 7);
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    transition: transform var(--dur) var(--ease-degrau);
+    transition-delay: calc((6 - var(--i)) * var(--stagger));
+    pointer-events: none;
+  }
+
+  .btn-degrau:hover .btn-degrau-laje,
+  .btn-degrau:focus-visible .btn-degrau-laje {
+    transform: scaleY(1);
+    /* subindo, da esquerda para a direita; descendo, o inverso — é o delay que
+       diferencia os dois sentidos, não uma segunda animação */
+    transition-delay: calc(var(--i) * var(--stagger));
+  }
+
+  /* O rótulo anda por cima das lajes. */
+  .btn-degrau-rotulo {
+    position: relative;
+  }
+
+  .btn-degrau-primary {
+    background: var(--accent);
+    color: var(--primary-fg);
+  }
+  .btn-degrau-primary .btn-degrau-laje {
+    background: var(--accent-hover);
+  }
+
+  .btn-degrau-secondary {
+    background: transparent;
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .btn-degrau-secondary .btn-degrau-laje {
+    background: var(--primary);
+  }
+  .btn-degrau-secondary:hover,
+  .btn-degrau-secondary:focus-visible {
+    color: var(--primary-fg);
+  }
+
+  /* Sobre a faixa navy o botão inverte de valor — `--accent` sobre `--primary`
+     dá 1,40:1 e viraria azul sujo sobre azul, pela mesma razão do painel de
+     menu (`DEC-036`). O motion é idêntico; trocam só as duas cores. Selector de
+     descendência de propósito: quem está sobre navy inverte sozinho, sem
+     depender de alguém lembrar de passar uma prop na próxima página. */
+  .bg-primary .btn-degrau-primary {
+    background: var(--accent-on-primary);
+    color: var(--primary);
+  }
+  .bg-primary .btn-degrau-primary .btn-degrau-laje {
+    background: var(--shade);
+  }
+
+  .bg-primary .btn-degrau-secondary {
+    border-color: var(--primary-fg);
+    color: var(--primary-fg);
+  }
+  .bg-primary .btn-degrau-secondary .btn-degrau-laje {
+    background: var(--primary-fg);
+  }
+  .bg-primary .btn-degrau-secondary:hover,
+  .bg-primary .btn-degrau-secondary:focus-visible {
+    color: var(--primary);
+  }
+
+  /* Com `reduce` sobra a troca de fundo em 120ms, sem transform e sem laje. O
+     estado final é o mesmo: sete lajes de pé são a cor da laje chapada. Nada
+     depende do movimento para ser lido. */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-degrau {
+      transition:
+        background-color 120ms linear,
+        border-color 120ms linear,
+        color 120ms linear;
+    }
+    .btn-degrau:active {
+      transform: none;
+    }
+    .btn-degrau-laje {
+      display: none;
+    }
+    .btn-degrau-primary:hover,
+    .btn-degrau-primary:focus-visible {
+      background: var(--accent-hover);
+    }
+    .btn-degrau-secondary:hover,
+    .btn-degrau-secondary:focus-visible {
+      background: var(--primary);
+    }
+    .bg-primary .btn-degrau-primary:hover,
+    .bg-primary .btn-degrau-primary:focus-visible {
+      background: var(--shade);
+    }
+    .bg-primary .btn-degrau-secondary:hover,
+    .bg-primary .btn-degrau-secondary:focus-visible {
+      background: var(--primary-fg);
+    }
+  }
+
+  /* Cota / spec — mono, alinha numeral em coluna. Line-height próprio: a
+     mono tem altura-x alta e não precisa da entrelinha do texto corrido. */
+  .spec {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    line-height: var(--lh-cota);
+    font-weight: 500;
+    letter-spacing: var(--tr-cota);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Pular para o conteúdo */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--primary);
+  color: var(--primary-fg);
+  padding: 0.75rem 1.25rem;
+}
+
+.skip-link:focus {
+  left: 0;
+}

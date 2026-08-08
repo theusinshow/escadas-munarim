@@ -1,0 +1,52 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# companion visual do brainstorming (mockups locais)
+.superpowers/
+
+# Coleta bruta de referência (DEC-039). 72 arquivos, ~15MB, achados em
+# Pinterest/Google — várias com marca d'água de terceiro e nenhuma com linha na
+# tabela de licença de BANCO_DE_IMAGENS.md. São insumo de busca e de prompt,
+# nunca vão para o site, e não têm por que viver no histórico do repo do
+# cliente. As 7 aprovadas moram em public/media/escadas/*/ref-*-hero.avif e
+# essas sim são versionadas.
+docs/ai/referencias/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
