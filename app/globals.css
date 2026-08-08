@@ -477,6 +477,48 @@
     }
   }
 
+  /* ---------- A aresta em escada da capa (DEC-041) ----------
+     A fronteira entre o navy e o concreto claro é o produto, em escala
+     arquitetônica: 7 lajes de largura igual e altura crescente — uma por tipo
+     do catálogo — cujo perfil é uma escada de degraus iguais.
+
+     Nenhuma medida foi escolhida. A largura é a linha da coluna 7 do grid da
+     capa até a borda direita; com 12 colunas e gap de 24px essa conta resolve
+     para (100% − gap) / 2, e o gutter se cancela — por isso vale igual no
+     mobile e no desktop, sem valor de breakpoint. A altura sai da razão real
+     do degrau via `aspect-ratio`, então não existe altura escrita à mão. */
+  .capa-escada {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: calc((100% - 24px) / 2);
+    aspect-ratio: 28 / 18;
+    pointer-events: none;
+  }
+
+  .capa-laje {
+    position: absolute;
+    bottom: 0;
+    /* +0,4%: sem a sobreposição o antialiasing deixa um fio de navy entre as
+       lajes, do mesmo jeito que no botão em degraus (`DEC-038`). */
+    width: calc(100% / 7 + 0.4%);
+    left: calc(var(--i) * 100% / 7);
+    /* escrito como soma, e não como `calc((var(--i) + 1) * 100% / 7)`: é a
+       mesma conta, mas sem aritmética dentro de parêntese com `var()`, que é a
+       forma que já foi verificada em navegador no botão em degraus. */
+    height: calc(var(--i) * 100% / 7 + 100% / 7);
+    background: var(--shade);
+    transform-origin: 50% 100%;
+    transition: background-color 150ms linear;
+  }
+
+  /* Concreto bruto em repouso, concreto polido no tipo da vez: é o material
+     antes e depois do beneficiamento que a empresa vende, não destaque
+     arbitrário. */
+  .capa-laje[data-vez="true"] {
+    background: var(--surface);
+  }
+
   /* Descritor do lockup da capa (DEC-041). Dois degraus da escala do sistema,
      nenhum corpo fora dela: no mobile ele divide espaço com a massa de concreto
      e precisa caber em três linhas curtas. */

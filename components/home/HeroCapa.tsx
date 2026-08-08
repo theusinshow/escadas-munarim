@@ -73,6 +73,20 @@ export function HeroCapa() {
       aria-labelledby="capa-titulo"
       className="relative -mt-24 overflow-hidden bg-primary text-primary-fg"
     >
+      {/* A massa de concreto, primeiro filho de propósito: ela e o grid são os
+          dois elementos posicionados da seção, e a ordem no DOM é o que faz o
+          grid pintar por cima sem precisar de `z-index`. */}
+      <div className="capa-escada" aria-hidden="true">
+        {SLIDES.map((t, i) => (
+          <span
+            key={t.slug}
+            aria-hidden="true"
+            className="capa-laje"
+            style={{ "--i": i } as React.CSSProperties}
+          />
+        ))}
+      </div>
+
       {/* Sem `Container`: a capa sangra. O gutter volta como padding do grid,
           porque card e parágrafo continuam precisando de margem para serem
           lidos — quem encosta na borda é o wordmark, e só ele.
