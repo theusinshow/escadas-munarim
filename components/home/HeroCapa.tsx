@@ -131,7 +131,7 @@ export function HeroCapa() {
               um pixel sem ela. */}
           <div className="col-span-12 self-start sm:col-span-10 lg:col-span-4 lg:col-start-9">
             <h1 id="capa-titulo" className="text-2xl leading-snug font-semibold sm:text-3xl">
-              Escadas de concreto pré-moldado, sob medida para o seu vão.
+              Segurança e design, na medida exata do seu vão.
             </h1>
             <p className="mt-5 leading-relaxed text-primary-fg-muted">
               Sete tipos, cada um com o desenho e as medidas abertos para você comparar
@@ -153,26 +153,36 @@ export function HeroCapa() {
               Em caixa alta não há perna descendente: a base da tinta é a linha
               de base, ~0,065em acima da caixa de linha — 7px no corpo máximo. */}
           <div className="col-span-12 -ml-6 self-end pb-12 pl-6 lg:-ml-10 lg:pb-25 lg:pl-25">
-            {/* A placa daqui saiu junto com a foto (`DEC-040`). O par que ela
-                exigia — `py-6` para cobrir o transbordo da caixa de métricas
-                sob `leading-[0.88]`, e `-mb-6` para devolver o excedente de
-                baixo — se anulava na conta dos 100px, então **a tinta do
-                wordmark não se move**: medido antes e depois, 100px da esquerda
-                e base a 81px do pé no desktop, 24px e 42px no mobile. `w-fit` e
-                `pr-6` foram junto: largura de placa não significa nada sem placa.
+            {/* O lockup (`DEC-041`). O nome deixou de vir sozinho: filete,
+                descritor e linha de fatos abaixo dele. O corpo caiu de 104px
+                para 88px porque 104 contra um descritor de 24px lê como nome
+                gigante com nota de rodapé (razão 4,3:1) em vez de lockup; a
+                88px fecha em 3,7:1 e o bloco cola. Isso aproxima o wordmark do
+                teto de display do sistema (72px) e reduz — sem eliminar — a
+                exceção nomeada do `DEC-031`.
 
-                O que muda: a caixa do `<p>` encolhe 48px, e no mobile isso
-                reparte espaço livre no grid `min-h-svh` (o `align-content`
-                padrão é `stretch`, e ali os três blocos são linhas separadas) —
-                o h1 desce 8px. No desktop card e texto dividem a mesma linha e
-                nada se desloca. 8px de folga redistribuída numa dobra que já
-                tinha folga; se um dia incomodar, o conserto é `content-start`
-                no grid, não devolver o padding. */}
-            <p className="font-display text-[clamp(2rem,7.4vw,6.5rem)] leading-[0.88] font-semibold tracking-[-0.03em] uppercase">
-              Escadas
-              <br />
-              Munarim
-            </p>
+                `max-w` no mobile não é estética: a massa de concreto começa em
+                x=207 numa tela de 390, e sem trava o descritor passaria por
+                baixo dela.
+
+                O par `py-6`/`-mb-6` da antiga placa não voltou: ele existia
+                para cobrir foto, e a foto saiu no `DEC-040`. */}
+            <div className="capa-lockup max-w-[183px] sm:max-w-none">
+              {/* `w-fit` no envelope: o filete se mede pela tinta do nome, não
+                  pela coluna do grid. */}
+              <div className="w-fit">
+                <p className="font-display text-[clamp(1.75rem,6.1vw,5.5rem)] leading-[0.88] font-semibold tracking-[-0.03em] uppercase">
+                  Escadas
+                  <br />
+                  Munarim
+                </p>
+                <hr className="mt-4 border-0 border-t border-primary-fg/40" />
+              </div>
+              <p className="capa-descritor mt-3 max-w-[44ch]">
+                Escadas pré-moldadas de concreto polido, sob medida.
+              </p>
+              <p className="spec mt-2 text-primary-fg-muted">SETE TIPOS · 15 ANOS</p>
+            </div>
           </div>
         </div>
       </div>

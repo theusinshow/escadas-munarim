@@ -477,6 +477,22 @@
     }
   }
 
+  /* Descritor do lockup da capa (DEC-041). Dois degraus da escala do sistema,
+     nenhum corpo fora dela: no mobile ele divide espaço com a massa de concreto
+     e precisa caber em três linhas curtas. */
+  .capa-descritor {
+    font-size: var(--text-body);
+    line-height: var(--lh-body);
+    font-weight: 500;
+  }
+
+  @media (min-width: 1024px) {
+    .capa-descritor {
+      font-size: var(--text-h4);
+      line-height: var(--lh-h4);
+    }
+  }
+
   /* Cota / spec — mono, alinha numeral em coluna. Line-height próprio: a
      mono tem altura-x alta e não precisa da entrelinha do texto corrido. */
   .spec {
