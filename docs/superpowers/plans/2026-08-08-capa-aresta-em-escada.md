@@ -274,12 +274,25 @@ MED = """
             left: Math.round(b.left - e.left), bg: cs.backgroundColor,
             hidden: l.getAttribute('aria-hidden')};
   });
-  // a TINTA do lockup, nao a caixa: no desktop `.capa-lockup` e um bloco que
-  // ocupa as 12 colunas, entao a caixa dele cruzaria a massa sempre e a
-  // checagem de colisao daria falso positivo.
-  const rgL = document.createRange();
-  rgL.selectNodeContents(sec.querySelector('.capa-lockup'));
-  const lk = rgL.getBoundingClientRect();
+  // A TINTA do lockup, nao a caixa. Cuidado: `Range.selectNodeContents` NAO
+  // serve aqui — sobre um elemento com filhos de bloco ele devolve a uniao das
+  // caixas dos filhos, que no desktop da 1400px, identico ao
+  // getBoundingClientRect. Medido: caixa 1400, range 1400, tinta 569.
+  // So percorrendo os nos de texto se obtem a extensao real dos glifos.
+  const lkEl = sec.querySelector('.capa-lockup');
+  const walker = document.createTreeWalker(lkEl, NodeFilter.SHOW_TEXT);
+  let lkDir = -Infinity, lkBase = -Infinity;
+  while (walker.nextNode()) {
+    const t = walker.currentNode;
+    if (!t.textContent.trim()) continue;
+    const rr = document.createRange();
+    rr.selectNodeContents(t);
+    for (const cb of rr.getClientRects()) {
+      lkDir = Math.max(lkDir, cb.right);
+      lkBase = Math.max(lkBase, cb.bottom);
+    }
+  }
+  const lk = {right: lkDir, bottom: lkBase};
   return {
     secao: {w: Math.round(r.width), h: Math.round(r.height)},
     massa: {w: Math.round(e.width), h: Math.round(e.height),
@@ -890,6 +903,10 @@ git commit -m "docs: DEC-041 — capa com aresta em escada, lockup e indicador d
 
 **Três defeitos encontrados nesta revisão e corrigidos:**
 
-1. **Falso positivo garantido na checagem de colisão da Task 2.** O script media a *caixa* de `.capa-lockup`, mas no desktop esse elemento é um bloco que ocupa as 12 colunas — a caixa dele cruzaria a massa em toda execução. Passou a medir a **tinta**, por `Range`, como no `DEC-040`.
+1. **Falso positivo garantido na checagem de colisão da Task 2.** O script media a *caixa* de `.capa-lockup`, mas no desktop esse elemento é um bloco que ocupa as 12 colunas — a caixa dele cruzaria a massa em toda execução.
+
+   **A primeira correção estava errada e foi corrigida de novo durante a execução.** Trocar por `Range.selectNodeContents` não resolve: sobre um elemento com filhos de bloco, o `Range` devolve a união das caixas dos filhos, não a extensão dos glifos. Medido em navegador no desktop: caixa 1400, `Range` **1400**, tinta real **569**. Só percorrendo os nós de texto com um `TreeWalker` e unindo `getClientRects()` se obtém a tinta. O script acima já está na forma correta.
+
+   Fica a lição, porque ela vale para os outros scripts deste plano: **`Range` só entrega tinta quando o conteúdo é inline.** No `DEC-040` funcionou porque ali os alvos eram um `<p>` e um `<h1>` com texto puro.
 2. **`height: calc((var(--i) + 1) * 100% / 7)` era aritmética dentro de parêntese com `var()`** — forma que eu não verifiquei em navegador. Trocada por `calc(var(--i) * 100% / 7 + 100% / 7)`, que é a mesma conta na forma já comprovada no botão em degraus (`DEC-038`).
 3. Uma tag `</style>` órfã tinha vazado para dentro do bloco CSS da Task 2, com uma nota mandando o implementador ignorá-la. Removida — plano não deve pedir que o leitor desconsidere o que está escrito nele.
