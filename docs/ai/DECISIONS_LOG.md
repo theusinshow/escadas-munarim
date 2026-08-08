@@ -1902,23 +1902,51 @@ lockup no mobile ou no conteúdo das linhas `ESCADAS MUNARIM` / `SETE TIPOS · 1
 
 **Verificado:** TypeScript limpo · build de produção limpo (21 rotas) · ESLint sem nenhum erro novo
 (o único que aparece é o pré-existente de `components/layout/Slideshow.tsx`, alheio a este trabalho).
-Medições em Chromium, servidor de produção:
 
-- **Lockup** — H1, descritor e linha de fatos exatos nos dois viewports, filete presente, corpo do
-  wordmark **87,84px** (desktop) e **28px** (mobile); largura do lockup no mobile **183px**, o teto
-  do `max-w`.
-- **Massa** — **708px** × razão **0,643** no desktop e **183px** × razão **0,643** no mobile, base e
-  lado direito colados na borda da seção (0px nos dois); as 7 alturas em 14,3 → 100%; todas as lajes
-  com `aria-hidden`.
-- **Folgas (desktop)** — wordmark→massa **234px** e H1→massa **186px**, contra o mínimo de 100px da
-  spec; tinta do lockup→massa **163px**. No mobile, tinta do lockup→massa **10px**.
-- **Indicador** — 8 amostras de 4 em 4 segundos: laje acesa **0→1→2→3→4→5→6→0**, sempre a mesma da
-  legenda do card; com `prefers-reduced-motion: reduce` fica travada em **[0]**.
-- **Entrada** — perfil de `scaleY` das 7 lajes quadro a quadro: `[0.42,0,0,0,0,0,0]` →
-  `[0.96,0.45,0,0,0,0,0]` → … → assentado em `[1,1,1,1,1,1,1]`, a laje 0 sempre à frente da 6; no
-  ramo `reduce` as sete já estão em 1 desde os 120ms.
-- **Não-regressão de conjunto** — **15 rotas × 2 viewports (1440×900 e 390×844)** contra o servidor
-  de produção: **zero respostas ≥ 400** e **zero estouro horizontal**.
+**Este bloco foi reconferido depois do fix wave da revisão final de branch (teto de largura,
+`--capa-gap`, comentários).** A primeira verificação abaixo tinha ficado com números de antes do
+teto — nenhum deles estava errado *para o código de então*, mas o código mudou e os números não
+tinham acompanhado, o que contradizia a própria entrada. Todo valor a seguir saiu de uma medição
+nova em Chromium, servidor de produção, contra o código pós-fix; onde um valor mudou por causa do
+teto, isso está dito explicitamente — não é reaproveitado nem recalculado de cabeça.
+
+- **Lockup** — corpo do wordmark **87,84px** (desktop, 1440×900) e **28px** (mobile, 390×844):
+  reconferido e **inalterado** por este fix wave, porque a correção não tocou o `clamp` do corpo.
+  Largura do lockup no mobile **183px**, o teto do `max-w`, também inalterada.
+- **Massa** — **≈656px** de largura × razão **0,6428** no desktop (1440×900) e **183px** × razão
+  **0,6428** no mobile; as 7 alturas em **14,3 → 28,6 → 42,9 → 57,1 → 71,4 → 85,7 → 100%** da altura
+  da massa nos dois viewports (o mobile fecha em 42,8% em vez de 42,9% na 3ª laje — diferença de
+  sub-pixel, mesma progressão). **O 656px substitui o 708px da primeira verificação, e o motivo é o
+  próprio fix**: 708px era a largura *sem* o teto de altura; em 1440×900 o teto (`--capa-teto`) agora
+  é o termo que vence no `min()`, então a largura real caiu para ≈656px e a altura para ≈422px. A
+  razão 0,6428 (≈ 28/18 = 0,643) segue intacta porque o `aspect-ratio` não muda com o teto — só a
+  largura de referência muda. Base e lado direito seguem colados na borda da seção (0px nos dois);
+  todas as lajes com `aria-hidden` só no container, não mais repetido em cada `<span>` (finding 6 do
+  fix wave).
+- **Folgas** — tinta do lockup inteiro (wordmark + filete + descritor + linha de fatos) até a laje
+  pintada mais próxima: **235px no desktop** (1440×900; a primeira verificação registrava 234px
+  medindo só o wordmark — a diferença de 1px é o descritor entrando na conta) e **33,2px no mobile**
+  a 390px de largura (**21,5px** a 344px). O 33,2px **substitui o 10px** que a primeira verificação
+  tinha registrado: aquele número vinha de medir só o eixo horizontal, e o parágrafo da pendência
+  mobile acima já registra a correção — este bloco só confirma que o valor corrigido é o mesmo que a
+  medição final usa. Tinta de H1+parágrafo até a laje pintada mais próxima (não bounding box):
+  **120,3px no pior caso dos 8 viewports reamostrados** (1440×900) — mais apertada que o `186px` que
+  a primeira verificação chamava de "H1→massa", porque aquela era contra a massa sem teto, e a tabela
+  completa dos 8 viewports está no corpo desta entrada, acima.
+- **Indicador** — 8 amostras de 4 em 4 segundos em 1440×900, reconferidas pós fix-wave: laje acesa
+  **0→1→2→3→4→5→6→0**, sempre a mesma da legenda do card. Ramo `prefers-reduced-motion: reduce`,
+  também reconferido: as 7 lajes já chegam em `scaleY(1)` (sem entrada animada) e o índice aceso
+  continua em **[0]** mesmo depois de 4,5s de espera — o `setInterval` do indicador não avança, como
+  a primeira verificação já tinha registrado.
+- **Entrada** — perfil de `scaleY` das 7 lajes reamostrado a cada 150ms em página recém-carregada,
+  pós fix-wave: sobe em degraus na ordem 0→6, cada laje sempre à frente da seguinte (`[0.76,0,0,0,0,
+  0,0]` → `[0.99,0.71,0,0,0,0,0]` → … → assentado em `[1,1,1,1,1,1,0.99]` por volta de 1,2–1,35s).
+  Qualitativamente igual ao perfil que a primeira verificação registrou; os números pontuais diferem
+  porque a cadência de amostragem desta rodada é outra (150ms, não a da primeira), não porque o
+  comportamento da entrada mudou — este fix wave não tocou `lib/motion.ts` nem o `useEffect` da
+  animação.
+- **Não-regressão de conjunto** — **15 rotas × 2 viewports (1440×900 e 390×844)**, reexecutada contra
+  o build desta correção: **zero respostas ≥ 400** (30/30 em 200) e **zero estouro horizontal**.
 
 **Reversível:** sim.
 
