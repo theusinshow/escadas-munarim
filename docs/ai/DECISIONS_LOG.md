@@ -1760,6 +1760,138 @@ medição e capturas em Chromium 1440×900 @2x e 390×844 @2x, antes e depois.
 
 ---
 
+## DEC-041 — A capa divide a dobra com uma massa de concreto, e a fronteira é uma escada
+
+**Data:** 2026-08-08
+**Etapa:** iteração de design
+**Decisão:** entra no canto inferior direito da capa uma **massa de concreto claro** formada por
+**7 lajes** de largura igual e altura crescente — uma por tipo do catálogo —, de modo que a aresta
+superior dela é literalmente uma escada. As lajes **sobem em degraus na entrada** e a do tipo da vez
+**acende** junto com a troca do card, então a mesma silhueta é fundo, movimento e índice. O wordmark
+do canto inferior esquerdo vira **lockup** (nome + filete + descritor + linha de fatos) e o H1 muda.
+
+**O problema de origem foram três itens, nesta ordem.** Depois do `DEC-040` a capa ficou em navy
+chapado, e o desenvolvedor apontou: (1) o vazio virou falta em vez de escolha; (2) a dobra não diz
+em três segundos o que a empresa vende, para um leigo que cai frio; (3) fora o crossfade do card,
+nada acontece. `DEC-031` já tinha escrito a raiz do item 1 — *"navy sólido faz o vazio pesar como
+massa; fundo claro faz o mesmo vazio respirar"* — e a capa manteve o navy sabendo disso. Esta
+entrada **não revoga** aquela escolha: ela para de pedir que **uma só** superfície carregue a dobra
+inteira. Ficou explicitamente fora do escopo trazer os SVGs dos 7 tipos para a dobra; o desenho
+técnico continua morando no catálogo.
+
+**A largura não é número escolhido.** É a linha da coluna 7 do grid da capa até a borda direita, e
+quando se escreve a conta o gutter se cancela: `largura = (W − p) − 6c − 6g`, com
+`c = (W − 2p − 11g)/12`, resolve para `(W − g)/2`. Com `g = 24px` (`gap-x-6`) isso é
+`calc((100% - 24px) / 2)` **em qualquer largura de tela**. Medido: **708px** em 1440×900 e **183px**
+em 390×844. **Foi essa álgebra que dispensou o fallback de mobile.** A spec §9 tinha deixado o
+celular em aberto — massa a ~45% da largura, a conferir em navegador, com autorização para omitir a
+massa abaixo de `lg` se não coubesse. Como a fórmula vale nos dois breakpoints sem um único valor de
+media query, **o fallback não foi necessário e não foi implementado**; não há tratamento de mobile
+para manter.
+
+**A altura também não existe como número.** Ela sai de `aspect-ratio: 28 / 18` — piso e espelho
+reais do degrau, os mesmos que o `DEC-010` usa no motion. A razão medida bateu em **0,643 nos dois
+viewports**, e as 7 lajes ficaram em **14,3 · 28,6 · 42,9 · 57,1 · 71,4 · 85,7 · 100%** da altura da
+massa. A altura de cada laje é `calc(var(--i) * 100% / 7 + 100% / 7)`, escrita como soma e não como
+`calc((var(--i) + 1) * 100% / 7)`: é a mesma conta na forma já verificada em navegador no botão em
+degraus (`DEC-038`). Cada laje tem `+0,4%` de largura pelo mesmo motivo daquele botão — sem a
+sobreposição o antialiasing deixa um fio de navy entre elas.
+
+**A massa é absoluta, irmã do grid, e não célula dele.** A spec §3 a desenhava ocupando as colunas
+7–12 com margem negativa; implementada como `position: absolute` ancorada em `right: 0` / `bottom:
+0`, ela não pode empurrar a linha que dividiria com o lockup. O risco R4 da spec — a massa alterar a
+altura da linha e deslocar a tinta do wordmark — deixou de existir por construção em vez de por
+medição.
+
+**`--shade` e `--surface` são o material, não destaque arbitrário.** A laje em repouso é `--shade`,
+concreto bruto; a do tipo da vez é `--surface`, concreto polido. É o antes e o depois do
+beneficiamento que a empresa vende. O indicador é redundante por construção — a legenda do card
+nomeia o tipo em texto —, então a massa inteira é `aria-hidden` e o pior caso de um delta sutil
+demais é degradar para silhueta pura, não para informação perdida.
+
+**A entrada não tem número novo.** A duração é `DUR + STAGGER` e o grupo escalona por `STAGGER`,
+com `amount` em `STAGGER × 6`. As 7 lajes dão **6 intervalos**, que é exatamente o `MAX_STAGGER = 6`
+que `lib/motion.ts` já documentava como teto — **coincidência favorável entre a contagem do catálogo
+e um teto que existia antes, não ajuste para caber**. O estado inicial vem de JS e nunca de CSS
+(`DEC-018`): o HTML estático já sai com a escada de pé, e `jaVisivel` cancela a animação de quem já
+teve tempo de ler.
+
+**O nome caiu de 104px para 88px.** A 104px contra um descritor de 24px a razão é 4,3:1, que lê como
+nome gigante com nota de rodapé; a 88px fecha em 3,7:1 e o bloco cola. Isso aproxima o wordmark do
+teto de display do sistema (72px) e **reduz — sem eliminar — a exceção nomeada que o `DEC-031`
+registrou**. Medido: **87,84px** no desktop e **28px** no mobile. O par `py-6`/`-mb-6` da antiga
+placa não voltou: ele existia para cobrir foto, e a foto saiu no `DEC-040`.
+
+**A linha de fatos não repete "SÃO JOSÉ — GRANDE FLORIANÓPOLIS", e isso é deliberado.** A região já
+aparece na barra fixa e de novo na faixa navy da home; ali seria a terceira ocorrência na mesma
+página. `SETE TIPOS · 15 ANOS` faz trabalho melhor — é fato verificado e explica em texto por que a
+escada tem sete degraus. Todos os fatos usados saem da lista verificada do `CLAUDE.md`.
+
+**A linha de fatos usa `.spec` (14px), e não os 13px que a spec §5 escreveu.** `.spec` é o
+componente de cota que o site inteiro já usa, em `--text-small`; criar uma classe nova para casar
+com um número de spec seria pagar um seletor para não reusar nada. Reuso do componente existente
+vale mais que casar com o número.
+
+**Uma frase foi descartada por ser falsa.** Qualquer construção do tipo "a escada chega pronta da
+fábrica" não vale para os 7 tipos: **in loco é concretada no local**, não é pré-moldada. Um sétimo
+do catálogo desmentiria a dobra. O H1 novo — *"Segurança e design, na medida exata do seu vão."* —
+apoia-se na tagline verificada da marca e substitui uma frase que tinha virado quase gêmea do
+descritor do lockup.
+
+**O H1 reusa "vão", e foi escolha consciente.** Foi apontado ao desenvolvedor, **antes** da escolha,
+que a palavra já aparece no fechamento da home (*"Conte o seu vão. A gente diz o que cabe nele."*).
+Ele escolheu assim mesmo. Fica registrado como decisão, não como descuido.
+
+**O acoplamento card↔escada é custo aceito.** O indicador reusa o `setInterval` que já existe no
+componente — nenhum relógio novo, nenhum estado novo —, o que significa que, se o card sair um dia,
+a escada perde o índice. Aceito explicitamente pelo desenvolvedor (spec R1): sem o indicador a massa
+continua legível como silhueta.
+
+**Um defeito de medição foi encontrado e corrigido durante a execução, e a lição vale para os
+próximos scripts.** A checagem de colisão entre lockup e massa media a tinta com
+`Range.selectNodeContents` sobre `.capa-lockup`. Sobre um elemento com filhos de bloco isso devolve
+a união das caixas dos filhos, não a extensão dos glifos. Medido em navegador a 1440×900: caixa do
+elemento **1400**, `Range` **1400** — idêntico —, tinta real por `TreeWalker` sobre os nós de texto
+**569**, com a massa começando em **732**. Os **163px** de folga sempre estiveram lá; quem falhava
+era o script. O implementador **recusou afrouxar a asserção** e reportou a divergência em vez de
+mascará-la, que é o comportamento certo. A regra que fica: **`Range` só entrega tinta quando o
+conteúdo é inline** — no `DEC-040` funcionou porque os alvos eram um `<p>` e um `<h1>` de texto puro.
+
+**Pendência menor, nomeada porque é apertada:** no mobile a folga entre a tinta do lockup e o início
+da massa é de **10px** (tinta termina em x=197, a massa começa em x=207). Passa, e o
+`max-w-[183px]` do lockup existe justamente para conter esse risco — os 10px são o que sobra
+*depois* da trava, não folga de projeto. Qualquer mudança na largura da massa, no corpo do lockup no
+mobile ou no conteúdo das linhas `ESCADAS MUNARIM` / `SETE TIPOS · 15 ANOS` precisa **reconferir
+essa medição** antes de assumir que ainda cabe.
+
+**Afeta:** `components/home/HeroCapa.tsx` · `app/globals.css` (`.capa-escada`, `.capa-laje`,
+`.capa-laje[data-vez="true"]`, `.capa-descritor`) · `docs/ai/DESIGN_SYSTEM.md` ·
+`docs/ai/PAGE_BLUEPRINTS.md`.
+
+**Verificado:** TypeScript limpo · build de produção limpo (21 rotas) · ESLint sem nenhum erro novo
+(o único que aparece é o pré-existente de `components/layout/Slideshow.tsx`, alheio a este trabalho).
+Medições em Chromium, servidor de produção:
+
+- **Lockup** — H1, descritor e linha de fatos exatos nos dois viewports, filete presente, corpo do
+  wordmark **87,84px** (desktop) e **28px** (mobile); largura do lockup no mobile **183px**, o teto
+  do `max-w`.
+- **Massa** — **708px** × razão **0,643** no desktop e **183px** × razão **0,643** no mobile, base e
+  lado direito colados na borda da seção (0px nos dois); as 7 alturas em 14,3 → 100%; todas as lajes
+  com `aria-hidden`.
+- **Folgas (desktop)** — wordmark→massa **234px** e H1→massa **186px**, contra o mínimo de 100px da
+  spec; tinta do lockup→massa **163px**. No mobile, tinta do lockup→massa **10px**.
+- **Indicador** — 8 amostras de 4 em 4 segundos: laje acesa **0→1→2→3→4→5→6→0**, sempre a mesma da
+  legenda do card; com `prefers-reduced-motion: reduce` fica travada em **[0]**.
+- **Entrada** — perfil de `scaleY` das 7 lajes quadro a quadro: `[0.42,0,0,0,0,0,0]` →
+  `[0.96,0.45,0,0,0,0,0]` → … → assentado em `[1,1,1,1,1,1,1]`, a laje 0 sempre à frente da 6; no
+  ramo `reduce` as sete já estão em 1 desde os 120ms.
+- **Não-regressão de conjunto** — **15 rotas × 2 viewports (1440×900 e 390×844)** contra o servidor
+  de produção: **zero respostas ≥ 400** e **zero estouro horizontal**.
+
+**Reversível:** sim.
+
+---
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

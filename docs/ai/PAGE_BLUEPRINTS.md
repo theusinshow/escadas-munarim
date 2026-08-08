@@ -42,10 +42,15 @@
                     alto dir.  axonometria do tipo da vez (onde a referência
                                põe um selo — selo a Munarim não tem)
                     baixo dir. o que a fábrica entrega, alinhado à direita
-                    canto inf. esq. ESCADAS MUNARIM encostado nas DUAS bordas
-                               da janela — a célula desfaz o gutter e a placa o
-                               repõe como padding, então a tinta cai em x=0 e a
-                               placa continua cobrindo a foto atrás dela.
+                    canto inf. esq. o LOCKUP — nome (ESCADAS MUNARIM) + filete +
+                               descritor + linha de fatos —, encostado nas DUAS
+                               bordas da janela. Ver DEC-041.
+                    canto inf. dir. MASSA DE CONCRETO CLARO, cuja aresta
+                               superior é uma escada de 7 lajes, uma por tipo.
+                               Largura = linha da coluna 7 até a borda; altura
+                               pela razão 28/18. Sobe em degraus na entrada e a
+                               laje do tipo da vez acende com o card. Decorativa
+                               (aria-hidden): a legenda já nomeia o tipo.
                     O vazio é o material principal da dobra, não sobra de layout.
 [Faixa de fatos]    continua o navy da capa. 15 anos em corpo grande ocupando
                     metade da faixa; 07 tipos · 04 etapas · SC em coluna

@@ -194,6 +194,24 @@ fechar ao abrir e volta ao gatilho ao fechar, o corpo trava o scroll e o Tab nã
 O painel usa `m-auto` e não `justify-center`: num container que rola, centralizar torna o topo do
 conteúdo inalcançável em tela baixa.
 
+**Lockup da capa** (`DEC-041`) — quatro linhas empilhadas no canto inferior esquerdo da dobra, nos
+mesmos 100px das duas bordas que o `DEC-033` mediu (24px no mobile).
+
+- **Nome** — `ESCADAS / MUNARIM` em duas linhas, Outfit 600, `clamp(1.75rem, 6.1vw, 5.5rem)`
+  (88px no desktop), `leading-[0.88]`, `tracking-[-0.03em]`, caixa alta, `--primary-fg`.
+- **Filete** — `<hr>` de 1px `--primary-fg` a 40%. **A largura dele é a tinta do nome, não a coluna
+  do grid:** nome e filete vivem juntos num envelope `w-fit`, e é o `w-fit` que faz a régua terminar
+  onde o M termina. Sem ele o filete atravessaria a capa.
+- **Descritor** — `.capa-descritor`: `--text-body` no mobile, `--text-h4` a partir de 1024px. Dois
+  degraus da escala do sistema, nenhum corpo fora dela.
+- **Fatos** — `.spec` (DM Mono, `--text-small`), `--primary-fg-muted`. Reusa a cota do site em vez de
+  ganhar corpo próprio.
+
+**Este lockup é exclusivo da capa.** Não é o padrão de marca das outras rotas: a barra leva o símbolo
+sem nome, o painel de menu leva símbolo + nome, e o rodapé leva a identificação com endereço. Quatro
+linhas em corpo de display só se sustentam numa dobra de `100svh` com vazio ao redor — repetir isso
+em página de conteúdo transforma assinatura em cabeçalho.
+
 **Footer** — 4 colunas: identificação + endereço em `<address>` · os 7 tipos · navegação · contato.
 Fundo `--primary`, texto `--primary-fg`. Telefone e WhatsApp como links `tel:` e `wa.me`.
 

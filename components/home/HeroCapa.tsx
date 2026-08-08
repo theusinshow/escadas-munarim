@@ -13,12 +13,12 @@ import { comMovimento, jaVisivel, gsap, DUR, EASE, STAGGER } from "@/lib/motion"
  *   texto            alto à direita
  *   ESCADAS MUNARIM  embaixo à esquerda, em corpo grande
  *
- * **O fundo é `--primary` chapado, e a capa não reage ao cursor** (`DEC-040`).
- * Saíram juntos a foto atrás do navy, a janela que a revelava sob o mouse e o
- * campo de pontos — os dois gestos de ponteiro que `DEC-036` tinha registrado
- * como exceção nomeada, e que conviviam disputando a mesma seção. Com eles foi
- * também a placa de fundo sólido de cada bloco de texto: ela existia só para
- * cortar a foto por trás da tinta, e sobre navy chapado não pinta nada.
+ * **O fundo navy divide a dobra com uma massa de concreto claro, e a fronteira
+ * entre as duas é uma escada** (`DEC-041`). São 7 lajes — uma por tipo — de
+ * altura crescente; elas sobem em degraus na entrada e a da vez acende junto
+ * com a troca do card, então a escada é também o índice do catálogo. A capa
+ * continua sem reagir ao cursor: os dois gestos de ponteiro saíram no
+ * `DEC-040` e não voltaram.
  *
  * O que sobrou é o que já se sustentava sem mouse — a capa do toque virou a
  * capa de todo mundo.
