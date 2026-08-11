@@ -79,7 +79,7 @@ export function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="fixed inset-x-0 top-0 z-50 h-24 border-b border-border bg-bg"
+      className="fixed inset-x-0 top-0 z-50 h-(--barra-h) border-b border-border bg-bg"
     >
       {/* Grid de três colunas iguais: só assim a cidade fica no centro real
           da página, e não no meio do espaço que sobra entre as pontas. */}

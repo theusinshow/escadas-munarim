@@ -31,7 +31,7 @@ Nunca rodar duas skills visuais sobrepostas na mesma fase (`catalog/skill-confli
 
 ### Goal
 Scaffold do Next.js 16 (App Router, TypeScript), Tailwind v4 com os tokens de `DESIGN_SYSTEM.md`,
-fontes via `next/font` (Archivo, IBM Plex Sans, IBM Plex Mono — só os pesos declarados), layout
+fontes via `next/font` (Outfit, Hanken Grotesk, DM Mono — só os pesos declarados), layout
 global com navbar, rodapé e botão flutuante de WhatsApp, `next.config` com os redirects 301, e
 `app/(rotas)` vazias mas navegáveis para as 9 rotas.
 

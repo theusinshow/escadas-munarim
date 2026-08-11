@@ -80,7 +80,7 @@ linkados no meio de parágrafo. Todo link solto, em linha própria, tem os 44px.
 
 ## Performance — target: **CWV**
 - [x] Imagens otimizadas: AVIF/WebP, `sizes` explícito, `priority` só no hero, `lazy` no resto.
-- [x] Fontes por `next/font`, subset latin+latin-ext, apenas Sora 400/600/700, Be Vietnam Pro 400/500/600, DM Mono 400/500. Sem layout shift.
+- [x] Fontes por `next/font`, subset latin, apenas Outfit 600, Hanken Grotesk 400/500/600, DM Mono 400/500. Sem layout shift.
 - [x] Above-the-fold dentro de **400KB**.
 - [x] GSAP importado por módulo, só nas rotas que animam. Sem Lenis.
 - [x] **LCP < 2,5s** em 4G — medido em 492–564ms · **CLS < 0,1** — medido em ≤ 0,0004.
@@ -125,12 +125,12 @@ python ~/.claude/skills/site-architect/scripts/check_slop.py .
 
 **Tipografia**
 - [x] Display com tracking óptico corrigido (`-0.03em`, nunca `normal` acima de 40px).
-- [x] Line-height inverso ao tamanho — 1.0 no display, 1.6 no corpo.
-- [x] Archivo (grotesca de largura variável) × Plex Sans (humanista) × Plex Mono — classificações distintas.
-- [x] Base 16px e razão 1.25 declaradas; desvios nomeados.
+- [x] Line-height inverso ao tamanho — 1.0 no H1, 1.55 no corpo.
+- [x] Outfit (display geométrica) × Hanken Grotesk (corpo grotesca) × DM Mono (cotas) — papéis distintos.
+- [x] Base 17px e razão 1.2 declaradas; desvios nomeados.
 - [x] `max-width` em `ch` em todo bloco de texto (65ch corpo, 18ch display).
 - [x] Corpo em peso ≥ 400.
-- [x] Uppercase só em eyebrow, com tracking de 0.12em.
+- [x] Uppercase só em eyebrow, com tracking de 0.14em.
 
 **Composição**
 - [x] Teste do default: cada valor de fundação tem uma razão que não é "é o default".

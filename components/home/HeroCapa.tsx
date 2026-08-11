@@ -102,13 +102,16 @@ export function HeroCapa() {
   const tipo = SLIDES[atual];
 
   return (
-    /* `-mt-24` cancela o `pt-24` que o `main` reserva para a barra fixa: a capa
-       começa no topo real da janela e tem `100svh` cheios, não `100svh - 96px`.
+    /* `-mt-(--barra-h)` cancela o `pt-(--barra-h)` que o `main` reserva para a
+       barra fixa: a capa começa no topo real da janela e tem `100svh` cheios,
+       não `100svh` menos a barra. Os dois são o mesmo token justamente porque
+       têm que se anular — escritos como dois literais, mexer em um só deixaria
+       a capa com uma faixa de sobra ou de falta que nada no código explica.
        A barra continua por cima — o respiro dela voltou como `pt` do grid, que
        é padding interno e não empurra a seção para baixo. */
     <section
       aria-labelledby="capa-titulo"
-      className="relative -mt-24 overflow-hidden bg-primary text-primary-fg"
+      className="relative -mt-(--barra-h) overflow-hidden bg-primary text-primary-fg"
     >
       {/* A massa de concreto, primeiro filho de propósito: ela e o grid são os
           dois elementos posicionados da seção, e a ordem no DOM é o que faz o
@@ -141,20 +144,35 @@ export function HeroCapa() {
             deste gap, então os dois precisam do mesmo número sempre — daí o
             token em vez de dois literais que podem divergir em silêncio. */}
         <div className="relative grid min-h-svh grid-cols-12 gap-x-(--capa-gap) pt-38 pb-0 lg:pt-44">
-          {/* Card, recuado da margem — quem encosta nela são o wordmark e a
-              massa de concreto.
-              A célula não mudou de lugar nem de tamanho: o `w-[70%]` está na
-              moldura, então o card encolheu 30% ancorado no mesmo canto alto à
-              esquerda. A legenda fica de fora do corte porque é `w-fit` e se
-              mede pela própria tinta — presa a 70% ela quebraria linha. */}
-          <div className="col-span-12 self-start sm:col-span-7 lg:col-span-4 lg:col-start-2">
+          {/* Card. **No desktop ele começa na mesma vertical do lockup**, e não
+              no gutter do grid: card, legenda e wordmark passam a assinar uma
+              régua só a 100px da borda da janela. Antes a célula era
+              `lg:col-start-2` e a moldura levava `w-[70%]`, o que punha a borda
+              esquerda do card em x=193 contra os x=100 do wordmark logo abaixo
+              — 93px de desencontro entre os dois maiores blocos do canto
+              esquerdo, sem nada que os explicasse.
+              O recuo não é remedido aqui: é o **mesmo par** `-ml-10`/`pl-25` da
+              célula do lockup (desfaz o gutter para o zero voltar a ser a borda
+              real da tela, e então mede 100px a partir dela). Sendo o mesmo
+              mecanismo e não dois números iguais por coincidência, os dois não
+              têm como divergir.
+              Com a esquerda presa em 100px, o `w-[70%]` da moldura perdeu a
+              função: a largura agora é a própria célula, então o card vai da
+              régua dos 100px até a linha da coluna 4 do grid — as duas bordas
+              passam a cair em algo, e ele cresce ~28% no caminho. Abaixo de
+              `lg` nada muda: lá o lockup já recua pelo próprio gutter, o card
+              sempre esteve nessa vertical, e o corte de 70% continua valendo
+              porque a massa de concreto divide a tela com ele.
+              A legenda fica de fora do corte porque é `w-fit` e se mede pela
+              própria tinta — presa a 70% ela quebraria linha. */}
+          <div className="col-span-12 self-start sm:col-span-7 lg:col-span-4 lg:col-start-1 lg:-ml-10 lg:pl-25">
             <Link href={`/escadas/${tipo.slug}`} className="group block">
               {/* `aspect-3/2` e não `5/4`: as sete fotos são 3:2 exatos, e uma
                   moldura 5:4 sobre elas jogava fora 17% da largura com
                   `object-cover` — 8% de cada lado, e é justamente onde o pé e o
                   topo do lance costumam estar. Moldura na razão do arquivo é
                   crop zero. */}
-              <div className="relative aspect-3/2 w-[70%] overflow-hidden border border-primary-fg/20 bg-shade">
+              <div className="relative aspect-3/2 w-[70%] overflow-hidden border border-primary-fg/20 bg-shade lg:w-full">
                 {/* Crossfade: as sete ficam empilhadas e só a da vez tem opacidade.
                     A que sai continua pintada durante o cruzamento, então o card
                     nunca pisca vazio — mesma garantia da persiana, sem o mecanismo.
@@ -168,7 +186,7 @@ export function HeroCapa() {
                       alt={i === atual ? t.imagem!.alt : ""}
                       fill
                       priority={i === 0}
-                      sizes="(min-width: 1024px) 24vw, 63vw"
+                      sizes="(min-width: 1024px) 30vw, 63vw"
                       style={{ transitionDuration: `${CRUZAMENTO}ms` }}
                       className={`object-cover transition-opacity ease-degrau motion-reduce:transition-none ${
                         i === atual ? "opacity-100" : "opacity-0"

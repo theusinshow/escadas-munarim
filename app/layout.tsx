@@ -91,7 +91,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Pular para o conteúdo
         </a>
         <Navbar />
-        <main id="conteudo" className="flex-1 pt-24">
+        {/* `pt-(--barra-h)` reserva no fluxo o espaço que a barra fixa ocupa
+            fora dele. O token e não `pt-20`: a barra, esta reserva e o
+            `-mt-(--barra-h)` da capa são o mesmo número em três arquivos
+            (`app/globals.css`). */}
+        <main id="conteudo" className="flex-1 pt-(--barra-h)">
           {children}
         </main>
         <Footer />

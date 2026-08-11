@@ -267,8 +267,8 @@ export const theme = {
       link: 'var(--link)', ring: 'var(--ring)', inox: 'var(--inox)',
     },
     fontFamily: {
-      display: ['var(--font-sora)', 'Helvetica Neue', 'sans-serif'],
-      body: ['var(--font-be-vietnam)', 'system-ui', 'Segoe UI', 'sans-serif'],
+      display: ['var(--font-outfit)', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      body: ['var(--font-hanken)', 'system-ui', 'Segoe UI', 'sans-serif'],
       mono: ['var(--font-dm-mono)', 'ui-monospace', 'Menlo', 'monospace'],
     },
     borderRadius: { DEFAULT: 'var(--radius)' },

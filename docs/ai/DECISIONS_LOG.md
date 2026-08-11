@@ -1952,6 +1952,131 @@ teto, isso está dito explicitamente — não é reaproveitado nem recalculado d
 
 ---
 
+## DEC-042 — O card da capa passa a nascer na mesma vertical do lockup
+
+**Data:** 2026-08-11
+**Etapa:** iteração de design (feedback do desenvolvedor no navegador)
+**Decisão:** no desktop (`lg`), o card da capa deixa de começar no gutter do grid e passa a começar
+na **mesma régua de 100px** do lockup do canto inferior esquerdo. Com a esquerda presa nessa régua,
+o `w-[70%]` da moldura perde a função e sai: a largura passa a ser a da própria célula, então o card
+vai da régua até a **linha da coluna 4** do grid e cresce ~28% no caminho. Abaixo de `lg` nada muda.
+
+**O problema.** O `DEC-040` encolheu o card em 30% ancorando-o no canto alto à esquerda, e o
+`DEC-041` trouxe o lockup para o canto de baixo com recuo de 100px. As duas decisões são coerentes
+isoladas e incoerentes juntas: medido em 1894×838, a borda esquerda do card caía em **x=193** e a do
+wordmark em **x=100** — **93px de desencontro** entre os dois maiores blocos da coluna esquerda, sem
+nada no layout que explicasse a diferença. O olho lê isso como erro de montagem, não como recuo
+intencional, porque não há terceiro elemento naquela vertical para justificar o 193.
+
+**O recuo não é remedido, é o mesmo mecanismo.** A célula do card recebe o par `-ml-10`/`pl-25` que a
+célula do lockup já usava — desfaz o gutter para o zero voltar a ser a borda real da tela, e mede
+100px a partir dela (25 × 4px, unidade base do sistema). Sendo o **mesmo** par e não dois números
+iguais por coincidência, card, legenda e wordmark não têm como divergir num ajuste futuro de gutter.
+Medido: `x` do card = `x` da legenda = `x` do wordmark em **9 viewports** (100px de 1024 a 1920; 24px
+em 768 e 390, onde o lockup já recuava pelo próprio gutter e o card sempre esteve nessa vertical).
+
+**A largura passou a ter as duas bordas ancoradas.** Antes, a borda direita do card era 70% de uma
+célula — não caía em nenhuma linha do grid (x=613 em 1920, contra a linha da coluna 4 em 637). Agora
+a esquerda é a régua do lockup e a direita é a linha da coluna 4, e a largura sai por álgebra:
+`(W − 308) / 3`, com `W` = largura da janela. Medido: **537px em 1920**, 377px em 1440, 239px em
+1024. O `sizes` da `<Image>` acompanhou — `24vw` → `30vw` acima de 1024px, que é teto para toda a
+faixa (23,3vw em 1024, 28vw em 1920, 29,3vw em 2560).
+
+**O custo, e ele é real: a capa deixa de fechar em `100svh` em janelas de 900px de altura.** A altura
+do card é `aspect-3/2` da largura, então os ~119px que ele ganhou de largura viram ~79px de altura, e
+a seção é `min-h-svh` — cresce além do viewport quando o conteúdo não cabe. O `DEC-041` registrava
+"sobra zero em 1920×900"; a folga real medida agora era de 22px, e o crescimento a consumiu.
+
+| Viewport | Altura da seção antes | Depois | Já estourava antes? |
+|---|---|---|---|
+| 1920×969 (1080 com barra) | 969 (cabe) | **969 (cabe)** | não |
+| 1920×900 | 900 (cabe) | **958 (+58)** | não |
+| 1440×900 | 900 (cabe) | **900 (cabe)** | não |
+| 1536×864 | 864 (cabe) | **872 (+8)** | não |
+| 1600×820 | 828 (+8) | **887 (+67)** | sim |
+| 1894×838 | 874 (+36) | **952 (+114)** | sim |
+| 1366×768 | 784 (+16) | **826 (+58)** | sim |
+| 1280×720 | 761 (+41) | **798 (+78)** | sim |
+| 1024×700 | 784 (+84) | **784 (+84)** | sim |
+| 768×1024 · 390×844 | cabe | **cabe** | não |
+
+Em 1920×1080 real — o desktop mais comum, viewport ~969 — a capa continua fechando na dobra. As
+janelas que passaram a estourar são de laptop, e cinco das nove combinações já estouravam antes. O
+desenvolvedor pediu o card maior sabendo que a altura é derivada da largura; fica registrado como
+custo aceito, não como efeito colateral não visto.
+
+**O modelo de colisão do `DEC-041` continua válido, e por quê.** Aquela entrada prova que, quando o
+teto de largura vence o `min()`, o topo da massa cai em `--capa-teto` **mais** o quanto a seção
+passar de `100svh` — o erro do modelo só soma folga, nunca subtrai. Uma seção mais alta empurra a
+massa para baixo, para longe do texto. Reteste medindo **retângulo de tinta** (um `Range` por nó de
+texto, mais o card, nunca bounding box de célula — a do lockup é `col-span-12` e daria falso
+positivo): **zero colisão nas 11 combinações** de largura×altura.
+
+**Affects:** `components/home/HeroCapa.tsx`. Nada em `app/globals.css` — `.capa-escada`,
+`.capa-laje`, `--capa-gap` e `--capa-teto` não foram tocados.
+
+**Why:** dois blocos empilhados na mesma coluna com bordas esquerdas a 93px um do outro leem como
+defeito de montagem; um site cuja tese é competência técnica não pode ter a montagem visível.
+Prender o card à régua que o lockup já definia troca um número solto (70% de uma célula) por duas
+bordas que caem em algo.
+
+**Reversível:** sim — voltar `lg:col-start-1 lg:-ml-10 lg:pl-25` para `lg:col-start-2`, repor
+`w-[70%]` sem o `lg:w-full` e devolver o `sizes` a `24vw`.
+
+---
+
+## DEC-043 — A barra cai de 96px para 80px, e a altura dela vira token
+
+**Data:** 2026-08-11
+**Etapa:** iteração de design (feedback do desenvolvedor no navegador)
+**Decisão:** a barra fixa passa de **96px para 80px**, e a altura deixa de ser um literal repetido:
+nasce `--barra-h` em `app/globals.css`, e os quatro lugares que precisavam saber esse número passam a
+lê-lo de lá.
+
+**O número não era um, eram quatro.** `h-24` em `Navbar.tsx` pintava a barra; `pt-24` em
+`layout.tsx` reservava no fluxo o espaço que ela ocupa fora dele; `-mt-24` em `HeroCapa.tsx`
+cancelava essa reserva para a capa ter `100svh` cheios; e `h-24` em `MenuOverlay.tsx` punha o botão
+de fechar na mesma linha do gatilho que ele substitui. Os quatro têm que ser o **mesmo** número ou a
+página se desmonta — e esquecer um não quebra o build, só desalinha. Havia ainda um quinto,
+disfarçado: o `lg:top-32` do bloco grudento das dúvidas na home era `96 + 32` já somado, e
+desalinharia sozinho na primeira mudança de altura. Virou `calc(var(--barra-h) + 2rem)`.
+
+É o mesmo argumento do `--capa-gap` (`DEC-041`) e do `--ease-degrau` (`DEC-010`): quando dois lugares
+precisam do mesmo número por construção, o número existe uma vez.
+
+**80px e não 72 ou 88.** O conteúdo da barra são dois alvos de 44px lado a lado — o piso de toque
+acessível, e o `min-h-11` já estava escrito no `Link` da marca. 80 deixa 18px de respiro acima e
+abaixo deles, que é folga suficiente para a barra não ler como apertada; 72 deixaria 14px e começaria
+a encostar. Acima de 80 a barra volta a competir com o conteúdo numa dobra que já é curta.
+
+**O respiro do topo da capa ficou como estava, de propósito.** O `pt-38`/`lg:pt-44` do grid da capa
+(176px) não foi amarrado ao token: ele é o afastamento do card em relação ao topo da janela, não a
+altura da barra. Com a barra em 80, o vão entre a base dela e o topo do card cresceu de 80 para 96px
+— o conteúdo não se moveu um pixel, só a barra ficou mais fina. Se a intenção for manter o vão de 80
+e recuperar 16px de dobra, o ajuste é uma linha: `lg:pt-[calc(var(--barra-h)+5rem)]`. Fica como
+escolha aberta, não como pendência.
+
+**Verificado em navegador**, 4 viewports (1920×969, 1440×900, 1024×700, 390×844):
+`--barra-h` = 80px · altura pintada da barra = 80 · `padding-top` do `main` = 80px · `margin-top` da
+capa = **−80px** (a forma negativa `-mt-(--barra-h)` compila e resolve, que era o único risco de
+sintaxe da mudança) · topo da capa = **0** em todos · `min-h-svh` honrado · topo grudento = 112px.
+Com o menu aberto, a linha do topo do overlay mede 80 e o **centro do botão de fechar bate em 40px,
+exatamente o centro do gatilho** que ele substitui — abrir o menu não faz o alvo saltar.
+**8 rotas × 2 viewports** (1440×900 e 390×844): barra em 80 e `main` em 0 nas 16, zero estouro
+horizontal.
+
+**Affects:** `app/globals.css` (token), `components/layout/Navbar.tsx`, `app/layout.tsx`,
+`components/home/HeroCapa.tsx`, `components/layout/MenuOverlay.tsx`, `app/page.tsx`.
+
+**Why:** 96px de barra fixa é dobra gasta com navegação num site cuja dobra é o argumento de venda; e
+uma altura que vive em quatro literais idênticos é uma armadilha que cobra na próxima mudança, não
+nesta.
+
+**Reversível:** sim — `--barra-h: 96px` devolve o estado anterior sem tocar em nenhum componente,
+que é justamente o ponto do token.
+
+---
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

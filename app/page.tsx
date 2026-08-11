@@ -174,7 +174,11 @@ export default function Home() {
       <Section density="dense" className="border-t border-border bg-shade">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <div className="lg:sticky lg:top-32">
+            {/* O topo grudento é a barra fixa mais 32px de respiro, não um
+                `top-32` solto: o `128px` de antes era `96 + 32` escrito já
+                somado, e ele desalinhava sozinho quando a barra mudasse de
+                altura. */}
+            <div className="lg:sticky lg:top-[calc(var(--barra-h)+2rem)]">
               <SectionHeader
                 indice="06"
                 eyebrow="Dúvidas"

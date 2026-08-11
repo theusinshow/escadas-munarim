@@ -196,5 +196,5 @@ página. O objetivo primário é autoridade — pedir a conversão cedo demais c
 **Específico deste projeto:**
 - Os desenhos técnicos dos 7 tipos são **SVG inline autoral**, com `id` nos paths para o
   `stroke-dashoffset`. São o ativo visual central — ver `MEDIA_PLAN.md`.
-- Cotas são texto SVG em IBM Plex Mono, não imagem — precisam ser legíveis por leitor de tela.
+- Cotas são texto SVG em DM Mono, não imagem — precisam ser legíveis por leitor de tela.
 - Imagem gerada por IA é permitida (`DEC-008`) e **nunca** recebe legenda factual.

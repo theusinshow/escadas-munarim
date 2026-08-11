@@ -78,6 +78,19 @@
      dois têm que ser sempre o mesmo valor; daí viver num token em vez de
      repetido como literal nos dois lugares. */
   --capa-gap: 24px;
+
+  /* altura da barra fixa. Era `h-24`/`pt-24`/`-mt-24`/`h-24` — quatro literais
+     `24` em quatro arquivos, que precisam ser o MESMO número ou a página se
+     desmonta: `Navbar.tsx` pinta a barra, `layout.tsx` reserva o espaço dela no
+     `main`, `HeroCapa.tsx` cancela essa reserva para a capa ter `100svh`
+     cheios, e `MenuOverlay.tsx` põe o botão de fechar na mesma linha do gatilho
+     que ele substitui. Mudar a altura significava acertar os quatro à mão, e
+     esquecer um não quebra o build — só desalinha. Mesmo motivo do
+     `--capa-gap`: o número passa a existir uma vez só.
+     80px e não 96: o conteúdo da barra são dois alvos de 44px lado a lado, que
+     é o piso de toque acessível; 80 deixa 18px de respiro em cima e embaixo
+     deles, e devolve 16px de dobra para a capa. */
+  --barra-h: 80px;
 }
 
 @theme inline {

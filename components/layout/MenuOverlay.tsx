@@ -68,8 +68,11 @@ export function MenuOverlay({
       className="fixed inset-0 z-50 grid grid-cols-1 lg:grid-cols-[380px_1fr]"
     >
       <div className="flex h-dvh flex-col overflow-y-auto bg-primary px-6 text-primary-fg lg:px-8">
-        {/* Topo: marca com nome, e o fechar na mesma altura do gatilho. */}
-        <div className="flex h-24 shrink-0 items-center justify-between gap-4">
+        {/* Topo: marca com nome, e o fechar na mesma altura do gatilho — daí
+            `h-(--barra-h)` e não uma altura própria: o botão substitui o
+            gatilho da barra no mesmo pixel, e abrir o menu não pode fazer o
+            alvo saltar. */}
+        <div className="flex h-(--barra-h) shrink-0 items-center justify-between gap-4">
           <Link
             href="/"
             onClick={onClose}

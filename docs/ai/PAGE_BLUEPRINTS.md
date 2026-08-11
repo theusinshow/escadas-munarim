@@ -30,13 +30,16 @@
 [Navbar]
 [Capa]              navy, SANGRANDO, 100svh cheios (passa por baixo da barra
                     fixa: -mt-24 contra o pt-24 do main). Sem container.
-                    O gutter volta como padding do grid — card e parágrafo
-                    ainda precisam de margem; quem encosta na borda é só o
-                    wordmark. Ver DEC-033.
-                    alto esq.  card pequeno (máx. 17rem ≈ 17% da largura) com
-                               os 7 tipos passando; dentro dele, 7 faixas que
-                               abrem uma a uma carregando a foto que sai
-                               legenda em duas pontas abaixo: nome · destaque
+                    O gutter volta como padding do grid — o parágrafo da
+                    direita ainda precisa de margem. Ver DEC-033.
+                    alto esq.  card com os 7 tipos passando em crossfade;
+                               legenda abaixo: nome · destaque.
+                               No desktop ele nasce na MESMA RÉGUA DE 100px do
+                               lockup lá embaixo (mesmo par -ml-10/pl-25, não
+                               dois números iguais por coincidência) e vai até a
+                               linha da coluna 4 — as duas bordas caem em algo.
+                               Custo aceito: a capa deixa de fechar em 100svh em
+                               janelas de 900px de altura. Ver DEC-042.
                     meio       fileira das 7 axonometrias miniatura + linha de
                                fato, H1, régua, link "Ver os sete tipos"
                     alto dir.  axonometria do tipo da vez (onde a referência
@@ -110,7 +113,7 @@
 ```text
 [Navbar]
 [Intro]             H1 + 2 parágrafos sobre como escolher (vão, pé-direito, uso)
-[Grid dos 7 tipos]  cada card: axonometria SVG · nome (Sora) · 1 característica ·
+[Grid dos 7 tipos]  cada card: axonometria SVG · nome (Outfit) · 1 característica ·
                     cota principal (DM Mono). Card inteiro clicável, sem "Saiba mais →"
 [Não sei qual]      bloco de ajuda: 3 perguntas que definem o tipo → CTA WhatsApp
 [CTA]
@@ -140,7 +143,7 @@ Slugs: `reta` · `caracol` · `leke` · `mista` · `premium` · `espelho-fechado
 [Navbar]
 [Breadcrumb]        Início › Escadas › {Tipo}
 [Hero do tipo]      7/5 — H1 + uma linha + axonometria SVG grande à direita
-[Desenho cotado]    corte técnico com espelho, piso, vão, pé-direito em Plex Mono.
+[Desenho cotado]    corte técnico com espelho, piso, vão, pé-direito em DM Mono.
                     Traço se desenha no scroll. É o bloco de autoridade da página.
 [Quando escolher]   lista concreta de situações
 [Quando NÃO]        limitações honestas deste tipo  ← decisão estratégica, não cortar
@@ -215,7 +218,7 @@ Slugs: `reta` · `caracol` · `leke` · `mista` · `premium` · `espelho-fechado
 [Passo 02]  Projeto e cotas — o desenho que você aprova antes de fabricar
 [Passo 03]  Fabricação — pré-moldagem e polimento na fábrica de São José
 [Passo 04]  Instalação — o que acontece no dia (quem instala: CNT-014)
-            (cada passo: número em Plex Mono, desenho SVG, texto 65ch; entrada em degrau)
+            (cada passo: número em DM Mono, desenho SVG, texto 65ch; entrada em degrau)
 [Sua obra]          o que precisa estar pronto antes de a escada chegar
 [Prazo]             prazo médio por etapa                          ← CNT-005
 [Incluso]           o que está e o que não está incluso
