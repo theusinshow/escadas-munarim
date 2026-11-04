@@ -1,20 +1,18 @@
-import Image from "next/image";
 import Link from "next/link";
 import { site, whatsappLink } from "@/lib/site";
-import { tipos } from "@/content/tipos";
 
 /**
- * Rodapé (DEC-051).
+ * Rodapé (DEC-051 → DEC-063).
  *
- * Três andares, do mais importante para o menos:
- * 1. a marca e o contato direto — o WhatsApp em corpo de título, porque é por
- *    ele que a conversa acontece (DEC-007);
- * 2. as rotas — os 7 tipos em lista própria, já que a barra não os mostra
- *    (DEC-020), mais o resto do site e o endereço;
- * 3. a linha legal.
+ * Sobre a referência trazida pelo desenvolvedor: três colunas no alto —
+ * contato à esquerda, navegação centralizada em caixa alta, links de serviço
+ * sublinhados à direita —, a assinatura centralizada no meio e o nome da
+ * empresa gigante sangrando no pé, cortado pela borda. O nome é a peça
+ * gráfica; por isso o logo em imagem saiu daqui.
  *
- * Texto secundário em `--primary-fg-muted` (6,11:1 sobre navy), não em
- * opacidade: opacidade sobre navy cai abaixo de AA conforme o valor.
+ * O WhatsApp continua em corpo de título: é por ele que a conversa acontece
+ * (DEC-007). Texto secundário em `--primary-fg-muted` (6,11:1 sobre navy),
+ * não em opacidade.
  */
 
 const ROTAS = [
@@ -30,68 +28,46 @@ const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURICompone
   `${site.address.street}, ${site.address.district}, ${site.address.city} - ${site.address.state}`,
 )}`;
 
-const link = "text-primary-fg-muted hover:text-primary-fg hover:underline underline-offset-4";
+const sublinhado =
+  "inline-flex min-h-11 items-center text-primary-fg underline decoration-primary-fg/40 decoration-1 underline-offset-[6px] hover:decoration-primary-fg";
 
 export function Footer() {
   return (
-    <footer id="contato" className="scroll-mt-(--barra-h) bg-primary text-primary-fg">
-      <div className="container-site">
-        <div className="grid gap-10 border-b border-primary-fg/15 py-14 lg:grid-cols-12 lg:items-end lg:py-20">
-          <div className="lg:col-span-6">
-            <Image
-              src="/marca/munarim-capa-sobre-escuro.svg"
-              alt={`${site.name} — ${site.tagline}`}
-              width={1022}
-              height={248}
-              unoptimized
-              className="h-auto w-full max-w-[24rem]"
-            />
-          </div>
-          <div className="lg:col-span-6 lg:text-right">
-            <p className="text-sm text-primary-fg-muted">Fale direto pelo WhatsApp</p>
-            <a
-              href={whatsappLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 inline-block font-display text-[clamp(1.25rem,5.8vw,2.25rem)] whitespace-nowrap underline-offset-[6px] hover:underline"
-            >
-              {site.contact.whatsapp}
+    <footer
+      id="contato"
+      className="relative scroll-mt-(--barra-h) overflow-hidden bg-primary text-primary-fg"
+    >
+      <div className="container-site grid gap-14 pt-20 lg:grid-cols-3 lg:gap-12 lg:pt-28">
+        <div>
+          <p className="text-sm text-primary-fg-muted">Fale direto pelo WhatsApp</p>
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-block font-display text-[clamp(1.25rem,5.8vw,1.9rem)] whitespace-nowrap underline-offset-[6px] hover:underline"
+          >
+            {site.contact.whatsapp}
+          </a>
+          <p className="mt-2 text-sm">
+            <a href={site.contact.phoneHref} className="text-primary-fg-muted hover:text-primary-fg">
+              {site.contact.phone}
             </a>
-            <p className="mt-3 text-sm">
-              <a href={site.contact.phoneHref} className={link}>
-                {site.contact.phone}
-              </a>
-              <span aria-hidden="true" className="mx-2 text-primary-fg-muted">
-                ·
-              </span>
-              <a href={`mailto:${site.contact.email}`} className={link}>
-                {site.contact.email}
-              </a>
-            </p>
-          </div>
+          </p>
+          <address className="mt-8 text-sm leading-relaxed text-primary-fg-muted not-italic">
+            {site.address.street}
+            <br />
+            {site.address.district}, {site.address.city} — {site.address.state}
+          </address>
         </div>
-      </div>
 
-      <div className="container-site grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-12">
-        <nav aria-labelledby="rodape-escadas" className="lg:col-span-5">
-          <h2 id="rodape-escadas" className="rotulo">Os sete tipos</h2>
-          <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-            {tipos.map((tipo) => (
-              <li key={tipo.slug}>
-                <Link href={`/escadas/${tipo.slug}`} className={link}>
-                  {tipo.nome}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <nav aria-labelledby="rodape-site" className="lg:col-span-3">
-          <h2 id="rodape-site" className="rotulo">Site</h2>
-          <ul className="mt-4 space-y-2 text-sm">
+        <nav aria-label="Rodapé" className="lg:justify-self-center">
+          <ul className="flex flex-col gap-1 lg:items-center">
             {ROTAS.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className={link}>
+                <Link
+                  href={item.href}
+                  className="inline-flex min-h-10 items-center font-label text-[0.78rem] tracking-[0.16em] text-primary-fg-muted uppercase hover:text-primary-fg"
+                >
                   {item.label}
                 </Link>
               </li>
@@ -99,37 +75,52 @@ export function Footer() {
           </ul>
         </nav>
 
-        <div className="lg:col-span-4">
-          <h2 className="rotulo">Endereço</h2>
-          <address className="mt-4 text-sm leading-relaxed text-primary-fg-muted not-italic">
-            {site.address.street}
-            <br />
-            {site.address.district}, {site.address.city} — {site.address.state}
-          </address>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            <a href={MAPA} target="_blank" rel="noopener noreferrer" className={link}>
-              Abrir no mapa
-            </a>
-            <a href={site.contact.instagramUrl} target="_blank" rel="noopener noreferrer" className={link}>
-              {site.contact.instagram}
-            </a>
-          </p>
+        <div className="flex flex-col lg:items-end">
+          <ul className="flex flex-col lg:items-end">
+            <li>
+              <a href={`mailto:${site.contact.email}`} className={sublinhado}>
+                {site.contact.email}
+              </a>
+            </li>
+            <li>
+              <a href={site.contact.instagramUrl} target="_blank" rel="noopener noreferrer" className={sublinhado}>
+                {site.contact.instagram}
+              </a>
+            </li>
+            <li>
+              <a href={MAPA} target="_blank" rel="noopener noreferrer" className={sublinhado}>
+                Abrir no mapa
+              </a>
+            </li>
+          </ul>
+          <ul className="mt-6 flex flex-col text-sm lg:items-end">
+            <li>
+              <Link href="/politica-de-privacidade" className={sublinhado}>
+                Política de Privacidade
+              </Link>
+            </li>
+          </ul>
           {/* CNT-001 (razão social, CNPJ) e CNT-011 (horário) entram aqui. */}
         </div>
       </div>
 
-      <div className="border-t border-primary-fg/15">
-        {/* pr extra: o botão flutuante de WhatsApp não pode cobrir este conteúdo. */}
-        <div className="container-site flex flex-col gap-2 py-6 pr-24 text-xs text-primary-fg-muted md:flex-row md:items-center md:justify-between">
-          <p>
-            © {new Date().getFullYear()} {site.name} · {site.tagline}. Atendemos{" "}
-            {site.serviceArea.slice(0, 4).join(", ")} e região.
-          </p>
-          <Link href="/politica-de-privacidade" className="hover:underline">
-            Política de Privacidade
-          </Link>
-        </div>
+      {/* pr/pl: o botão flutuante de WhatsApp não pode cobrir a assinatura. */}
+      <div className="container-site mt-20 px-20 text-center text-sm leading-relaxed text-primary-fg-muted lg:mt-28">
+        <p>© {new Date().getFullYear()}</p>
+        <p>
+          {site.name} · {site.tagline}
+        </p>
+        <p>Atendemos {site.serviceArea.slice(0, 4).join(", ")} e região.</p>
       </div>
+
+      {/* O nome como peça gráfica, cortado pela borda de baixo. Decorativo: o
+          nome da empresa já está na assinatura acima. */}
+      <p
+        aria-hidden="true"
+        className="pointer-events-none mt-10 -mb-[0.2em] text-center font-display text-[12.4vw] leading-[0.8] whitespace-nowrap text-primary-fg/[0.08] select-none lg:mt-14"
+      >
+        MUNARIM
+      </p>
     </footer>
   );
 }

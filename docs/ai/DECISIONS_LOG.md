@@ -2638,6 +2638,87 @@ Cada página abria e fechava de um jeito, e o pedido de orçamento tinha cinco c
 
 ---
 
+## DEC-062 — Capa sem botão de pausa, audit do site e motion autoral
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site — `impeccable audit` + `frontend-design-director` (assets e motion)
+**Decisão:**
+
+1. **Sai o botão "Pausar" da capa** (pedido do desenvolvedor: capa mais limpa). A rotação para
+   sozinha com o cursor ou o foco de teclado na capa e com a aba oculta; com `reduce` ela nem
+   começa. ⚠ WCAG 2.2.2 pede um mecanismo de pausa *acionável*. A pausa por hover/foco não alcança
+   quem está no celular, então o critério fica parcialmente atendido, por escolha do desenvolvedor.
+2. **Motion — o momento autoral é o processo se construindo** (`LanceProcesso`): cada etapa é
+   revelada por `clip-path` da esquerda para a direita, como o piso sendo traçado, com o stagger de
+   um espelho (0,18s). Deitado no celular, revela de cima para baixo.
+3. **Apoio: foto revelada atrás de uma escada** (`RevelaDegrau`): máscara poligonal de 7 faixas
+   cuja borda é um lance subindo; traço linear, como o desenho técnico. Manifesto e pré-moldada.
+4. **Apoio: `stepIn`** no glossário da pré-moldada e nas três colunas da empresa; **entrada no
+   primeiro paint** do título das páginas internas (`.entra-degrau`, mesma curva da capa).
+5. **Assets:** nenhuma dependência nova. GSAP + ScrollTrigger já estavam no projeto e cobrem
+   tudo; Lenis (scroll suave) foi considerado e recusado: scroll sequestrado não serve a um
+   leitor leigo no celular, e seria motion decorativo. Ícones seguem autorais (`TipoIcone`):
+   Lucide quebraria a linguagem do desenho técnico.
+6. **Audit — correções:** overflow horizontal de 169px na página do caracol no celular (item do
+   grid sem `min-w-0`) e de 2px na tabela da home; salto h1→h3 em `/escadas` (h2 `sr-only`); links
+   do rodapé com alvo de 16–20px passam a 44px; fio lateral de 2px nos avisos CNT vira 1px;
+   paleta nas superfícies do navegador (caret, `accent-color`, barra de rolagem).
+7. **Código morto removido:** `HeroCapa`, `CapaGaleria`, `Acervo`, `ColecoesDestaque`,
+   `FaixaReferencias`, `FichaTecnica`, `HoraLocal`, `PageStub`, `DotField`, `PinHorizontal`,
+   `munarim-1a-sobre-escuro.svg` e ~230 linhas de CSS da capa antiga (onde estava o único achado
+   do detector do impeccable).
+
+**Why:** pedido do desenvolvedor: tirar o pausa, deixar a capa mais limpa, auditar o site todo e
+deixar mais animado com motion que venha da escada.
+
+**Affects:** `components/home/{CapaTriptico,TripticoRotacao,Manifesto,PreMoldada,ProcessoLinha,EmpresaBloco}.tsx` ·
+`components/motion/{LanceProcesso,RevelaDegrau}.tsx` (novos) · `components/ui/{PageHeader,TypeCard}.tsx` ·
+`components/layout/Footer.tsx` · `app/escadas/{page,[tipo]/page}.tsx` · `app/globals.css` ·
+arquivos removidos listados acima.
+
+**Reversível:** sim.
+
+---
+
+## DEC-063 — Home refeita sobre o feedback anotado: sem template de métrica, cards e pictogramas novos, rodapé de referência
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site — 16 anotações do desenvolvedor na home
+**Decisão:**
+
+1. **Manifesto:** sai a faixa 15 · 07 · 04 (lida como IA slop: é o template de métrica de landing
+   page). Vira composição editorial: frase em manchete, foto grande à esquerda, texto de apoio e
+   uma segunda foto desencontrada à direita. `FaixaFatos` foi removida também de `/empresa`.
+2. **Os sete tipos:** título simplificado ("Os sete tipos"), lead removido, link "Comparar os
+   sete". Cards refeitos: sem o "0n / 07", só nome, diferença e pictograma, com um fio que se
+   estende no hover; o resumo aparece só em `/escadas` (`detalhe`). O card "Não sei" deixa de
+   prometer e já mostra as três perguntas (`content/escolha.ts`, fonte única com `/escadas`).
+3. **Pictogramas v2:** os sete em projeção oblíqua cabinet, a convenção da axonometria
+   (DEC-016): perfil cheio, face de trás e arestas como linha oculta. O caracol virou elevação
+   (eixo e degraus em balanço girando), porque a hélice em oblíqua comprimia a metade de trás.
+4. **Pré-moldada:** lead removido; foto e tabela lado a lado, glossário em faixa própria.
+5. **Processo:** cada etapa vira um bloco cheio até o chão. Os quatro juntos desenham a massa
+   de uma escada de concreto, com o número grande em cada degrau.
+6. **Empresa:** o bloco de três colunas (que confundia) vira uma pergunta respondida: quem faz
+   cada parte. Quatro linhas, a da Munarim em navy.
+7. **Dúvidas:** título e link na mesma base; acordeão em duas colunas logo abaixo, no mesmo fio.
+8. **Fechamento:** sai o véu em degradê ("blur azul"); painel sólido e foto limpa em duas metades.
+9. **Rodapé:** sobre a referência do desenvolvedor. Três colunas (contato, navegação centralizada
+   em caixa alta, links sublinhados), assinatura centralizada e MUNARIM gigante cortado no pé. O
+   logo em imagem e a lista dos tipos saem do rodapé (os tipos estão no menu e em `/escadas`).
+
+**Why:** anotações do desenvolvedor: "IA slop" (barras, "02 / 07"), "muito simples", "melhorar a
+estrutura", "não entendi", "blur azul" e a referência de rodapé.
+
+**Affects:** `components/home/{Manifesto,PreMoldada,ProcessoLinha,EmpresaBloco,Fechamento}.tsx` ·
+`components/ui/{TypeCard,TypeGrid}.tsx` · `components/technical/TipoIcone.tsx` ·
+`components/layout/Footer.tsx` · `content/escolha.ts` (novo) · `components/ui/FaixaFatos.tsx`
+(removido) · `app/{page,escadas/page,empresa/page}.tsx` · `app/globals.css`.
+
+**Reversível:** sim.
+
+---
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

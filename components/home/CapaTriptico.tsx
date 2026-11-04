@@ -2,7 +2,7 @@ import Image from "next/image";
 import { fotosIntercaladas, temReferencia } from "@/content/galeria";
 import { tipoSlugs } from "@/content/tipos";
 import { site } from "@/lib/site";
-import { PausarRotacao, TripticoColunas, TripticoRotacao } from "./TripticoRotacao";
+import { TripticoColunas, TripticoRotacao } from "./TripticoRotacao";
 
 /**
  * Capa da home — tríptico com o título no canto inferior esquerdo
@@ -16,8 +16,9 @@ import { PausarRotacao, TripticoColunas, TripticoRotacao } from "./TripticoRotac
  *
  * No canto inferior esquerdo, um card de vidro com o logo da empresa (DEC-056)
  * — o logo é o H1, com o nome e a tagline no `alt`.
- * Embaixo, pequenos, o botão de pausa (WCAG 2.2.2) e o aviso de imagem de
- * referência, que não podem sair.
+ * Embaixo, pequeno, o aviso de imagem de referência, que não pode sair. A
+ * pausa da rotação deixou de ser botão (DEC-062): ela acontece sozinha com o
+ * cursor ou o foco na capa.
  *
  * Texto sobre foto só aqui e na grade, sempre sobre véu de tinta.
  * Sem botões de ação e sem orçamento: a prova é a grade logo abaixo (DEC-001).
@@ -77,17 +78,14 @@ export function CapaTriptico() {
             </h1>
           </div>
 
-          <div
-            className="triptico-entra mt-8 flex flex-wrap items-center gap-x-8 gap-y-2"
-            style={atraso(1)}
-          >
-            <PausarRotacao />
-            {temReferencia && (
-              <p className="spec text-[0.62rem] text-primary-fg/75">
-                IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM (CNT-003)
-              </p>
-            )}
-          </div>
+          {temReferencia && (
+            <p
+              className="triptico-entra spec mt-6 text-[0.6rem] text-primary-fg/70"
+              style={atraso(1)}
+            >
+              IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM (CNT-003)
+            </p>
+          )}
         </div>
       </TripticoRotacao>
     </section>

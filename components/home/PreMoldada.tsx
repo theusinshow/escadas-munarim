@@ -1,4 +1,6 @@
 import { Foto } from "@/components/media/Foto";
+import { RevelaDegrau } from "@/components/motion/RevelaDegrau";
+import { StepIn } from "@/components/motion/StepIn";
 import { GhostLink } from "@/components/ui/Button";
 import { fotosDo } from "@/content/galeria";
 
@@ -13,6 +15,9 @@ import { fotosDo } from "@/content/galeria";
  * Nenhum dado novo: as linhas da tabela são as três diferenças que o texto
  * antigo já declarava (tempo de obra parada, sujeira, acabamento). Sem prazo
  * em dias, sem número — isso é CNT-005.
+ *
+ * DEC-063: foto e tabela lado a lado; o glossário desce para uma faixa
+ * própria. O lead saiu — o título e a tabela já dizem o que é.
  */
 
 const COMPARACAO = [
@@ -55,44 +60,42 @@ const GLOSSARIO = [
   },
 ];
 
-/** A 2ª e a 3ª reta já estão na faixa de fotos; aqui entra a 4ª. */
+/** A 4ª reta: as outras já aparecem na capa e no grid. */
 const FOTO = fotosDo("reta")[3];
 
 export function PreMoldada() {
   return (
     <section className="border-t border-border bg-shade py-24 lg:py-36">
       <div className="container-site">
-        <header className="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <h2 className="measure-display lg:col-span-6">O que é uma escada pré-moldada</h2>
-          <p className="measure text-lg text-muted lg:col-span-5 lg:col-start-8">
-            Moldada antes: a escada é concretada em fôrma, curada e polida fora da
-            obra, e chega pronta na sua casa.
-          </p>
-        </header>
-
-        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-12">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-12">
           {FOTO && (
-            <div className="relative hidden aspect-[4/5] overflow-hidden lg:col-span-4 lg:block">
-              <Foto foto={FOTO} fill sizes="(min-width: 1280px) 400px, 33vw" />
-            </div>
+            <RevelaDegrau className="relative aspect-[4/5] overflow-hidden lg:col-span-5">
+              <Foto foto={FOTO} fill sizes="(min-width: 1024px) 40vw, 100vw" />
+            </RevelaDegrau>
           )}
 
-          <div className={FOTO ? "lg:col-span-8" : "lg:col-span-12"}>
+          <div
+            className={`flex min-w-0 flex-col justify-center ${
+              FOTO ? "lg:col-span-6 lg:col-start-7" : "lg:col-span-12"
+            }`}
+          >
+            <h2 className="measure-display">O que é uma escada pré-moldada</h2>
+
             {/* Tabela de verdade: o leitor compara linha a linha. */}
-            <table className="w-full border-collapse text-left">
+            <table className="mt-10 w-full border-collapse text-left text-[0.95rem] sm:text-base lg:mt-14">
               <caption className="sr-only">
                 Escada pré-moldada comparada à escada concretada no local
               </caption>
               <thead>
-                <tr className="border-b-2 border-text">
-                  <th scope="col" className="w-[30%] py-3 pr-4 text-sm font-semibold text-muted">
+                <tr className="border-b border-text">
+                  <th scope="col" className="w-[30%] py-3 pr-4">
                     <span className="sr-only">Aspecto</span>
                   </th>
-                  <th scope="col" className="py-3 pr-4 font-display text-lg font-bold">
+                  <th scope="col" className="py-3 pr-4 font-display text-base font-normal sm:text-lg">
                     Pré-moldada
                   </th>
-                  <th scope="col" className="py-3 font-display text-lg font-bold text-muted">
-                    Concretada no local
+                  <th scope="col" className="py-3 font-display text-base font-normal text-muted sm:text-lg">
+                    No local
                   </th>
                 </tr>
               </thead>
@@ -108,21 +111,28 @@ export function PreMoldada() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
 
-            <h3 className="mt-14 text-2xl">Três palavras de todo orçamento</h3>
-            <dl className="mt-6 grid gap-8 sm:grid-cols-3">
-              {GLOSSARIO.map((g) => (
-                <div key={g.termo} className="border-t-2 border-accent pt-4">
-                  <dt className="font-display text-lg font-bold">{g.termo}</dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-muted">{g.definicao}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <p className="mt-8">
+        {/* Glossário em faixa própria: título à esquerda, os três termos em
+            colunas iguais à direita, tudo sobre o mesmo fio. */}
+        <div className="mt-20 grid gap-10 border-t border-text pt-10 lg:mt-28 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-4">
+            <h3 className="text-[1.35rem] leading-tight">Três palavras de todo orçamento</h3>
+            <p className="mt-6">
               <GhostLink href="/duvidas">Ver as dúvidas mais comuns</GhostLink>
             </p>
           </div>
+          <StepIn className="lg:col-span-8" selector="dl > div">
+            <dl className="grid gap-10 sm:grid-cols-3">
+              {GLOSSARIO.map((g) => (
+                <div key={g.termo}>
+                  <dt className="font-display text-xl">{g.termo}</dt>
+                  <dd className="mt-3 text-[0.95rem] leading-relaxed text-muted">{g.definicao}</dd>
+                </div>
+              ))}
+            </dl>
+          </StepIn>
         </div>
       </div>
     </section>

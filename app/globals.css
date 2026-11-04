@@ -245,6 +245,14 @@
     background: var(--primary);
     color: var(--primary-fg);
   }
+
+  /* As superfícies do navegador também levam a paleta: caret e controles
+     nativos no azulão, barra de rolagem em concreto. */
+  html {
+    accent-color: var(--accent);
+    caret-color: var(--accent);
+    scrollbar-color: #9aa3ad var(--bg);
+  }
 }
 
 /* ---------- classes do projeto ----------
@@ -554,235 +562,11 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* ---------- Capa: o lance de fotos (DEC-048 · DEC-050) ----------
-     Sete colunas de foto, uma por tipo, cujo topo é uma escada. A largura da
-     coluna é o piso (`--t`) e o salto de altura entre duas colunas é o espelho
-     (`--r` = piso × 18/28) — a mesma razão do motion (`DEC-010`), lida dos
-     tokens `--step-*`. Base da primeira coluna: 1,6 piso. Altura do lance
-     inteiro: 1,6 + 6 × 18/28 ≈ 5,457 pisos.
-
-     No celular o lance não cabe na largura sem virar fiapo, então ele inverte a
-     conta: parte da altura disponível (`--H`), tira o espelho dela e deriva o
-     piso — a razão continua exata, as colunas ficam largas e o lance continua
-     para a direita, com swipe. */
-  .capa {
-    --g: 1.5rem;
-    --rotulo-h: 3.4rem;
-    --H: max(26rem, 60svh);
-    --base: 7.5rem;
-    --r: calc((var(--H) - var(--base)) / 6);
-    --t: calc(var(--r) * var(--step-tread) / var(--step-riser));
-  }
-
-  .capa-grade {
-    display: grid;
-    grid-template-areas: "cabeca" "lance" "apoio";
-    min-height: 100svh;
-    padding-top: calc(var(--barra-h) + 1.75rem);
-  }
-
-  .capa-cabeca {
-    grid-area: cabeca;
-    padding-inline: var(--g);
-  }
-
-  .capa-logo {
-    display: block;
-    width: clamp(14rem, 28vw, 28rem);
-    height: auto;
-  }
-
-  .capa-sub {
-    margin-top: 2rem;
-    max-width: 22ch;
-    font-family: var(--font-display);
-    font-stretch: 115%;
-    font-weight: 700;
-    font-size: clamp(1.4rem, 2vw, 1.84rem);
-    line-height: var(--lh-h3);
-    letter-spacing: var(--tr-h3);
-    color: var(--primary-fg-muted);
-  }
-
-  .capa-lance {
-    grid-area: lance;
-    position: relative;
-    margin-top: 2rem;
-    /* Celular: o lance rola na horizontal e para em cada degrau. */
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--g);
-    scrollbar-width: none;
-  }
-
-  .capa-lance::-webkit-scrollbar {
-    display: none;
-  }
-
-  .capa-degraus {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    width: max-content;
-    height: var(--H);
-    padding-inline: var(--g);
-  }
-
-  .capa-degrau {
-    flex: 0 0 var(--t);
-    min-width: 0;
-    /* Celular: o lance desce — começa no degrau mais alto, para não sobrar
-       vão escuro acima das primeiras colunas (DEC-051). */
-    height: calc(var(--base) + (6 - var(--i)) * var(--r));
-    scroll-snap-align: start;
-    transition: flex-grow 640ms var(--ease-degrau);
-  }
-
-  .capa-apoio {
-    grid-area: apoio;
-    padding: 1.25rem var(--g) 2.5rem;
-  }
-
-  .capa-arraste {
-    margin-bottom: 1.5rem;
-    font-size: 0.72rem;
-  }
-
-  .capa-coluna {
-    position: relative;
-    display: block;
-    height: 100%;
-    overflow: hidden;
-    background: #1f2d3b;
-  }
-
-  .capa-foto {
-    position: absolute;
-    inset: 0 0 var(--rotulo-h) 0;
-    overflow: hidden;
-  }
-
-  /* Linha de giz no topo do degrau em foco: o azulão marca a peça escolhida,
-     como marca a laje antes do corte. */
-  .capa-coluna::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    z-index: 2;
-    height: 3px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 460ms var(--ease-degrau);
-  }
-
-  .capa-coluna:hover::before,
-  .capa-coluna:focus-visible::before {
-    transform: scaleX(1);
-  }
-
-  .capa-coluna:focus-visible {
-    outline-offset: -3px;
-  }
-
-  .capa-rotulo {
-    position: absolute;
-    inset: auto 0 0 0;
-    height: var(--rotulo-h);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 0.3rem;
-    padding: 0.55rem 0.6rem 0;
-    background: var(--text);
-    border-top: 1px solid rgb(255 255 255 / 0.1);
-  }
-
-  /* O nome do degrau em Michroma, como o "ESCADAS" do logo. Até duas linhas:
-     reticência em nome de produto é informação cortada. */
-  .capa-nome {
-    font-family: var(--font-label);
-    font-size: 0.56rem;
-    line-height: 1.35;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  @media (min-width: 1024px) {
-    .capa {
-      --g: 2.5rem;
-      --rotulo-h: 3.9rem;
-      /* Desktop: o piso é o menor de dois tetos — 66% da largura, ou a altura
-         disponível dividida pelos 5,457 pisos do lance. */
-      --t: min(
-        calc((66vw - 12px) / 7),
-        calc((100svh - var(--barra-h) - 1.5rem) / 5.457)
-      );
-      --r: calc(var(--t) * var(--step-riser) / var(--step-tread));
-      --base: calc(var(--t) * 1.6);
-    }
-
-    .capa-grade {
-      grid-template-areas:
-        "cabeca lance"
-        "apoio lance";
-      grid-template-columns: minmax(0, 1fr) calc(var(--t) * 7 + 12px);
-      grid-template-rows: 1fr auto;
-      column-gap: var(--g);
-      padding-top: var(--barra-h);
-    }
-
-    .capa-cabeca {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 2.25rem 0 0 var(--g);
-    }
-
-    .capa-apoio {
-      padding: 1.75rem 0 2.75rem var(--g);
-    }
-
-    .capa-arraste {
-      display: none;
-    }
-
-    /* O lance sangra: encosta na borda direita e na base da tela. */
-    .capa-lance {
-      align-self: end;
-      margin-top: 0;
-      overflow: visible;
-      scroll-snap-type: none;
-    }
-
-    .capa-degraus {
-      width: 100%;
-      height: auto;
-      padding-inline: 0;
-    }
-
-    .capa-degrau {
-      flex: 1 1 0;
-      height: calc(var(--base) + var(--i) * var(--r));
-    }
-
-    .capa-rotulo {
-      padding-inline: 0.75rem;
-    }
-
-    .capa-nome {
-      font-size: 0.66rem;
-    }
-
-    /* Hover: o degrau apontado abre e mostra mais da foto. As alturas não
-       mudam, então o perfil continua sendo uma escada. */
-    .capa-degraus:has(.capa-coluna:hover, .capa-coluna:focus-visible) .capa-degrau {
-      flex-grow: 0.8;
-    }
-    .capa-degraus .capa-degrau:has(.capa-coluna:hover, .capa-coluna:focus-visible) {
-      flex-grow: 2.4;
-    }
+  /* Pictograma dos tipos: face de trás e arestas de profundidade em traço
+     fraco, como linha oculta de prancha (DEC-063). */
+  .tipo-icone .tipo-oculta {
+    opacity: 0.4;
+    stroke-width: 0.9;
   }
 
   /* ---------- Seção escura (DEC-060) ----------
@@ -838,16 +622,19 @@
 
   @media (min-width: 1024px) {
     .processo-lance {
-      --pe: 5.25rem;
+      --pe: 6rem;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      align-items: start;
+      align-items: stretch;
     }
 
+    /* Cada degrau é um bloco cheio até o chão: os quatro juntos são a massa
+       de uma escada de concreto vista de lado (DEC-063). */
     .processo-degrau {
       margin-top: calc((3 - var(--i)) * var(--pe));
-      padding: 1.25rem 1.75rem 0 1.25rem;
+      padding: 1.75rem 1.75rem 2.5rem;
       border-left: 0;
       border-top: 2px solid var(--text);
+      background: rgb(255 255 255 / calc(0.03 + var(--i) * 0.015));
     }
 
     /* O espelho: do canto do piso até o piso do degrau anterior. */
@@ -865,44 +652,14 @@
   }
 
   /* ---------- Entrada da capa ----------
-     O lance sobe degrau por degrau: cada coluna se revela de baixo para cima
-     com o stagger do espelho (0,18s) — a mesma conta de `stepIn`. O texto
-     entra antes, com o deslocamento piso/espelho. CSS puro: roda no primeiro
-     paint, não espera hidratação, e com `reduce` nada disso existe. */
-  @media (prefers-reduced-motion: no-preference) {
-    .capa-degrau {
-      --atraso: calc(260ms + var(--i) * var(--step-riser) * 10ms);
-      animation: capa-sobe 900ms var(--ease-degrau) both;
-      animation-delay: var(--atraso);
-    }
-
-    .capa-foto {
-      animation: capa-assenta 1600ms var(--ease-degrau) both;
-      animation-delay: var(--atraso);
-    }
-
-    .capa-entra {
-      animation: capa-entra 720ms var(--ease-degrau) both;
-      animation-delay: calc(var(--d, 0) * 120ms + 80ms);
-    }
-
-  }
-
+     Os dois gestos da capa tríptico: a coluna sobe revelada de baixo para
+     cima, e o bloco do título entra com o deslocamento piso/espelho. */
   @keyframes capa-sobe {
     from {
       clip-path: inset(100% 0 0 0);
     }
     to {
       clip-path: inset(0 0 0 0);
-    }
-  }
-
-  @keyframes capa-assenta {
-    from {
-      transform: scale(1.18) translateY(6%);
-    }
-    to {
-      transform: none;
     }
   }
 
@@ -933,7 +690,8 @@
       animation-delay: calc(var(--i) * var(--step-riser) * 10ms);
     }
 
-    .triptico-entra {
+    .triptico-entra,
+    .entra-degrau {
       animation: capa-entra 720ms var(--ease-degrau) both;
       animation-delay: calc(300ms + var(--d, 0) * var(--step-riser) * 6ms);
     }

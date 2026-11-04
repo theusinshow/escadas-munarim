@@ -5,13 +5,12 @@ import { site, whatsappLink } from "@/lib/site";
 
 /**
  * Fechamento — o único pedido de orçamento da home, depois de toda a prova
- * (DEC-001). Refeito em DEC-051.
+ * (DEC-001). Refeito em DEC-051 e DEC-063.
  *
- * Foto vertical de escada sangrando a seção inteira, e o texto num painel
- * **sólido** de tinta à esquerda. Vidro (backdrop-blur) foi considerado e
- * recusado: está nas anti-referências do `PRODUCT.md`, e texto sobre foto
- * borrada perde contraste conforme a foto troca. O painel sólido garante
- * 14:1 em qualquer imagem.
+ * Duas metades de borda reta: o painel sólido de tinta à esquerda, a foto
+ * limpa à direita. O véu em degradê que escurecia a foto para o painel saiu —
+ * ele lia como um borrão azul sobre a escada (DEC-063). Sem véu, a foto não
+ * precisa competir com o texto, e o painel sólido garante 14:1 sempre.
  *
  * A foto é a capa do tipo "in loco" — a escada mais escultórica do acervo.
  */
@@ -20,17 +19,9 @@ const FOTO = capaDo("in-loco") ?? capaDo("reta");
 
 export function Fechamento() {
   return (
-    <section className="relative isolate overflow-hidden bg-text text-primary-fg">
-      {FOTO && (
-        <div className="absolute inset-0 -z-10">
-          <Foto foto={FOTO} fill sizes="100vw" imgClassName="object-[50%_35%]" />
-          {/* Escurece só a borda do painel, para a foto não brigar com ele. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-text via-text/40 to-transparent" />
-        </div>
-      )}
-
-      <div className="container-site flex min-h-[78svh] items-center py-20">
-        <div className="max-w-xl bg-text p-8 lg:p-12">
+    <section className="grid bg-text text-primary-fg lg:min-h-[86svh] lg:grid-cols-2">
+      <div className="flex items-center px-6 py-20 lg:px-[max(2.5rem,calc((100vw-var(--container))/2+2.5rem))] lg:py-28">
+        <div className="max-w-xl">
           <p className="text-sm font-semibold text-primary-fg-muted">
             {site.address.city} e Grande Florianópolis
           </p>
@@ -54,6 +45,12 @@ export function Fechamento() {
           </div>
         </div>
       </div>
+
+      {FOTO && (
+        <div className="relative aspect-[4/5] lg:aspect-auto">
+          <Foto foto={FOTO} fill sizes="(min-width: 1024px) 50vw, 100vw" imgClassName="object-[50%_35%]" />
+        </div>
+      )}
     </section>
   );
 }

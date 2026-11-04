@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FaixaCta } from "@/components/ui/FaixaCta";
-import { FaixaFatos } from "@/components/ui/FaixaFatos";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
@@ -36,10 +35,6 @@ export default function EmpresaPage() {
         lead="Escada pré-moldada em concreto polido, sob medida, para a Grande Florianópolis. A Munarim faz uma coisa só — a escada de concreto."
       />
 
-      <Section density="default">
-        <FaixaFatos />
-      </Section>
-
       <Section density="dense" className="border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -62,7 +57,7 @@ export default function EmpresaPage() {
               corrimão — a Munarim trabalha em parceria com outras empresas. A escada é
               fabricada por ela; o restante do acabamento vem de quem faz aquilo bem.
             </p>
-            <p className="spec border-l-2 border-accent pl-4">
+            <p className="spec border-l border-accent pl-4">
               ANO DE FUNDAÇÃO A CONFIRMAR (CNT-002) · ESTRUTURA DE PRODUÇÃO E QUEM
               INSTALA A CONFIRMAR (CNT-004, CNT-014)
             </p>

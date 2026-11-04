@@ -104,7 +104,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
               <p className="measure mt-6 text-xl leading-relaxed text-muted">{tipo.resumo}</p>
 
               {!tipo.validado && (
-                <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
+                <p className="spec mt-8 border-l border-accent pl-4 text-muted">
                   CONTEÚDO PROVISÓRIO — AGUARDA VALIDAÇÃO TÉCNICA DA EMPRESA (CNT-009)
                 </p>
               )}
@@ -161,7 +161,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
           }
         />
 
-        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:items-end">
+        <div className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:items-end">
           {/* A axonometria mostra a peça inteira; o corte mostra as medidas. */}
           {capa && (
             <div className="bg-surface p-6 lg:col-span-5">
@@ -267,7 +267,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
               title={`Escada ${tipo.nome.toLowerCase()} dentro de casa`}
             />
             {temReferencia && (
-              <p className="spec border-l-2 border-accent pl-4 text-muted lg:col-span-5">
+              <p className="spec border-l border-accent pl-4 text-muted lg:col-span-5">
                 IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. LEGENDA SÓ COM O
                 TIPO (DEC-008 · CNT-003)
               </p>

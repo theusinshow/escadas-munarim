@@ -67,7 +67,7 @@ export default function ComoFuncionaPage() {
                 ))}
               </div>
               {passo.pendente && (
-                <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
+                <p className="spec mt-8 border-l border-accent pl-4 text-muted">
                   {passo.pendente}
                 </p>
               )}
@@ -87,7 +87,7 @@ export default function ComoFuncionaPage() {
           title="O que está incluso"
           lead="A Munarim fabrica a escada. Para entregar o conjunto completo — projeto, escada, revestimento e corrimão — trabalha em parceria com outras empresas."
         />
-        <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
+        <p className="spec mt-8 border-l border-accent pl-4 text-muted">
           DETALHAMENTO DO ESCOPO E PRAZO POR ETAPA — AGUARDANDO A EMPRESA (CNT-005,
           CNT-014)
         </p>

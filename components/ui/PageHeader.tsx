@@ -24,9 +24,9 @@ export function PageHeader({
       <div className="container-site">
         {trail && <Breadcrumb trail={trail} />}
         <div className="mt-14 grid gap-8 lg:mt-24 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <h1 className="type-display measure-display lg:col-span-7">{title}</h1>
+          <h1 className="entra-degrau type-display measure-display lg:col-span-7">{title}</h1>
           {(lead || children) && (
-            <div className="lg:col-span-4 lg:col-start-9">
+            <div className="entra-degrau lg:col-span-4 lg:col-start-9" style={{ "--d": 1 } as React.CSSProperties}>
               {lead && <p className="measure text-lg leading-relaxed text-muted">{lead}</p>}
               {children && <div className={lead ? "mt-6" : ""}>{children}</div>}
             </div>

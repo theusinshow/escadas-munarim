@@ -1,3 +1,4 @@
+import { LanceProcesso } from "@/components/motion/LanceProcesso";
 import { GhostLink } from "@/components/ui/Button";
 import { passos } from "@/content/processo";
 
@@ -16,6 +17,10 @@ import { passos } from "@/content/processo";
  *
  * É a única seção navy antes do fechamento (DEC-060): quebra a sequência de
  * fundos claros e dá peso à etapa em que o cliente aprova o desenho.
+ *
+ * DEC-063: cada etapa é um bloco cheio até o chão da seção, então as quatro
+ * juntas desenham a silhueta maciça de uma escada de concreto — não mais só
+ * a linha. O número grande fica no piso de cada degrau.
  */
 export function ProcessoLinha() {
   return (
@@ -29,17 +34,20 @@ export function ProcessoLinha() {
           </p>
         </div>
 
+        <LanceProcesso>
         <ol className="processo-lance mt-14 lg:mt-20">
           {passos.map((p, i) => (
             <li key={p.step} className="processo-degrau" style={{ "--i": i } as React.CSSProperties}>
-              <p className="font-display text-sm font-bold text-accent">
-                Etapa {i + 1}
+              <p className="font-display text-[clamp(2.5rem,4vw,3.5rem)] leading-none text-accent">
+                <span className="sr-only">Etapa </span>
+                {i + 1}
               </p>
-              <h3 className="mt-2 text-xl lg:text-2xl">{p.titulo}</h3>
+              <h3 className="mt-6 text-xl lg:mt-10 lg:text-2xl">{p.titulo}</h3>
               <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">{p.resumo}</p>
             </li>
           ))}
         </ol>
+        </LanceProcesso>
 
         <p className="mt-10">
           <GhostLink href="/como-funciona">Ver cada etapa em detalhe</GhostLink>

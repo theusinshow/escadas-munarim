@@ -12,7 +12,7 @@ export default function PoliticaPage() {
       <h1 className="measure-display">Política de Privacidade</h1>
 
       {/* CNT-008 — não publicar texto jurídico genérico como se fosse aprovado. */}
-      <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
+      <p className="spec mt-8 border-l border-accent pl-4 text-muted">
         AGUARDANDO REVISÃO E APROVAÇÃO DO CLIENTE (CNT-008)
       </p>
 

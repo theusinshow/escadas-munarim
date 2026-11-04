@@ -39,7 +39,7 @@ export default function ObrasPage() {
         }
       >
         {temReferencia && (
-          <p className="spec border-l-2 border-accent pl-4 text-muted">
+          <p className="spec border-l border-accent pl-4 text-muted">
             IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. O ACERVO DE OBRAS ENTRA
             AQUI QUANDO CHEGAR (CNT-003)
           </p>

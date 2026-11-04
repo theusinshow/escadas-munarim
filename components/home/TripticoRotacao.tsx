@@ -1,30 +1,51 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { INTERVALO, RotacaoFotos } from "@/components/media/RotacaoFotos";
 import type { FotoAcervo } from "@/content/galeria";
 
 /**
- * As três colunas da capa e o botão que pausa as três juntas (DEC-054).
+ * As três colunas da capa (DEC-054 → DEC-062).
  *
- * Movimento automático por mais de 5 s precisa de pausa (WCAG 2.2.2). O botão
- * mora no bloco do título, longe das colunas, então o estado vive num contexto
- * que a capa (Server Component) só envolve.
+ * Sem botão de pausa (pedido do desenvolvedor: capa limpa). A rotação para
+ * sozinha quando há alguém olhando de perto — cursor sobre a capa ou foco de
+ * teclado dentro dela —, quando a aba sai de vista e, com `reduce`, nem
+ * começa (`RotacaoFotos`). O estado vive num contexto porque a capa é Server
+ * Component e só envolve.
  */
 
-const Pausa = createContext({ pausado: false, alternar: () => {} });
+const Pausa = createContext(false);
 
 export function TripticoRotacao({ children }: { children: React.ReactNode }) {
-  const [pausado, setPausado] = useState(false);
+  const [perto, setPerto] = useState(false);
+  const [oculta, setOculta] = useState(false);
+
+  useEffect(() => {
+    const aoMudar = () => setOculta(document.hidden);
+    document.addEventListener("visibilitychange", aoMudar);
+    return () => document.removeEventListener("visibilitychange", aoMudar);
+  }, []);
+
   return (
-    <Pausa.Provider value={{ pausado, alternar: () => setPausado((p) => !p) }}>
-      {children}
+    <Pausa.Provider value={perto || oculta}>
+      {/* `contents`: não cria caixa; os eventos dos filhos sobem até aqui. */}
+      <div
+        className="contents"
+        onPointerEnter={() => setPerto(true)}
+        onPointerLeave={() => setPerto(false)}
+        onFocus={() => setPerto(true)}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) setPerto(false);
+        }}
+      >
+        {children}
+      </div>
     </Pausa.Provider>
   );
 }
 
 export function TripticoColunas({ colunas }: { colunas: FotoAcervo[][] }) {
-  const { pausado } = useContext(Pausa);
+  const pausado = useContext(Pausa);
   return (
     <div className="absolute inset-0 grid md:grid-cols-3">
       {colunas.map((fotos, c) => (
@@ -45,29 +66,5 @@ export function TripticoColunas({ colunas }: { colunas: FotoAcervo[][] }) {
         </div>
       ))}
     </div>
-  );
-}
-
-/** Com `reduce` a rotação nem começa, então o botão não tem o que pausar. */
-export function PausarRotacao() {
-  const { pausado, alternar } = useContext(Pausa);
-  return (
-    <button
-      type="button"
-      onClick={alternar}
-      className="spec flex min-h-11 items-center gap-2 text-[0.72rem] tracking-[0.12em] uppercase motion-reduce:hidden"
-    >
-      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" fill="currentColor">
-        {pausado ? (
-          <path d="M1 0l9 5-9 5z" />
-        ) : (
-          <>
-            <rect x="1" width="3" height="10" />
-            <rect x="6" width="3" height="10" />
-          </>
-        )}
-      </svg>
-      {pausado ? "Continuar" : "Pausar"}
-    </button>
   );
 }

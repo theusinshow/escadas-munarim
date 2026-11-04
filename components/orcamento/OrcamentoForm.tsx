@@ -266,7 +266,7 @@ export function OrcamentoForm() {
       <aside className="lg:col-span-5">
         {enviado ? (
           /* Fallback obrigatório: se o WhatsApp não abriu, a mensagem está aqui. */
-          <div className="border-l-2 border-accent pl-6" aria-live="polite">
+          <div className="border-l border-accent pl-6" aria-live="polite">
             <p className="rotulo">Abrimos o WhatsApp em outra aba</p>
             <p className="measure mt-4 text-muted">
               Se nada abriu, copie a mensagem abaixo e mande para{" "}
