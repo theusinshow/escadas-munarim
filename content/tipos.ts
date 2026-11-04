@@ -22,25 +22,6 @@ export type Tipo = {
   cotas: null;
   /** false = conteúdo provisório, não publicável como especificação. */
   validado: boolean;
-  /**
-   * Foto selecionada na coleta de 2026-08-06 (`BANCO_DE_IMAGENS.md`).
-   *
-   * ATENÇÃO: são arquivos `ref-`, e `ref-` é o **único prefixo que não pode ir
-   * para produção** — a seleção está feita, a licença não existe. Servem para
-   * montar a página e ver o site de pé, que é exatamente o papel que o próprio
-   * documento lhes dá. Saem quando chegar a foto do cliente (`CNT-003`) ou a
-   * versão licenciada. Ver `DEC-034`.
-   *
-   * `largura`/`altura` são os pixels **reais** do arquivo, medidos, não os
-   * pixels que o slot gostaria de ter. Declarar tamanho maior que o arquivo faz
-   * o otimizador do Next gerar um srcset acima da fonte e **ampliar** — ampliar
-   * não cria detalhe, só peso e borrão. As sete variam de 720 a 1200 de largura
-   * (teto do Pinterest, de onde vieram), e é por isso que cada uma precisa do
-   * seu número. Ver `DEC-035`.
-   *
-   * `alt` descreve o que aparece — nunca afirma que é obra da Munarim.
-   */
-  imagem?: { src: string; largura: number; altura: number; alt: string };
 };
 
 export const tipos: Tipo[] = [
@@ -60,12 +41,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/reta/ref-reta-hero.avif",
-      largura: 1200,
-      altura: 800,
-      alt: "Escada reta de concreto em lance único contínuo, encostada em parede de concreto aparente, com guarda-corpo de vidro",
-    },
   },
   {
     slug: "caracol",
@@ -84,12 +59,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/caracol/ref-caracol-hero.avif",
-      largura: 720,
-      altura: 480,
-      alt: "Escada caracol de concreto girando em torno de um eixo central, com degraus em cunha e corrimão de inox",
-    },
   },
   {
     slug: "leke",
@@ -106,12 +75,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/leke/ref-leke-hero.avif",
-      largura: 1170,
-      altura: 780,
-      alt: "Degraus de concreto em balanço, engastados na parede, sem viga aparente sob o lance, com corrimão de inox",
-    },
   },
   {
     slug: "mista",
@@ -129,12 +92,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/mista/ref-mista-hero.avif",
-      largura: 1080,
-      altura: 720,
-      alt: "Escada com dois lances e um patamar de descanso entre eles, mudando de direção no meio da subida",
-    },
   },
   {
     slug: "premium",
@@ -146,15 +103,6 @@ export const tipos: Tipo[] = [
     quandoNaoEscolher: [],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/premium/ref-premium-hero.avif",
-      largura: 736,
-      altura: 491,
-      /* A foto selecionada é de pedra polida, não de concreto polido — o `alt`
-         descreve o que está na imagem, não o que a página gostaria que fosse.
-         Registrada como insuficiente na coleta de 2026-08-06. */
-      alt: "Escada de lance reto com degraus de pedra polida de alto brilho e corrimão metálico",
-    },
   },
   {
     slug: "espelho-fechado",
@@ -172,14 +120,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/espelho-fechado/ref-espelho-fechado-hero.avif",
-      largura: 1024,
-      altura: 683,
-      /* Degrau de madeira sobre estrutura fechada — o tipo se lê, o material
-         não é o do produto. Registrada como aceitável na coleta de 2026-08-06. */
-      alt: "Escada com o contra-degrau fechado, sem vazado entre os degraus, formando um lance sólido",
-    },
   },
   {
     slug: "in-loco",
@@ -197,12 +137,6 @@ export const tipos: Tipo[] = [
     ],
     cotas: null,
     validado: false,
-    imagem: {
-      src: "/media/escadas/in-loco/ref-in-loco-hero.avif",
-      largura: 1125,
-      altura: 750,
-      alt: "Lance de escada monolítico de concreto claro, moldado no local, destacado de uma parede de concreto escuro",
-    },
   },
 ];
 

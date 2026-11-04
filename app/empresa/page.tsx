@@ -31,7 +31,6 @@ export default function EmpresaPage() {
       <Section density="default">
         <SectionHeader
           as="h1"
-          eyebrow={site.tagline}
           title={`${site.yearsInMarket} anos fabricando escadas em São José.`}
           lead="Escadas pré-moldadas em concreto polido sob medida, para a Grande Florianópolis."
         />
@@ -40,7 +39,7 @@ export default function EmpresaPage() {
       <Section density="dense" className="border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeader eyebrow="História" title="O que a Munarim faz" />
+            <SectionHeader title="O que a Munarim faz" />
           </div>
           <div className="measure space-y-5 text-muted lg:col-span-7">
             <p>
@@ -71,7 +70,6 @@ export default function EmpresaPage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader
-              eyebrow="Valores"
               title="O que a empresa diz sobre si"
               lead="Reproduzidos como a própria Munarim os declara."
             />
@@ -92,7 +90,7 @@ export default function EmpresaPage() {
       <Section density="dense" className="border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeader eyebrow="Onde estamos" title="Região atendida" />
+            <SectionHeader title="Região atendida" />
           </div>
           <div className="measure space-y-5 text-muted lg:col-span-7">
             <p>

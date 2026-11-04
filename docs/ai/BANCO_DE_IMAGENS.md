@@ -99,7 +99,9 @@ Fonte e licença de cada `stock-` entram na tabela do fim deste documento.
 
 - Origem em JPG/PNG na maior resolução disponível → converter para **AVIF a 1600px** no lado maior.
 - Alvo de peso: **160KB** por imagem de galeria (as atuais estão entre 28 e 46KB).
-- Ratio 3:2 na galeria de tipo, 2:3 aceito em `/obras`.
+- Ratio retrato como padrão: **2:3** nas molduras de tipo e menu, com **3:4** aceito quando a foto
+  inteira sustenta melhor a leitura da escada. 3:2 horizontal só entra quando o arquivo já nasceu
+  assim e o recorte não destrói o curso dos degraus.
 
 ## Antes de publicar qualquer imagem — checklist
 
@@ -121,8 +123,16 @@ Ela ficou **na pasta errada até 2026-08-08**: os 72 arquivos brutos estavam em
 achado de Pinterest/Google morar em `docs/ai/referencias/{tipo}/`. Foram movidos para lá (`DEC-039`).
 As sete `ref-*-hero.avif` — os recortes aprovados — continuam em `public/`, que é onde devem estar.
 
-**O `public/` caiu de 15,8 MB para 832 KB.** Nenhum dos 72 era referenciado por código: o site
-consome exatamente as sete, via `content/tipos.ts`.
+**Estado em 2026-08-11:** o site passou a consumir o acervo vertical em `public/media/*.jpg`, via
+`content/tipos.ts`, e não mais as sete `ref-*-hero.avif` de paisagem. A regra continua a mesma:
+nenhuma legenda factual, e o `alt` descreve apenas o que aparece.
+
+**Estado em 2026-10-09 (`DEC-048`):** o acervo entra por pipeline. Originais em `media-src/{tipo}/`
+(fora do git), `npm run media` gera `public/media/escadas/{tipo}/{prefixo}-{tipo}-NN.avif` e
+`content/galeria.generated.ts`. A subpasta define o prefixo (raiz → `ref-`, `_stock/`, `_gerado/`,
+`_cliente/`) e a primeira foto do tipo é a capa. As 43 fotos atuais são **todas `ref-`** — achadas na
+internet. Sem selo sobre a foto (`DEC-049`); o aviso fica nas seções. O `foto-` antigo com `origem: "cliente"`
+em `tipos.ts` estava errado e saiu. Instruções de uso em `media-src/LEIA-ME.md`.
 
 ## Seleção de 2026-08-06 — 70 imagens coletadas, 7 escolhidas
 

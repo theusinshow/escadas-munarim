@@ -50,3 +50,11 @@ docs/ai/referencias/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Originais do acervo de fotos (PNG/JPG pesados). Entram por `npm run media`,
+# que gera o AVIF versionado em public/media/escadas/ — DEC-048.
+media-src/*
+!media-src/LEIA-ME.md
+
+# Logs e capturas do Playwright MCP — saída de ferramenta, não código.
+.playwright-mcp/

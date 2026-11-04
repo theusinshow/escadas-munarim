@@ -2077,6 +2077,306 @@ que é justamente o ponto do token.
 
 ---
 
+## DEC-044 — Adoção de proporção vertical (Portrait 3:4 / 2:3 / 9:16) para acervo de fotos
+
+**Data:** 2026-08-11
+**Etapa:** iteração de mídia & direção visual (feedback do desenvolvedor)
+**Decisão:** o acervo de fotografia de obras passa a priorizar **proporções verticais (Portrait 3:4, 2:3 e 9:16)** em vez de forçar cortes horizontais (3:2 landscape) ou expansões artificiais por outpainting de IA.
+
+**Why:** escadas são estruturas arquitetônicas verticais por definição (vencem o desnível do pé-direito). Fotos verticais capturam todo o curso dos degraus, a relação chão-teto e a luz do ambiente de forma natural e imponente. O outpainting horizontal foi testado e recusado pelo desenvolvedor por parecer artificial em relação às fotos reais do acervo.
+
+**Affects:**
+- Protótipos em `app/ideias-hero/page.tsx` (Opções 7 e 8 adicionadas)
+- `docs/ai/BANCO_DE_IMAGENS.md` — atualização dos slots de imagem para aceitar `3:4` e `2:3` sem recorte destrutivo.
+
+**Reversível:** sim.
+
+---
+
+## DEC-045 — Molduras de foto do site passam a usar retrato 2:3 como padrão
+
+**Data:** 2026-08-11
+**Etapa:** implementação da direção vertical de mídia
+**Decisão:** as superfícies que exibem fotografia de escada passam a tratar retrato como padrão:
+card da capa, slideshow do menu, galeria das páginas de tipo e slots de obras usam moldura vertical
+2:3, com 3:4 aceito quando o arquivo pedir menos corte.
+
+**Why:** a decisão `DEC-044` mudava a direção do acervo, mas o código ainda forçava `aspect-3/2`
+horizontal na capa e uma galeria larga nas páginas de tipo. Isso destruía a verticalidade que o
+acervo novo preserva: curso dos degraus, relação chão-teto e leitura do pé-direito. Escada é peça
+vertical; a moldura precisa obedecer a isso.
+
+**Affects:**
+- `content/tipos.ts` — imagens dos 7 tipos agora apontam para o acervo vertical existente, com
+  dimensões reais e `alt` sem legenda factual.
+- `components/home/HeroCapa.tsx` — card da capa em 2:3 e `sizes` recalibrado.
+- `components/layout/Slideshow.tsx` — slideshow decorativo com foto vertical centralizada.
+- `app/escadas/[tipo]/page.tsx` — galeria de tipo em coluna retrato, sem `ref-` antigo.
+- `components/home/ObrasSlots.tsx` — slots vazios de obra em 2:3.
+- `docs/ai/BANCO_DE_IMAGENS.md` e `docs/ai/MEDIA_PLAN.md` — ratio de mídia atualizado.
+
+**Reversível:** sim, mas exige rever o acervo; voltar a 3:2 horizontal volta a cortar entre 40% e
+60% das imagens verticais.
+
+---
+
+## DEC-046 — Capa da home passa a ser fullscreen image-led
+
+**Data:** 2026-08-11
+**Etapa:** iteração de home section (referência visual enviada pelo desenvolvedor)
+**Decisão:** a capa deixa de tratar a fotografia como card pequeno no alto à esquerda e passa a usar
+uma foto grande, fullscreen, ocupando a lateral inteira da dobra. O painel navy continua carregando
+o H1, a explicação e o acesso ao catálogo; não há CTA de orçamento na primeira dobra.
+
+**Why:** o desenvolvedor pediu explicitamente a referência de hero com imagens grandes e fullscreen.
+Depois da adoção do acervo vertical (`DEC-044`/`DEC-045`), manter a foto pequena desperdiçava o
+principal ganho visual: a verticalidade da escada. A foto em escala de dobra comunica arquitetura e
+pé-direito imediatamente; o texto em navy sólido preserva contraste e evita depender de texto sobre
+imagem.
+
+**Affects:**
+- `components/home/HeroCapa.tsx` — composição split fullscreen, foto grande à esquerda e painel navy
+  à direita.
+- `app/page.tsx` — comentário da capa atualizado.
+- `DEC-041` e `DEC-042` ficam como histórico da versão anterior da capa, não como regra vigente para
+  a posição do card/lockup.
+
+**Reversível:** sim.
+
+---
+
+## DEC-047 — Hero de entrada com imagem recortada abrindo no centro
+
+**Data:** 2026-08-11
+**Etapa:** iteração de home section (wireframe enviado pelo desenvolvedor)
+**Decisão:** a hero passa a usar fundo `#16222E`, uma moldura fullscreen e uma imagem vertical no
+centro do display que nasce como corte estreito e abre com animação. Depois da abertura entram
+marca, título, navegação curta e CTA de catálogo.
+
+**Why:** o wireframe pediu uma experiência de início do site: imagem cortada no centro, abrindo, e
+interface aparecendo depois. Isso dá peso de primeira dobra sem abandonar a tese técnica do site. O
+CTA continua sendo "Ver os sete tipos", não orçamento, porque orçamento antes de prova viola
+`DEC-001`.
+
+**Affects:**
+- `components/home/HeroCapa.tsx` — nova composição da hero.
+- `app/globals.css` — animações `capa-abre-imagem`, `capa-entra-ui` e fallback reduced motion.
+- `DEC-046` fica como passo intermediário superado pela versão animada.
+
+**Reversível:** sim.
+
+---
+
+## DEC-048 — Refactor sobre o acervo vertical: pipeline de imagens, capa em lance de fotos, catálogo e tipos com foto
+
+**Data:** 2026-10-09
+**Etapa:** refactor geral pedido pelo desenvolvedor ("imagens mais verticais, tirar o que não está
+bem feito, refazer várias partes para eu trabalhar em cima")
+**Decisão:**
+
+1. **Pipeline de imagens.** Originais moram em `media-src/{tipo}/` (fora do git). `npm run media`
+   (`scripts/media.mjs`) converte para AVIF 1600px, grava em `public/media/escadas/{tipo}/` e gera
+   `content/galeria.generated.ts`. A subpasta define a procedência e o prefixo: raiz → `ref-`,
+   `_stock/` → `stock-`, `_gerado/` → `gen-`, `_cliente/` → `foto-`. A primeira foto do tipo é a
+   capa; cliente vem antes de tudo, então a foto real assume a capa sem edição de código.
+2. **`tipos.ts` perde o campo `imagem`.** Ele declarava `origem: "cliente"` para imagens achadas na
+   internet — prova fabricada por tipo. As fotos agora vêm de `content/galeria.ts`.
+3. **`Foto.tsx` recebe a foto do acervo** e verifica o prefixo das quatro origens no build. Toda
+   foto que não é `cliente` leva o selo de procedência ("Referência").
+4. **Capa da home: o lance de fotos.** Sete colunas de foto, uma por tipo, cujo topo é uma escada:
+   largura da coluna = piso, salto entre colunas = espelho, razão 18/28 (`DEC-010`). Texto no vão
+   livre à esquerda, nunca sobre foto. Entrada e hover em CSS puro, Server Component. Supera
+   `DEC-046`/`DEC-047` e remove o CSS de `DEC-041` (`.capa-escada`, `.capa-laje`, `--capa-gap`).
+5. **Catálogo com foto.** `TypeCard` vira foto 3:4 com a axonometria como carimbo pequeno — o grid
+   continua comparável (`DEC-009`). A 8ª célula ("não sei") fica navy, para não ler como 8º tipo.
+6. **"Obras" vazia → faixa "Dentro de casa".** Faixa horizontal fixada no scroll (GSAP `pin`, só
+   desktop com movimento; nativo com `snap` no resto). O título não afirma obra.
+7. **Página de tipo.** Hero 7/5 com a foto vertical sangrando até a borda; axonometria e corte lado a
+   lado no bloco "corte cotado"; galeria em mosaico com lightbox `<dialog>`; sumário de âncoras.
+8. **`/obras`** deixa de ser stub: galeria filtrável por tipo, com o mesmo lightbox. Enquanto
+   `temReferencia` for verdadeiro, o título não fala em "instaladas"; vira sozinho quando não houver
+   mais `ref-`.
+9. **Removidos:** `app/ideias-hero/` (protótipos de capa), `ObrasSlots`, `SlotFoto`, as sete
+   `foto-*-hero.avif` e os PNGs soltos em `public/media` (502MB → 2,9MB de AVIF).
+
+**Why:** o acervo é inteiramente vertical (`DEC-044`) e o site usava 7 das ~55 fotos, uma por tipo,
+em molduras pequenas. O catálogo mostrava só o desenho; a seção de obras eram três caixas cinza; a
+página de tipo tinha uma foto de 384px. E as imagens estavam marcadas como `cliente` sem ser.
+
+**Triagem do acervo (detalhe em `media-src/LEIA-ME.md`):** descartadas por marca d'água, UI de app,
+letreiro, pessoa identificável, duplicata ou resolução (8 arquivos em `_descartes/`); 5 sem tipo em
+`_triagem/`. Ficam para o desenvolvedor julgar: as caracol de metal (`00-capa`, `caracol-1`,
+`caracol-3`), as helicoidais (`caracol-6`, `caracol-7`) e as de piso de madeira.
+
+**Affects:** `scripts/media.mjs` · `content/galeria.ts` · `content/galeria.generated.ts` ·
+`content/tipos.ts` · `components/media/Foto.tsx` · `components/media/GaleriaTipo.tsx` ·
+`components/home/HeroCapa.tsx` · `components/home/FaixaReferencias.tsx` ·
+`components/motion/PinHorizontal.tsx` · `components/ui/TypeCard.tsx` · `components/ui/TypeGrid.tsx` ·
+`components/obras/ObrasFilter.tsx` · `components/layout/Slideshow.tsx` · `app/page.tsx` ·
+`app/escadas/[tipo]/page.tsx` · `app/obras/page.tsx` · `app/globals.css` · `lib/motion.ts`
+(`comMovimento` repassa a limpeza) · `.gitignore` · `package.json`.
+
+**Condição de publicação (inalterada, agora visível):** todas as 43 fotos são `ref-`. O site não sobe
+enquanto `temReferencia` for verdadeiro — o selo e os avisos `CNT-003` existem para isso não passar
+despercebido.
+
+**Reversível:** sim. A capa anterior está no histórico do git (`4413d96`).
+
+---
+
+## DEC-049 — Sai o selo "Referência" de cima das fotos
+
+**Data:** 2026-10-09
+**Etapa:** revisão do refactor `DEC-048` (pedido do desenvolvedor)
+**Decisão:** as fotos não levam mais selo de procedência sobreposto. Saem `SeloOrigem`, a prop
+`selo` de `Foto.tsx` e `ROTULO_ORIGEM`. Ficam os avisos de seção ligados a `temReferencia`
+("imagens de referência — não são obras da Munarim"), a trava de prefixo no build e a proibição de
+legenda factual fora de `cliente`.
+
+**Why:** pedido direto do desenvolvedor — o selo repetido em cada foto pesava na leitura das
+imagens. A informação de procedência continua na página, uma vez por seção.
+
+**Affects:** `components/media/Foto.tsx` · `components/media/GaleriaTipo.tsx` ·
+`components/home/HeroCapa.tsx` · `content/galeria.ts` · `docs/ai/BANCO_DE_IMAGENS.md`. Supera o
+item 3 de `DEC-048` no que diz respeito ao selo.
+
+**Reversível:** sim.
+
+---
+
+## DEC-050 — Tipografia v4 (Archivo + Michroma) e capa ampliada com o logo
+
+**Data:** 2026-10-09
+**Etapa:** iteração da capa (pedido do desenvolvedor: "ampliar mais, ter o logo, nova tipografia,
+como fica no mobile")
+**Decisão:**
+
+1. **Tipografia v4.** Archivo variável — expandida (`font-stretch: 115%`, 700) nos títulos e em
+   tudo com `font-display`, normal (100%, 400) no corpo. Michroma só em rótulo curto em caixa alta
+   (eyebrow, nome de degrau, cidade da barra). DM Mono continua nas cotas. Saem Outfit e Hanken
+   Grotesk. Comparadas três direções renderizadas com o logo real (Saira, Archivo + Michroma,
+   Outfit atual); o desenvolvedor escolheu Archivo + Michroma.
+2. **Logo na capa.** A marca 1a em contorno (`public/marca/munarim-1a-sobre-escuro.svg`, a versão
+   navy sem o retângulo de fundo) abre a capa. O H1 deixa de repetir a tagline que já está no logo:
+   "Escada de concreto, sob medida para o seu vão." (texto-exemplo de voz do `MASTER_CONTEXT`).
+3. **Capa ampliada.** O lance passa de 56% para 62% da largura, sangra até a borda direita e sobe
+   até 1,5rem abaixo da barra.
+4. **Capa no celular.** Ordem: logo + H1 → lance → apoio. O lance rola na horizontal com snap por
+   degrau. A conta inverte: parte da altura disponível (`--H`), deriva o espelho e dali o piso — a
+   razão 18/28 continua exata e as colunas ficam com ~87px em vez de ~50px.
+
+**Why:** a Outfit, geométrica de compasso, brigava com a Eurostile quadrada do logo assim que os
+dois passaram a dividir a capa. A Archivo expandida aproxima a letra do site da marca sem copiá-la;
+a Michroma é a própria Eurostile livre, usada só onde o logo usa caixa alta. No celular, sete
+colunas na largura viravam fiapos sem nome.
+
+**Affects:** `app/layout.tsx` · `app/globals.css` (tokens `--font-*`, `--font-label`, tracking,
+regras de h1–h3, `.eyebrow`, `.type-display`, bloco da capa) · `components/home/HeroCapa.tsx` ·
+`public/marca/munarim-1a-sobre-escuro.svg` · `DESIGN.md` e `docs/ai/DESIGN_SYSTEM.md` (seção de
+tipografia reescrita). Supera a tipografia de `DEC-019`/`DEC-030`.
+
+**Pendente:** `app/opengraph-image.tsx` ainda usa a Outfit vendorizada; trocar exige o TTF da Archivo
+em `assets/fonts/`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-051 — Home refinada sobre feedback do desenvolvedor: sem eyebrow, seções reestruturadas, pictogramas dos tipos
+
+**Data:** 2026-10-09
+**Etapa:** revisão anotada da home pelo desenvolvedor (18 pontos), com a skill `impeccable`
+**Decisão:**
+
+1. **Capa.** O H1 passa a ser o nome da empresa: o logo 1a em contorno, grande, no meio da coluna
+   (o `alt` é o texto do H1). "Escada de concreto, sob medida para o seu vão." desce como subtítulo.
+   Saem o parágrafo de apoio e a cota 18/28. Botões: "Ver modelos" (variante nova `claro`, branco
+   cheio com lajes em azulão) e "Como funciona" (contorno). O lance cresce para 66% da largura. No
+   celular o lance **desce** (começa no degrau mais alto) para não deixar vão escuro acima das
+   primeiras colunas. O aviso de imagem de referência fica só aqui.
+2. **Sem eyebrow e sem índice "/0n" no site todo.** `SectionHeader` perdeu as duas props.
+   Rótulos que não são kicker (colunas do rodapé, grupos do FAQ, campos) viram `.rotulo`, em caixa
+   normal; a Michroma em caixa alta fica em `.rotulo-marca` (cidade da barra) e no nome dos degraus.
+3. **Ficha técnica** substitui a faixa "15 + estatísticas" (template hero-metric): os mesmos fatos
+   num carimbo de prancha de 6 células.
+4. **"O que é pré-moldada"** vira tabela comparativa (pré-moldada × concretada no local, 4 linhas,
+   só com as diferenças que o texto antigo já declarava) + glossário de 3 termos.
+5. **Faixa de fotos:** título novo ("Como cada escada ocupa a casa"), sem o aviso repetido.
+6. **Processo** vira storyline em degraus: 4 colunas que sobem um espelho cada; ~850px contra
+   ~1.345px. `ProcessoTimeline` removido (o detalhe continua em `/como-funciona`).
+7. **Empresa** estruturada em três blocos: o conjunto (projeto · escada · revestimento · corrimão,
+   em parceria), os valores declarados e o endereço com mapa.
+8. **Fechamento** com a foto do in loco sangrando a seção e painel **sólido** de tinta. Vidro
+   (backdrop-blur), sugerido pelo desenvolvedor como hipótese, foi recusado: está nas
+   anti-referências do `PRODUCT.md` e perde contraste conforme a foto. Ganha um segundo botão,
+   "Chamar no WhatsApp".
+9. **Rodapé** em três andares: marca + WhatsApp em corpo de título; os 7 tipos, o site e o
+   endereço; a linha legal. Texto secundário em `--primary-fg-muted` em vez de opacidade.
+10. **Pictogramas dos tipos** (`TipoIcone`) substituem a axonometria miniatura no card: um traço
+    distintivo por tipo, num quadro comum (mesmo chão, altura e traço). A axonometria continua na
+    página do tipo. Exceção consciente ao `DEC-009`: o caracol é desenhado em planta, porque em
+    elevação a 56px ele não se distingue.
+
+**Why:** o desenvolvedor marcou a eyebrow como "IA slop" e pediu as seções reestruturadas; a
+`impeccable` confirma os dois (eyebrow e índice de seção são bans; faixa de números é o template
+hero-metric). Nenhum fato novo foi criado: onde a primeira versão escreveu "na fábrica" e "Fábrica:
+São José", foi corrigido para "fora da obra" e "Endereço" (`DEC-017`).
+
+**Affects:** `components/home/{HeroCapa,FichaTecnica,PreMoldada,FaixaReferencias,ProcessoLinha,EmpresaBloco,Fechamento}.tsx` ·
+`components/technical/TipoIcone.tsx` · `components/ui/{SectionHeader,TypeCard,Button}.tsx` ·
+`components/layout/{Footer,Navbar,PageStub,Slideshow,MenuOverlay}.tsx` · todas as páginas que
+passavam `eyebrow`/`indice` · `app/page.tsx` · `app/globals.css` · `DESIGN.md` ·
+`docs/ai/DESIGN_SYSTEM.md`. Removidos: `FaixaFatos.tsx`, `ProcessoTimeline.tsx`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-052 — Home vira galeria antes de conversão, na estrutura do site de referência
+
+**Data:** 2026-11-04
+**Etapa:** pedido do desenvolvedor — "mais uma galeria de projetos do que uma landing page"
+**Decisão:**
+
+1. **Estrutura importada, identidade mantida.** A ordem e a forma das seções seguem o site de
+   referência do desenvolvedor (repositório `stige`): capa com fotos em rotação → manifesto →
+   destaques em degrau + índice → tipos → bloco de explicação → processo → acervo → empresa →
+   fechamento. Cor, tipografia, botões e motion continuam os da Munarim. O visual da referência
+   (fundo preto, serifa itálica) **não** foi trazido: é outra empresa de escadas na mesma região.
+2. **A unidade da galeria é o tipo, não o projeto.** O acervo é de referência (`CNT-003`); juntar
+   fotos de casas diferentes num "projeto" inventaria uma obra. Cada tipo vira uma coleção
+   (`ColecaoCard`), com índice no catálogo, contagem real de fotos e link para `/escadas/[tipo]`.
+   Quando chegarem fotos de obra, a obra assume o lugar e o card troca de dado, não de forma.
+3. **Capa** (`CapaGaleria`): o H1 continua sendo o logo + a frase (`DEC-050`); "vão" definido no
+   primeiro uso (`DEC-002`); moldura vertical girando as 7 capas do catálogo em crossfade
+   (`RotacaoFotos`, respeita `prefers-reduced-motion`). Botões levam à galeria e aos tipos — sem
+   orçamento (`DEC-001`). O aviso de imagem de referência continua só aqui.
+4. **Manifesto**: uma frase, com marca de três degraus na razão 18/28.
+5. **Coleções em degrau** (`ColecoesDestaque`): três cards deslocados em múltiplos do espelho
+   (0 · 72 · 144px), o resto em índice numerado que continua de onde os cards pararam.
+6. **Acervo**: alvenaria de até 14 fotos (até duas por tipo, sem as capas), sem texto sobre a foto.
+   Substitui a faixa horizontal fixada (`FaixaReferencias`).
+7. **Saem da home** `HeroCapa`, `FichaTecnica` e `FaixaReferencias` (arquivos mantidos, sem uso).
+8. **`/obras`** abre com as sete coleções em degrau e mantém embaixo "Todas as fotos" com filtro.
+9. **Sem seção de complementos.** Foi feita e retirada: a Munarim só fabrica escada de concreto;
+   corrimão, guarda-corpo e revestimento entram por parceria e já aparecem assim no `EmpresaBloco`.
+10. **Acervo só com escada de concreto.** Pela mesma regra, 13 fotos de referência que mostravam
+    escada de metal, madeira ou carpete saíram para `media-src/_descartes/` (caracol 4, leke 4,
+    espelho fechado 5), mais `polido-5` por marca d'água. O acervo cai de 43 para 29 fotos.
+
+**Why:** o objetivo do site é autoridade (`DEC-001`); para o desenvolvedor, a prova é ver as escadas.
+A tentativa anterior de "biblioteca de fotos" (visor escuro, uma foto por vez, 29/10) foi revertida;
+esta mantém as seções da home e mostra várias fotos de uma vez.
+
+**Affects:** `app/page.tsx` · `app/obras/page.tsx` ·
+`components/home/{CapaGaleria,Manifesto,ColecoesDestaque,Acervo}.tsx` (novos) ·
+`components/galeria/{ColecaoCard,ColecaoIndice}.tsx` (novos) · `components/media/RotacaoFotos.tsx` (novo).
+CSS `.capa-*` em `globals.css` fica sem uso enquanto `HeroCapa` não voltar.
+
+**Reversível:** sim.
+
+---
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

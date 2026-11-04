@@ -57,10 +57,10 @@
   --lh-h3: 1.16;       --lh-h4: 1.25;   --lh-lead: 1.45;
   --lh-body: 1.55;     --lh-small: 1.45; --lh-cota: 1.3;
 
-  --tr-display: -0.035em; --tr-h1: -0.03em;  --tr-h2: -0.025em;
-  --tr-h3: -0.02em;       --tr-h4: -0.015em; --tr-lead: -0.01em;
+  --tr-display: -0.02em;  --tr-h1: -0.02em;  --tr-h2: -0.015em;
+  --tr-h3: -0.01em;       --tr-h4: -0.01em;  --tr-lead: -0.01em;
   --tr-body: 0;           --tr-small: 0.005em;
-  --tr-eyebrow: 0.14em;   --tr-cota: 0.01em;
+  --tr-eyebrow: 0.1em;    --tr-cota: 0.01em;
 
   /* teto de croma do sistema: só o acento passa de 0,08 (declarativo) */
   --chroma-max: 0.08;
@@ -72,21 +72,14 @@
   --step-riser: 18;
   --step-tread: 28;
 
-  /* gap horizontal do grid da capa — `gap-x-(--capa-gap)` em
-     `HeroCapa.tsx`. A largura da massa de concreto em `.capa-escada`
-     (`DEC-041`) deriva desse número por álgebra ((100% − gap) / 2), então os
-     dois têm que ser sempre o mesmo valor; daí viver num token em vez de
-     repetido como literal nos dois lugares. */
-  --capa-gap: 24px;
-
   /* altura da barra fixa. Era `h-24`/`pt-24`/`-mt-24`/`h-24` — quatro literais
      `24` em quatro arquivos, que precisam ser o MESMO número ou a página se
      desmonta: `Navbar.tsx` pinta a barra, `layout.tsx` reserva o espaço dela no
      `main`, `HeroCapa.tsx` cancela essa reserva para a capa ter `100svh`
      cheios, e `MenuOverlay.tsx` põe o botão de fechar na mesma linha do gatilho
      que ele substitui. Mudar a altura significava acertar os quatro à mão, e
-     esquecer um não quebra o build — só desalinha. Mesmo motivo do
-     `--capa-gap`: o número passa a existir uma vez só.
+     esquecer um não quebra o build — só desalinha. O número passa a existir
+     uma vez só.
      80px e não 96: o conteúdo da barra são dois alvos de 44px lado a lado, que
      é o piso de toque acessível; 80 deixa 18px de respiro em cima e embaixo
      deles, e devolve 16px de dobra para a capa. */
@@ -111,8 +104,11 @@
   --color-ring: var(--ring);
   --color-inox: var(--inox);
 
-  --font-display: var(--font-outfit), "Helvetica Neue", Arial, sans-serif;
-  --font-body: var(--font-hanken), system-ui, "Segoe UI", sans-serif;
+  /* v4 (DEC-050): Archivo expandida nos títulos, normal no corpo; Michroma
+     nos rótulos curtos; DM Mono nas cotas. */
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-archivo), system-ui, "Segoe UI", sans-serif;
+  --font-label: var(--font-michroma), var(--font-archivo), sans-serif;
   --font-mono: var(--font-dm-mono), ui-monospace, Menlo, monospace;
 
   --radius-DEFAULT: var(--radius);
@@ -131,10 +127,10 @@
 }
 
 /* ---------- base ----------
-   Em `@layer base` de propósito: assim `.eyebrow` e as outras classes de
+   Em `@layer base` de propósito: assim `.rotulo` e as outras classes de
    `@layer components` vencem o estilo de elemento, e um utilitário do
    Tailwind vence os dois. Fora de camada, a regra de `h2` sobrescrevia
-   `.eyebrow` e estourava os títulos do rodapé. */
+   `.rotulo` e estourava os títulos do rodapé. */
 
 @layer base {
   html {
@@ -154,34 +150,43 @@
     font-size: var(--text-body);
     font-weight: 400;
     line-height: var(--lh-body);
+    /* A Archivo de largura normal é justa a 17px; um fio de ar a mais. */
+    letter-spacing: 0.008em;
     font-kerning: normal;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  /* Escala tipográfica: base 17px, razão 1,2 (Sistema Visual v3).
-     Line-height inverso ao tamanho. Tracking óptico no display.
-     A Outfit roda com um peso só (600): a diferença entre H1 e H2 é de
-     tamanho e de tracking, não de peso. */
+  /* Escala tipográfica: base 17px, razão 1,2. Line-height inverso ao tamanho.
+     v4 (DEC-050): título em Archivo expandida — a largura extra é o que faz a
+     letra rimar com a Eurostile do logo. O tracking afrouxou junto: letra
+     larga apertada a -0,035em encosta uma na outra. */
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    font-stretch: 115%;
+  }
 
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
     text-wrap: balance;
   }
 
   h1 {
     font-size: var(--text-h1);
     line-height: var(--lh-h1);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: var(--tr-h1);
   }
 
   h2 {
     font-size: var(--text-h2);
     line-height: var(--lh-h2);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: var(--tr-h2);
   }
 
@@ -268,13 +273,23 @@
     }
   }
 
-  /* Eyebrow — único lugar onde uppercase + tracking é permitido (T9).
-     Tracking em 0,14em: maiúscula geométrica é mais larga e mais fechada,
-     e precisa de mais ar para não virar bloco cinza (Sistema Visual v3). */
-  .eyebrow {
-    font-size: var(--text-eyebrow);
-    line-height: 1.4;
+  /* Rótulo — título de coluna, de grupo, de campo. Não é eyebrow: não fica
+     acima de um H2 anunciando a seção (DEC-051). Caixa normal, peso de texto.
+     Herda a cor do contexto; quem quer mais quieto aplica `text-muted`. */
+  .rotulo {
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: var(--lh-small);
     font-weight: 600;
+  }
+
+  /* Michroma, a Eurostile do "ESCADAS" do logo — só em rótulo curto que já é
+     marca: a cidade da barra. Uppercase e tracking vivem aqui e no nome dos
+     degraus da capa, em nenhum outro lugar. */
+  .rotulo-marca {
+    font-family: var(--font-label);
+    font-size: 0.72rem;
+    line-height: 1.5;
     letter-spacing: var(--tr-eyebrow);
     text-transform: uppercase;
     color: var(--muted);
@@ -285,9 +300,10 @@
      solto (T7). Usado uma vez no site. */
   .type-display {
     font-family: var(--font-display);
+    font-stretch: 115%;
     font-size: var(--text-display);
     line-height: var(--lh-display);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: var(--tr-display);
   }
 
@@ -438,6 +454,20 @@
     color: var(--primary-fg);
   }
 
+  /* Claro: branco cheio sobre fundo escuro; as lajes sobem em azulão — a linha
+     de giz marcando a peça escolhida. */
+  .btn-degrau-claro {
+    background: var(--primary-fg);
+    color: var(--text);
+  }
+  .btn-degrau-claro .btn-degrau-laje {
+    background: var(--accent);
+  }
+  .btn-degrau-claro:hover,
+  .btn-degrau-claro:focus-visible {
+    color: var(--primary-fg);
+  }
+
   /* Sobre a faixa navy o botão inverte de valor — `--accent` sobre `--primary`
      dá 1,40:1 e viraria azul sujo sobre azul, pela mesma razão do painel de
      menu (`DEC-036`). O motion é idêntico; trocam só as duas cores. Selector de
@@ -451,16 +481,22 @@
     background: var(--shade);
   }
 
-  .bg-primary .btn-degrau-secondary {
+  .bg-primary .btn-degrau-secondary,
+  .sobre-escuro .btn-degrau-secondary {
     border-color: var(--primary-fg);
     color: var(--primary-fg);
   }
-  .bg-primary .btn-degrau-secondary .btn-degrau-laje {
+  .bg-primary .btn-degrau-secondary .btn-degrau-laje,
+  .sobre-escuro .btn-degrau-secondary .btn-degrau-laje {
     background: var(--primary-fg);
   }
   .bg-primary .btn-degrau-secondary:hover,
   .bg-primary .btn-degrau-secondary:focus-visible {
     color: var(--primary);
+  }
+  .sobre-escuro .btn-degrau-secondary:hover,
+  .sobre-escuro .btn-degrau-secondary:focus-visible {
+    color: var(--text);
   }
 
   /* Com `reduce` sobra a troca de fundo em 120ms, sem transform e sem laje. O
@@ -487,100 +523,19 @@
     .btn-degrau-secondary:focus-visible {
       background: var(--primary);
     }
+    .btn-degrau-claro:hover,
+    .btn-degrau-claro:focus-visible {
+      background: var(--accent);
+    }
     .bg-primary .btn-degrau-primary:hover,
     .bg-primary .btn-degrau-primary:focus-visible {
       background: var(--shade);
     }
     .bg-primary .btn-degrau-secondary:hover,
-    .bg-primary .btn-degrau-secondary:focus-visible {
+    .bg-primary .btn-degrau-secondary:focus-visible,
+    .sobre-escuro .btn-degrau-secondary:hover,
+    .sobre-escuro .btn-degrau-secondary:focus-visible {
       background: var(--primary-fg);
-    }
-  }
-
-  /* ---------- A aresta em escada da capa (DEC-041) ----------
-     A fronteira entre o navy e o concreto claro é o produto, em escala
-     arquitetônica: 7 lajes de largura igual e altura crescente — uma por tipo
-     do catálogo — cujo perfil é uma escada de degraus iguais.
-
-     Nenhuma medida foi escolhida. A largura é a linha da coluna 7 do grid da
-     capa até a borda direita; com 12 colunas e gap de `--capa-gap` essa conta
-     resolve para (100% − gap) / 2, e o gutter se cancela — por isso vale
-     igual no mobile e no desktop, sem valor de breakpoint. A altura sai da
-     razão real do degrau via `aspect-ratio`, então não existe altura escrita
-     à mão.
-
-     A largura tem um teto, e ele não existia até a revisão final de branch
-     achar o defeito: a altura da massa cresce com a LARGURA da viewport
-     (altura = largura × 18/28), mas o parágrafo de apoio do hero fica numa
-     posição vertical fixa. Em telas largas e baixas a laje 6 — a mais alta —
-     sobe por cima do texto; a tinta ali é `--primary-fg-muted` sobre
-     `--shade`, contraste ~1,35:1, então a palavra clipada não fica cortada,
-     fica invisível. `--capa-teto: 478px` é a banda vertical que o bloco de
-     título + parágrafo ocupa no pior wrap, mais folga: a base da tinta do
-     parágrafo mede 358px em larguras ≥1440px, 385px entre 1280–1366px e
-     454px em 1024px (onde ele quebra em quatro linhas); 454 + 24px de folga
-     = 478.
-
-     Quando este teto vence o `min()`, o topo da massa NÃO cai sempre em
-     y=478 cravado — cai em 478 mais o quanto a seção passar de `100svh`.
-     A seção é `min-h-svh`: em janelas ≥900px de altura o conteúdo cabe
-     exato e a sobra é zero, então o topo bate 478 na régua. Em janelas mais
-     baixas (720–820px) o grid não cabe no espaço mínimo e a seção cresce
-     além do viewport — a massa, ancorada em `bottom: 0` da seção e não da
-     janela, desce junto, e o topo medido fica ACIMA de 478 (mais longe do
-     texto, nunca mais perto). Medido: sobra zero em 1920×900 e 1440×900
-     (topo em 478 exato); sobra de 8–84px nos demais, com o pior caso —
-     1024×700 — pousando em y=562. A colisão nunca acontece porque o erro
-     do modelo só soma folga, nunca subtrai. */
-  .capa-escada {
-    --capa-teto: 478px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: min(
-      calc((100% - var(--capa-gap)) / 2),
-      calc((100svh - var(--capa-teto)) * 28 / 18)
-    );
-    aspect-ratio: 28 / 18;
-    pointer-events: none;
-  }
-
-  .capa-laje {
-    position: absolute;
-    bottom: 0;
-    /* +0,4%: sem a sobreposição o antialiasing deixa um fio de navy entre as
-       lajes, do mesmo jeito que no botão em degraus (`DEC-038`). */
-    width: calc(100% / 7 + 0.4%);
-    left: calc(var(--i) * 100% / 7);
-    /* escrito como soma, e não como `calc((var(--i) + 1) * 100% / 7)`: é a
-       mesma conta, mas sem aritmética dentro de parêntese com `var()`, que é a
-       forma que já foi verificada em navegador no botão em degraus. */
-    height: calc(var(--i) * 100% / 7 + 100% / 7);
-    background: var(--shade);
-    transform-origin: 50% 100%;
-    transition: background-color 150ms linear;
-  }
-
-  /* Concreto bruto em repouso, concreto polido no tipo da vez: é o material
-     antes e depois do beneficiamento que a empresa vende, não destaque
-     arbitrário. */
-  .capa-laje[data-vez="true"] {
-    background: var(--surface);
-  }
-
-  /* Descritor do lockup da capa (DEC-041). Dois degraus da escala do sistema,
-     nenhum corpo fora dela: no mobile ele divide espaço com a massa de concreto
-     e precisa caber em três linhas curtas. */
-  .capa-descritor {
-    font-size: var(--text-body);
-    line-height: var(--lh-body);
-    font-weight: 500;
-  }
-
-  @media (min-width: 1024px) {
-    .capa-descritor {
-      font-size: var(--text-h4);
-      line-height: var(--lh-h4);
     }
   }
 
@@ -594,6 +549,351 @@
     letter-spacing: var(--tr-cota);
     font-variant-numeric: tabular-nums;
   }
+
+  /* ---------- Capa: o lance de fotos (DEC-048 · DEC-050) ----------
+     Sete colunas de foto, uma por tipo, cujo topo é uma escada. A largura da
+     coluna é o piso (`--t`) e o salto de altura entre duas colunas é o espelho
+     (`--r` = piso × 18/28) — a mesma razão do motion (`DEC-010`), lida dos
+     tokens `--step-*`. Base da primeira coluna: 1,6 piso. Altura do lance
+     inteiro: 1,6 + 6 × 18/28 ≈ 5,457 pisos.
+
+     No celular o lance não cabe na largura sem virar fiapo, então ele inverte a
+     conta: parte da altura disponível (`--H`), tira o espelho dela e deriva o
+     piso — a razão continua exata, as colunas ficam largas e o lance continua
+     para a direita, com swipe. */
+  .capa {
+    --g: 1.5rem;
+    --rotulo-h: 3.4rem;
+    --H: max(26rem, 60svh);
+    --base: 7.5rem;
+    --r: calc((var(--H) - var(--base)) / 6);
+    --t: calc(var(--r) * var(--step-tread) / var(--step-riser));
+  }
+
+  .capa-grade {
+    display: grid;
+    grid-template-areas: "cabeca" "lance" "apoio";
+    min-height: 100svh;
+    padding-top: calc(var(--barra-h) + 1.75rem);
+  }
+
+  .capa-cabeca {
+    grid-area: cabeca;
+    padding-inline: var(--g);
+  }
+
+  .capa-logo {
+    display: block;
+    width: clamp(14rem, 28vw, 28rem);
+    height: auto;
+  }
+
+  .capa-sub {
+    margin-top: 2rem;
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-stretch: 115%;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2vw, 1.84rem);
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tr-h3);
+    color: var(--primary-fg-muted);
+  }
+
+  .capa-lance {
+    grid-area: lance;
+    position: relative;
+    margin-top: 2rem;
+    /* Celular: o lance rola na horizontal e para em cada degrau. */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--g);
+    scrollbar-width: none;
+  }
+
+  .capa-lance::-webkit-scrollbar {
+    display: none;
+  }
+
+  .capa-degraus {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    width: max-content;
+    height: var(--H);
+    padding-inline: var(--g);
+  }
+
+  .capa-degrau {
+    flex: 0 0 var(--t);
+    min-width: 0;
+    /* Celular: o lance desce — começa no degrau mais alto, para não sobrar
+       vão escuro acima das primeiras colunas (DEC-051). */
+    height: calc(var(--base) + (6 - var(--i)) * var(--r));
+    scroll-snap-align: start;
+    transition: flex-grow 640ms var(--ease-degrau);
+  }
+
+  .capa-apoio {
+    grid-area: apoio;
+    padding: 1.25rem var(--g) 2.5rem;
+  }
+
+  .capa-arraste {
+    margin-bottom: 1.5rem;
+    font-size: 0.72rem;
+  }
+
+  .capa-coluna {
+    position: relative;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    background: #1f2d3b;
+  }
+
+  .capa-foto {
+    position: absolute;
+    inset: 0 0 var(--rotulo-h) 0;
+    overflow: hidden;
+  }
+
+  /* Linha de giz no topo do degrau em foco: o azulão marca a peça escolhida,
+     como marca a laje antes do corte. */
+  .capa-coluna::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 2;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 460ms var(--ease-degrau);
+  }
+
+  .capa-coluna:hover::before,
+  .capa-coluna:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  .capa-coluna:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .capa-rotulo {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: var(--rotulo-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.3rem;
+    padding: 0.55rem 0.6rem 0;
+    background: var(--text);
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+
+  /* O nome do degrau em Michroma, como o "ESCADAS" do logo. Até duas linhas:
+     reticência em nome de produto é informação cortada. */
+  .capa-nome {
+    font-family: var(--font-label);
+    font-size: 0.56rem;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 1024px) {
+    .capa {
+      --g: 2.5rem;
+      --rotulo-h: 3.9rem;
+      /* Desktop: o piso é o menor de dois tetos — 66% da largura, ou a altura
+         disponível dividida pelos 5,457 pisos do lance. */
+      --t: min(
+        calc((66vw - 12px) / 7),
+        calc((100svh - var(--barra-h) - 1.5rem) / 5.457)
+      );
+      --r: calc(var(--t) * var(--step-riser) / var(--step-tread));
+      --base: calc(var(--t) * 1.6);
+    }
+
+    .capa-grade {
+      grid-template-areas:
+        "cabeca lance"
+        "apoio lance";
+      grid-template-columns: minmax(0, 1fr) calc(var(--t) * 7 + 12px);
+      grid-template-rows: 1fr auto;
+      column-gap: var(--g);
+      padding-top: var(--barra-h);
+    }
+
+    .capa-cabeca {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2.25rem 0 0 var(--g);
+    }
+
+    .capa-apoio {
+      padding: 1.75rem 0 2.75rem var(--g);
+    }
+
+    .capa-arraste {
+      display: none;
+    }
+
+    /* O lance sangra: encosta na borda direita e na base da tela. */
+    .capa-lance {
+      align-self: end;
+      margin-top: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+
+    .capa-degraus {
+      width: 100%;
+      height: auto;
+      padding-inline: 0;
+    }
+
+    .capa-degrau {
+      flex: 1 1 0;
+      height: calc(var(--base) + var(--i) * var(--r));
+    }
+
+    .capa-rotulo {
+      padding-inline: 0.75rem;
+    }
+
+    .capa-nome {
+      font-size: 0.66rem;
+    }
+
+    /* Hover: o degrau apontado abre e mostra mais da foto. As alturas não
+       mudam, então o perfil continua sendo uma escada. */
+    .capa-degraus:has(.capa-coluna:hover, .capa-coluna:focus-visible) .capa-degrau {
+      flex-grow: 0.8;
+    }
+    .capa-degraus .capa-degrau:has(.capa-coluna:hover, .capa-coluna:focus-visible) {
+      flex-grow: 2.4;
+    }
+  }
+
+  /* ---------- Processo em degraus (DEC-051) ----------
+     Quatro etapas, quatro degraus. No desktop cada coluna sobe um espelho em
+     relação à anterior: a linha de cima é o piso do degrau, o fio à esquerda é
+     o espelho que liga ao degrau de baixo. `--pe` (84px) é baixo de propósito:
+     a seção é resumo, e um espelho real (18/28 de ~270px) dobraria a altura. */
+  .processo-lance {
+    display: grid;
+  }
+
+  .processo-degrau {
+    position: relative;
+    padding: 0 0 2.25rem 1.5rem;
+    border-left: 2px solid var(--text);
+  }
+
+  .processo-degrau::before {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    left: -6px;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+  }
+
+  .processo-degrau:last-child {
+    padding-bottom: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .processo-lance {
+      --pe: 5.25rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .processo-degrau {
+      margin-top: calc((3 - var(--i)) * var(--pe));
+      padding: 1.25rem 1.75rem 0 1.25rem;
+      border-left: 0;
+      border-top: 2px solid var(--text);
+    }
+
+    /* O espelho: do canto do piso até o piso do degrau anterior. */
+    .processo-degrau::before {
+      top: -2px;
+      left: -1px;
+      width: 2px;
+      height: calc(var(--pe) + 2px);
+      background: var(--text);
+    }
+
+    .processo-degrau:first-child::before {
+      display: none;
+    }
+  }
+
+  /* ---------- Entrada da capa ----------
+     O lance sobe degrau por degrau: cada coluna se revela de baixo para cima
+     com o stagger do espelho (0,18s) — a mesma conta de `stepIn`. O texto
+     entra antes, com o deslocamento piso/espelho. CSS puro: roda no primeiro
+     paint, não espera hidratação, e com `reduce` nada disso existe. */
+  @media (prefers-reduced-motion: no-preference) {
+    .capa-degrau {
+      --atraso: calc(260ms + var(--i) * var(--step-riser) * 10ms);
+      animation: capa-sobe 900ms var(--ease-degrau) both;
+      animation-delay: var(--atraso);
+    }
+
+    .capa-foto {
+      animation: capa-assenta 1600ms var(--ease-degrau) both;
+      animation-delay: var(--atraso);
+    }
+
+    .capa-entra {
+      animation: capa-entra 720ms var(--ease-degrau) both;
+      animation-delay: calc(var(--d, 0) * 120ms + 80ms);
+    }
+
+  }
+
+  @keyframes capa-sobe {
+    from {
+      clip-path: inset(100% 0 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes capa-assenta {
+    from {
+      transform: scale(1.18) translateY(6%);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes capa-entra {
+    from {
+      opacity: 0;
+      transform: translate(
+        calc(var(--step-tread) * -0.5px),
+        calc(var(--step-riser) * 0.5px)
+      );
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
 }
 
 /* Pular para o conteúdo */

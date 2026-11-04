@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Foto } from "@/components/media/Foto";
-import { SlotFoto } from "@/components/media/SlotFoto";
+import { GaleriaTipo } from "@/components/media/GaleriaTipo";
 import { Draw } from "@/components/motion/Draw";
 import { Spiral } from "@/components/motion/Spiral";
 import { StepIn } from "@/components/motion/StepIn";
@@ -12,6 +12,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TypeCard } from "@/components/ui/TypeCard";
+import { fotosDo, temReferencia } from "@/content/galeria";
 import { getTipo, tipos } from "@/content/tipos";
 import { site } from "@/lib/site";
 
@@ -37,14 +38,28 @@ export async function generateMetadata({
   };
 }
 
+/** Âncoras do sumário do hero — quem chega do Google pula para o que veio buscar. */
+function sumario(totalFotos: number) {
+  return [
+    { href: "#corte", rotulo: "Desenho e medidas" },
+    { href: "#escolher", rotulo: "Quando escolher" },
+    ...(totalFotos > 0 ? [{ href: "#galeria", rotulo: `Galeria (${totalFotos})` }] : []),
+  ];
+}
+
 export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">) {
   const { tipo: slug } = await params;
   const tipo = getTipo(slug);
   if (!tipo) notFound();
 
-  /* Três outros tipos, na ordem do catálogo, para a comparação continuar. */
   const ehCaracol = tipo.slug === "caracol";
+  /* Três outros tipos, na ordem do catálogo, para a comparação continuar. */
   const relacionados = tipos.filter((t) => t.slug !== tipo.slug).slice(0, 3);
+  const fotos = fotosDo(tipo.slug);
+  const capa = fotos[0];
+  /* A capa já está no hero; a galeria mostra o resto — a não ser que o resto
+     seja tão pouco que a galeria fique manca. */
+  const galeria = fotos.length > 3 ? fotos.slice(1) : fotos;
 
   /* Product sem `offers`/preço — não há preço público e inventar um é fabricação de fato. */
   const productLd = {
@@ -56,51 +71,83 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
     category: "Escada pré-moldada de concreto",
   };
 
+  /* O caracol gira; os outros se desenham. Um gesto por verdade. */
+  const desenho = ehCaracol ? (
+    <Spiral>
+      <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
+    </Spiral>
+  ) : (
+    <Draw>
+      <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
+    </Draw>
+  );
+
   return (
     <>
-      <Section density="default">
-        <Breadcrumb
-          trail={[
-            { label: "Início", href: "/" },
-            { label: "Escadas", href: "/escadas" },
-            { label: tipo.nome },
-          ]}
-        />
+      {/* Hero em régua 7/5: texto à esquerda, a foto vertical do tipo à direita
+          na altura da dobra. O desenho técnico desceu para o bloco do corte,
+          onde ele mede em vez de decorar (DEC-048). Sem foto, ele volta. */}
+      <section className="overflow-x-clip border-b border-border">
+        <div className="container-site grid gap-10 pt-10 lg:min-h-[calc(100svh-var(--barra-h))] lg:grid-cols-12 lg:gap-12 lg:pt-0">
+          <div className="flex flex-col justify-between gap-12 lg:col-span-6 lg:py-14 xl:col-span-7">
+            <Breadcrumb
+              trail={[
+                { label: "Início", href: "/" },
+                { label: "Escadas", href: "/escadas" },
+                { label: tipo.nome },
+              ]}
+            />
 
-        {/* Régua assimétrica 7/5: texto à esquerda, desenho técnico à direita. */}
-        <div className="mt-8 grid items-center gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <h1 className="measure-display">Escada {tipo.nome}</h1>
-            <p className="measure mt-6 text-xl leading-relaxed text-muted">
-              {tipo.resumo}
-            </p>
+            <div>
+              <p className="spec text-accent">{tipo.destaque}</p>
+              <h1 className="type-display measure-display mt-4">Escada {tipo.nome}</h1>
+              <p className="measure mt-6 text-xl leading-relaxed text-muted">{tipo.resumo}</p>
 
-            {!tipo.validado && (
-              <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
-                CONTEÚDO PROVISÓRIO — AGUARDA VALIDAÇÃO TÉCNICA DA EMPRESA (CNT-009)
-              </p>
-            )}
+              {!tipo.validado && (
+                <p className="spec mt-8 border-l-2 border-accent pl-4 text-muted">
+                  CONTEÚDO PROVISÓRIO — AGUARDA VALIDAÇÃO TÉCNICA DA EMPRESA (CNT-009)
+                </p>
+              )}
+            </div>
+
+            <nav
+              aria-label="Nesta página"
+              className="flex flex-wrap gap-x-6 border-t border-border pt-3"
+            >
+              {sumario(galeria.length).map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="spec inline-flex min-h-11 items-center text-link underline-offset-4 hover:underline"
+                >
+                  {item.rotulo}
+                </a>
+              ))}
+            </nav>
           </div>
 
-          <div className="lg:col-span-5">
-            {/* O caracol gira; os outros se desenham. Um gesto por verdade. */}
-            {ehCaracol ? (
-              <Spiral>
-                <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
-              </Spiral>
+          {/* A foto sangra até a borda direita da janela: escada é peça de
+              pé-direito, e a moldura não pode parecer um card. */}
+          <div className="lg:col-span-6 lg:mr-[calc(-1*(max(0px,(100vw-var(--container))/2)+2.5rem))] xl:col-span-5">
+            {capa ? (
+              <div className="relative aspect-[2/3] overflow-hidden bg-shade lg:aspect-auto lg:h-full">
+                <Foto
+                  foto={capa}
+                  fill
+                  priority
+                  sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 50vw, 100vw"
+                />
+              </div>
             ) : (
-              <Draw>
-                <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
-              </Draw>
+              <div className="lg:py-14">{desenho}</div>
             )}
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Bloco de autoridade da página. Denso de propósito. */}
-      <Section density="dense" className="border-t border-border">
+      <Section density="dense" id="corte" className="scroll-mt-(--barra-h)">
         <SectionHeader
-          eyebrow="Corte cotado"
           title="As medidas que definem a subida"
           lead={
             <>
@@ -112,31 +159,46 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
             </>
           }
         />
-        {/* Bloco de autoridade: o traço se constrói atrelado ao scroll. */}
-        {/* Rola em vez de encolher: cota ilegível não serve para nada
-            (DESIGN_SYSTEM.md, Responsive Principles). `tabIndex` porque região
-            rolável precisa ser alcançável pelo teclado — sem isso, quem navega
-            sem mouse não consegue ver o desenho inteiro no celular. */}
-        <div
-          className="mt-10 max-w-2xl overflow-x-auto"
-          tabIndex={0}
-          role="region"
-          aria-label={`Corte cotado da escada ${tipo.nome.toLowerCase()} — role para o lado para ver o desenho inteiro`}
-        >
-          <Draw>
-            <SectionDrawing
-              slug={tipo.slug}
-              title={tipo.nome}
-              className="w-full min-w-[520px]"
-            />
-          </Draw>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
+          {/* A axonometria mostra a peça inteira; o corte mostra as medidas. */}
+          {capa && (
+            <div className="bg-surface p-6 lg:col-span-5">
+              {desenho}
+              <p className="spec mt-4 text-muted">AXONOMETRIA</p>
+            </div>
+          )}
+          {/* Rola em vez de encolher: cota ilegível não serve para nada
+              (DESIGN_SYSTEM.md, Responsive Principles). `tabIndex` porque região
+              rolável precisa ser alcançável pelo teclado — sem isso, quem navega
+              sem mouse não consegue ver o desenho inteiro no celular. */}
+          <div className={capa ? "lg:col-span-7" : "max-w-2xl lg:col-span-12"}>
+            <div
+              className="overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label={`Corte cotado da escada ${tipo.nome.toLowerCase()} — role para o lado para ver o desenho inteiro`}
+            >
+              <Draw>
+                <SectionDrawing
+                  slug={tipo.slug}
+                  title={tipo.nome}
+                  className="w-full min-w-[520px]"
+                />
+              </Draw>
+            </div>
+            <p className="spec mt-4 text-muted">
+              CORTE — DESENHO ILUSTRATIVO, MEDIDAS REAIS SOB CONSULTA (CNT-009)
+            </p>
+          </div>
         </div>
-        <p className="spec mt-4 text-muted">
-          DESENHO ILUSTRATIVO — MEDIDAS REAIS SOB CONSULTA (CNT-009)
-        </p>
       </Section>
 
-      <Section density="default" className="border-t border-border">
+      <Section
+        density="default"
+        id="escolher"
+        className="scroll-mt-(--barra-h) border-t border-border"
+      >
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
             <h2>Quando escolher</h2>
@@ -173,7 +235,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
       <Section density="dense" className="border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeader eyebrow="Acabamentos" title="Corrimão e guarda-corpo" />
+            <SectionHeader title="Corrimão e guarda-corpo" />
           </div>
           <div className="measure space-y-5 text-muted lg:col-span-7">
             <p>
@@ -190,74 +252,62 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
         </div>
       </Section>
 
-      {/* Galeria — o desenho técnico ocupa o lugar da foto até haver material
-          real ou asset aprovado na verificação (MEDIA_PLAN.md). */}
-      <Section density="default" className="border-t border-border">
-        <SectionHeader eyebrow="Galeria" title={`Escadas ${tipo.nome.toLowerCase()} instaladas`} />
-        {tipo.imagem ? (
-          <>
-            {/* `width`/`height` vêm do arquivo, não do slot: com 1600×1063
-                declarado sobre um arquivo de 1200×800, o Next gerava srcset até
-                1600 e ampliava — era metade do borrão.
-                A caixa cai de `max-w-4xl` (896px) para `max-w-2xl` (672px)
-                porque 672 é o maior tamanho que 1200px de fonte ainda cobrem
-                com folga em tela retina. Imagem exibida acima do que os pixels
-                sustentam é a outra metade. */}
-            <Foto
-              origem="referencia"
-              src={tipo.imagem.src}
-              alt={tipo.imagem.alt}
-              width={tipo.imagem.largura}
-              height={tipo.imagem.altura}
-              sizes="(min-width: 1024px) 672px, 100vw"
-              className="mt-10 max-w-2xl"
+      {/* Galeria — o resto das fotos do tipo, em mosaico vertical. Sem foto, a
+          seção não existe: o desenho já está no hero. */}
+      {galeria.length > 0 && (
+        <Section
+          density="default"
+          id="galeria"
+          className="scroll-mt-(--barra-h) border-t border-border"
+        >
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <SectionHeader
+              className="lg:col-span-7"
+              title={`Escada ${tipo.nome.toLowerCase()} dentro de casa`}
             />
-            <p className="spec mt-4 text-muted">
-              IMAGEM DE REFERÊNCIA — SUBSTITUÍDA POR FOTO DE OBRA REAL QUANDO O ACERVO
-              CHEGAR (CNT-003)
-            </p>
-          </>
-        ) : (
-          <SlotFoto
-            slug={tipo.slug}
-            titulo={tipo.nome}
-            pendencia="AGUARDANDO ACERVO FOTOGRÁFICO DO CLIENTE (CNT-003)"
-            className="mt-10 max-w-sm"
-          />
-        )}
-      </Section>
+            {temReferencia && (
+              <p className="spec border-l-2 border-accent pl-4 text-muted lg:col-span-5">
+                IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. LEGENDA SÓ COM O
+                TIPO (DEC-008 · CNT-003)
+              </p>
+            )}
+          </div>
+          <div className="mt-10">
+            <GaleriaTipo fotos={galeria} nome={tipo.nome} />
+          </div>
+        </Section>
+      )}
 
       {/* CTA depois de toda a prova da página (DEC-001). Esparso: é o fechamento. */}
       <Section density="airy" className="bg-primary text-primary-fg">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <h2 className="measure-display">
-              Essa é a escada do seu vão?
-            </h2>
+            <h2 className="measure-display">Essa é a escada do seu vão?</h2>
             <p className="measure mt-5 text-lg opacity-90">
               O formulário já vai com “{tipo.nome}” marcado. Se você mudar de ideia no
               caminho, é só trocar.
             </p>
           </div>
           <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href={`/orcamento?tipo=${tipo.slug}`}>
-              Pedir orçamento
-            </ButtonLink>
+            <ButtonLink href={`/orcamento?tipo=${tipo.slug}`}>Pedir orçamento</ButtonLink>
           </div>
         </div>
       </Section>
 
       {/* Tipos relacionados. */}
       <Section density="default" className="border-t border-border">
-        <SectionHeader eyebrow="Comparar" title="Outros tipos" />
+        <SectionHeader title="Outros tipos" />
         <StepIn className="mt-10" selector="li">
-        <ul className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {relacionados.map((outro) => (
-            <li key={outro.slug}>
-              <TypeCard tipo={outro} />
-            </li>
-          ))}
-        </ul>
+          <ul className="grid border-t border-l border-border sm:grid-cols-2 lg:grid-cols-3">
+            {relacionados.map((outro) => (
+              <li key={outro.slug} className="border-r border-b border-border">
+                <TypeCard
+                  tipo={outro}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                />
+              </li>
+            ))}
+          </ul>
         </StepIn>
       </Section>
 

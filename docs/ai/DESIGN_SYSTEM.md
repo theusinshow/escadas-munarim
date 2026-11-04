@@ -50,59 +50,59 @@ saturado do que o laranja era, e é a única área cromática da interface.
 
 ## Typography
 
-- **Display — Outfit**, fallback: `Helvetica Neue, Arial, sans-serif`
-- **Corpo — Hanken Grotesk**, fallback: `system-ui, Segoe UI, sans-serif`
+> **Sistema tipográfico v4 (`DEC-050`, 2026-10-09).** Substitui Outfit + Hanken Grotesk.
+
+- **Títulos e corpo — Archivo** (variável, eixo `wdth`), fallback: `Helvetica Neue, Arial, sans-serif`
+- **Rótulos curtos — Michroma**, fallback: Archivo
 - **Cotas e specs — DM Mono**, fallback: `ui-monospace, Menlo, monospace`
 
-**Por que estas três.** A hierarquia não vem da classificação (grotesca × humanista), e sim da curva,
-do peso e da medida — são **duas geométricas de construção diferente, uma de esquadro e uma de
-compasso**, mais a mono do mesmo esqueleto.
+**Por que estas três.** A letra do site passa a rimar com a do logo. A marca 1a é desenhada numa
+Eurostile — quadrada, expandida, de quinas retas. A Outfit, de compasso, brigava com ela sempre que os
+dois apareciam juntos (a capa passou a abrir com o logo).
 
-A **Outfit** desenha o `o` como círculo exato, o `a` em andar único, e mantém a mesma espessura em
-todo o percurso do traço: não há um ponto de modulação na família. Contra a Poppins, que é o mesmo
-princípio geométrico, ela tem altura-x bem mais alta no mesmo corpo — o título de quatro linhas do
-hero segura 18ch de medida sem estourar, e o eyebrow em caixa alta não fica anão ao lado dele.
+A **Archivo** é uma grotesca com eixo de largura. **Expandida (`font-stretch: 115%`) nos títulos**:
+a largura extra é o que a aproxima da Eurostile sem copiar o logo. **Normal (100%) no corpo**: uma
+família só, então título e parágrafo são parentes, e o parágrafo não cansa. Títulos em 700, corpo em 400.
 
-A **Hanken Grotesk** tem o bojo quase circular e o terminal cortado na horizontal: lê como parente da
-Outfit sem ser a mesma letra. Não é a própria Outfit no corpo porque tem largura de avanço maior e
-abertura maior no `c`, no `s` e no `e` — geometria estrita a 17px fecha a contraforma e empasta o
-parágrafo. A Outfit fica acima de 24px, a Hanken abaixo.
+A **Michroma** é a Eurostile livre — a mesma letra do "ESCADAS" do logo. Tem um peso só e é larga
+por natureza, então fica **só em rótulo curto em caixa alta** (`.rotulo-marca`): nome de degrau da capa,
+cidade da barra. Em frase longa ela cansa.
 
-A **DM Mono** mantém a justificativa funcional do papel: cota alinha numeral em coluna, e ela tem
-avanço estreito o bastante para caber dentro do desenho SVG sem cobrir traço. Mesmo esqueleto
-circular das outras duas.
+A **DM Mono** mantém o papel funcional: cota alinha numeral em coluna e cabe dentro do desenho SVG.
 
-**Escala.** Base **17px**, razão **1,2**. Line-height inverso ao tamanho.
+**Escala.** Base **17px**, razão **1,2**. Line-height inverso ao tamanho. O tracking afrouxou com a
+troca: letra expandida apertada a −0,035em encosta uma na outra.
 
 | Papel | Size | Line-height | Weight | Tracking | Face |
 | --- | --- | --- | --- | --- | --- |
-| Display | `clamp(2.6rem, 5.6vw, 4.5rem)` | 0.94 | 600 | `-0.035em` | Outfit |
-| H1 | `2.65rem` — 42px | 1.0 | 600 | `-0.03em` | Outfit |
-| H2 | `2.2rem` — 35px | 1.08 | 600 | `-0.025em` | Outfit |
-| H3 | `1.84rem` — 29px | 1.16 | 600 | `-0.02em` | Outfit |
-| H4 | `1.53rem` — 24px | 1.25 | 600 | `-0.015em` | Hanken Grotesk |
-| Lead | `1.275rem` — 20px | 1.45 | 400 | `-0.01em` | Hanken Grotesk |
-| Body | `1.0625rem` — 17px | 1.55 | 400 | `0` | Hanken Grotesk |
-| Small | `0.885rem` — 14px | 1.45 | 400 | `0.005em` | Hanken Grotesk |
-| Eyebrow | `0.82rem` — 13px | 1.4 | 600 | `0.14em`, uppercase | Hanken Grotesk |
+| Display | `clamp(2.6rem, 5.6vw, 4.5rem)` | 0.94 | 700 | `-0.02em` | Archivo 115% |
+| Capa (H1 da home) | `clamp(2.05rem, 3.5vw, 3.75rem)` | 1.0 | 700 | `-0.02em` | Archivo 115% |
+| H1 | `2.65rem` — 42px | 1.0 | 700 | `-0.02em` | Archivo 115% |
+| H2 | `2.2rem` — 35px | 1.08 | 700 | `-0.015em` | Archivo 115% |
+| H3 | `1.84rem` — 29px | 1.16 | 600 | `-0.01em` | Archivo 115% |
+| H4 | `1.53rem` — 24px | 1.25 | 600 | `-0.01em` | Archivo 100% |
+| Lead | `1.275rem` — 20px | 1.45 | 400 | `-0.01em` | Archivo 100% |
+| Body | `1.0625rem` — 17px | 1.55 | 400 | `0.008em` | Archivo 100% |
+| Small | `0.885rem` — 14px | 1.45 | 400 | `0.005em` | Archivo 100% |
+| Rótulo (`.rotulo`) | `0.885rem` — 14px | 1.45 | 600 | `0` | Archivo 100% |
+| Rótulo de marca (`.rotulo-marca`) | `0.72rem` | 1.5 | 400 | `0.1em`, uppercase | Michroma |
+
+**Sem eyebrow (`DEC-051`).** Nenhum rótulo em caixa alta acima de H2 anunciando a seção, e nenhum
+índice "/0n" de seção. O título carrega a seção sozinho.
 | Cota / spec | `0.885rem` — 14px | 1.3 | 500 | `0.01em` | DM Mono |
 
-**Base 17 e não 16.** O argumento de altura-x caiu — a Hanken tem altura-x alta e 16px já leria bem.
-O que sustenta o 17 é distância de leitura: o cliente lê no celular, em obra, em pé. É a decisão mais
-frágil do sistema.
+Qualquer elemento com a classe `font-display` herda a largura 115% (regra em `globals.css`), então
+card, rótulo e título não divergem.
 
-**Razão 1,2 e não 1,25.** A escada de tamanhos tem dez papéis, e o salto de terça maior abria buraco
-entre H3 e H4 num site que precisa dos dois lado a lado no mesmo card.
-
-**Tamanhos fixos**, com um degrau em 768px para o celular. Não há sizing fluido.
+**Tamanhos fixos**, com um degrau em 768px para o celular. Exceções fluidas: Display e o H1 da capa.
 
 **Medida:** corpo travado em `65ch`. Display em `18ch`.
 
-**Carregamento:** `next/font` com `display: swap`, subset `latin`. **Cinco pesos, nada além:**
-Outfit 600 · Hanken Grotesk 400/500/600 · DM Mono 400/500. A Outfit entra com **um peso só** —
-monolinear e geométrica, ela ganha hierarquia por tamanho, não por peso; dois pesos altos seguidos
-apagariam a diferença entre H1 e H2.
+**Carregamento:** `next/font` com `display: swap`, subset `latin`. Archivo variável (pesos e larguras
+num arquivo) · Michroma 400 · DM Mono 400/500.
 
+**Pendência:** a imagem de Open Graph (`app/opengraph-image.tsx`) ainda usa a Outfit vendorizada em
+`assets/fonts/`. Trocar exige vendorizar o TTF da Archivo.
 
 ## Spacing Scale
 
@@ -145,7 +145,7 @@ que sobra entre as pontas (medido: desvio de 0px em 1280 e 1440).
 
 - **Esquerda:** símbolo de 44px (sem wordmark; o nome vai em `sr-only`) + gatilho do menu de 44px
   dentro de um retângulo de linha fina `--border`, que passa a `--primary` no hover.
-- **Meio:** `São José — Grande Florianópolis` em eyebrow. A cidade é onde a fábrica está; a região é
+- **Meio:** `São José — Grande Florianópolis` em `.rotulo-marca`. A cidade é onde a fábrica está; a região é
   a que a empresa declara atender. Escondido abaixo de 1024px.
 - **Direita:** hora local em `--font-mono`, com numeral tabular. **Não é horário de atendimento** —
   esse é `CNT-011` e continua pendente. Escondida abaixo de 640px.
@@ -179,7 +179,7 @@ movimento, não por menos affordance.
     900ms. Só `transform` — sem layout, sem repaint.
   - **Fade de baixo em branco**, curto (32% da altura) e de subida longa: ele esmaece a foto, não a
     corta. Não chega a opaco — para em 92% no pé —, porque a legenda por cima é escura.
-  - **Legenda escura sobre o fade**: `--text` nas duas linhas. O eyebrow abre exceção ao `--muted`
+  - **Legenda escura sobre o fade**: `--text` nas duas linhas. O rótulo abre exceção ao `--muted`
     do resto do site: sobre foto o fundo varia, e em `--muted` ele caía para 3,31:1.
   - **No hover a passagem trava** e aparece o nome do modelo, subindo 8px. É o *tipo* — que é o que
     `MEDIA_PLAN.md` permite escrever sobre imagem gerada. Nunca cliente, endereço, data ou metragem.
@@ -193,6 +193,9 @@ Entrada com `stepIn` — a razão 18/28, como o resto do site. Esc fecha, o foco
 fechar ao abrir e volta ao gatilho ao fechar, o corpo trava o scroll e o Tab não escapa do overlay.
 O painel usa `m-auto` e não `justify-center`: num container que rola, centralizar torna o topo do
 conteúdo inalcançável em tela baixa.
+
+> **Histórico — superado por `DEC-048`/`DEC-050`:** a capa agora abre com o logo 1a em SVG
+> (`public/marca/munarim-1a-sobre-escuro.svg`) e o lance de fotos. O lockup abaixo não existe mais.
 
 **Lockup da capa** (`DEC-041`) — quatro linhas empilhadas no canto inferior esquerdo da dobra, nos
 mesmos 100px das duas bordas que o `DEC-033` mediu (24px no mobile).
@@ -215,7 +218,7 @@ em página de conteúdo transforma assinatura em cabeçalho.
 **Footer** — 4 colunas: identificação + endereço em `<address>` · os 7 tipos · navegação · contato.
 Fundo `--primary`, texto `--primary-fg`. Telefone e WhatsApp como links `tel:` e `wa.me`.
 
-**Buttons** — retangulares, radius 2px, altura 48px, padding lateral 24px, Hanken Grotesk 500.
+**Buttons** — retangulares, radius 2px, altura 48px, padding lateral 24px, Archivo 500.
 - `primary`: fundo `--accent`, texto branco. **Um por tela.**
 - `secondary`: transparente, borda 1px `--primary`, texto `--primary`.
 - `ghost`: texto `--link` com sublinhado 1px → 2px no hover.
@@ -251,11 +254,11 @@ só no hover. Nunca link sem affordance visual além da cor.
 
 **Containers** — `max-w-container mx-auto px-6 lg:px-10`.
 
-**Section headers** — eyebrow (uppercase, Hanken Grotesk 600, tracking 0.14em) + H2 em Outfit, alinhados
+**Section headers** — H2 em Archivo expandida + lead opcional, sem eyebrow nem índice (`DEC-051`), alinhados
 à esquerda. Centralizado só em bloco de fechamento de página.
 
 **Cards (tipo de escada)** — fundo `--surface` sobre `--bg`, sem borda e sem sombra. Composição:
-axonometria SVG · nome (Outfit) · uma característica (DM Mono) · cota principal (DM Mono).
+axonometria SVG · nome (Archivo expandida) · uma característica (DM Mono) · cota principal (DM Mono).
 Clicável inteiro. **Sem "Saiba mais →".**
 
 **Form fields** — fundo `--surface`, borda 1px `--border`, radius 2px, altura 48px. Label sempre
@@ -304,7 +307,7 @@ rotas. Não pulsa, não expande, não abre balão automático.
 
 ## Regra de camada (aprendida na fase 04)
 
-As classes próprias do projeto — `.container-site`, `.measure`, `.measure-display`, `.eyebrow`,
+As classes próprias do projeto — `.container-site`, `.measure`, `.measure-display`, `.rotulo`, `.rotulo-marca`,
 `.spec` — vivem dentro de **`@layer components`** no `globals.css`.
 
 Motivo: CSS fora de camada vence utilitário do Tailwind, que vive em `@layer utilities`. Com

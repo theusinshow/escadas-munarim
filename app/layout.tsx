@@ -1,31 +1,33 @@
 import type { Metadata } from "next";
-import { DM_Mono, Hanken_Grotesk, Outfit } from "next/font/google";
+import { Archivo, DM_Mono, Michroma } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-/* Sistema Visual v3 — duas geométricas de construção diferente, uma de esquadro
-   e uma de compasso, mais a mono do mesmo esqueleto. Cinco pesos, nada além.
+/* Sistema tipográfico v4 (DEC-050) — a letra do site passa a rimar com a do
+   logo, que é uma Eurostile quadrada e expandida.
 
-   Subset `latin` e só: ã, õ, ç, é e í vivem em U+00C0–U+00FF, dentro do `latin`.
-   O `latin-ext` cobre leste europeu, que este site não escreve. */
+   - **Archivo**, variável com eixo de largura: expandida (wdth 115) nos títulos,
+     largura normal no corpo. Uma família só, então título e texto são parentes.
+   - **Michroma** — a Eurostile livre — só em rótulo curto em caixa alta
+     (nome de degrau, cidade da barra). Ela é larga e tem um peso só; em frase longa cansa.
+   - **DM Mono** fica nas cotas: numeral em coluna, cabe dentro do desenho.
 
-/* A Outfit entra com um peso só. Monolinear e geométrica, ela ganha hierarquia
-   por tamanho, não por peso — dois pesos altos seguidos apagariam a diferença
-   entre H1 e H2. */
-const outfit = Outfit({
-  variable: "--font-outfit",
+   Subset `latin` e só: ã, õ, ç, é e í vivem em U+00C0–U+00FF, dentro do `latin`. */
+
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["600"],
+  axes: ["wdth"],
   display: "swap",
 });
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
+const michroma = Michroma({
+  variable: "--font-michroma",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "400",
   display: "swap",
 });
 
@@ -84,7 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${outfit.variable} ${hanken.variable} ${dmMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${michroma.variable} ${dmMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <a href="#conteudo" className="skip-link">

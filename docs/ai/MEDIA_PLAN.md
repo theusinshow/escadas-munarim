@@ -32,9 +32,9 @@
 | MED-001 | `/` · hero | foto | gerado | 3:2 | 220KB | **aprovado** — 65KB |
 | MED-002 | `/escadas/*` · perspectiva (×7) | SVG autoral | código | — | ~10KB cada | **aprovado** |
 | MED-003 | `/escadas/*` · corte cotado (×7) | SVG autoral | código | — | ~10KB cada | **aprovado** |
-| MED-004 | `/escadas/*` · galeria (×7) | foto | gerado | 3:2 | 160KB cada | **aprovado** — 28 a 46KB |
+| MED-004 | `/escadas/*` · galeria (×7) | foto | acervo | 2:3 / 3:4 | 160KB cada | **em iteração** — AVIF derivado do acervo |
 | MED-005 | `/como-funciona` · passos 01–04 | SVG autoral | código | 1:1 | ~4KB cada | **aprovado** |
-| MED-006 | `/obras` · grid | foto | gerado → substituir | 3:2 / 2:3 | 160KB cada | **não gerado** — sem crédito |
+| MED-006 | `/obras` · grid | foto | gerado → substituir | 2:3 / 3:4 | 160KB cada | **não gerado** — sem crédito |
 | MED-007 | `/empresa` · fábrica | foto | cliente-vai-enviar | 3:2 | 200KB | bloqueado (`CNT-004`) |
 | MED-008 | `/empresa` · mapa da região | SVG estático | — | — | — | **descartado** — ver nota |
 | MED-009 | Global · logo | SVG | cliente-vai-enviar | — | 8KB | bloqueado (`CNT-010`) |

@@ -139,7 +139,7 @@ export function MenuOverlay({
           className="mt-10 shrink-0 border-t border-primary-fg/20 py-8"
           data-item
         >
-          <p className="eyebrow text-primary-fg-muted">Contato</p>
+          <p className="rotulo text-primary-fg-muted">Contato</p>
           <ul className="mt-1">
             <li>
               <a
@@ -171,7 +171,7 @@ export function MenuOverlay({
 
           {/* Uma rede só, porque é a única que a empresa tem. Fileira de ícones
               com perfil que não existe é prova fabricada. */}
-          <p className="eyebrow mt-5 text-primary-fg-muted">Redes</p>
+          <p className="rotulo mt-5 text-primary-fg-muted">Redes</p>
           <ul className="mt-1">
             <li>
               <a

@@ -9,12 +9,10 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
  * nunca texto verossímil.
  */
 export function PageStub({
-  eyebrow,
   title,
   lead,
   sections,
 }: {
-  eyebrow?: string;
   title: string;
   lead: string;
   sections: string[];
@@ -22,7 +20,7 @@ export function PageStub({
   return (
     <>
       <Section density="dense">
-        <SectionHeader as="h1" eyebrow={eyebrow} title={title} lead={lead} />
+        <SectionHeader as="h1" title={title} lead={lead} />
       </Section>
 
       <Container>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525 155" width="525" height="155" role="img" aria-label="Escadas Munarim — Segurança e Design">
+  
+  <path d="M508,5 L508,39 L472,39 L472,73 L436,73 L436,108 L13.89,108" fill="none" stroke="#9FA9B3" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"></path>
+  <text class="m" x="13.89" y="30" textLength="217.35" lengthAdjust="spacing" font-size="24" fill="#2C445F">ESCADAS</text>
+  <circle cx="447.5" cy="23.5" r="7.5" fill="none" stroke="#9FA9B3" stroke-width="1.2"></circle>
+  <text class="m" x="447.5" y="26.9" text-anchor="middle" font-size="9.11" fill="#9FA9B3">R</text>
+  <text class="m" x="13.89" y="91" textLength="393.8" lengthAdjust="spacing" font-size="50.88" fill="#2C445F">MUNARIM</text>
+  <text class="t" x="13.89" y="142.07" font-size="17.5" fill="#2C445F">Segurança e Design</text>
+</svg>

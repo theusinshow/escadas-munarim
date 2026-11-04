@@ -130,7 +130,7 @@ export function Navbar() {
 
         {/* Meio: onde a fábrica fica. São José é a cidade; Grande Florianópolis
             é a região atendida — as duas declaradas pela empresa (DEC-017). */}
-        <p className="eyebrow hidden justify-self-center whitespace-nowrap lg:block">
+        <p className="rotulo-marca hidden justify-self-center whitespace-nowrap lg:block">
           São José <span aria-hidden="true">—</span> Grande Florianópolis
         </p>
 

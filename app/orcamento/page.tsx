@@ -19,7 +19,6 @@ export default function OrcamentoPage() {
       <Section density="default">
         <SectionHeader
           as="h1"
-          eyebrow="Orçamento"
           title="Conte o que você precisa."
           lead="O formulário monta a mensagem e abre o seu WhatsApp já preenchido. Se você ainda não sabe as medidas, envie assim mesmo — a gente explica o que medir."
         />
@@ -36,7 +35,6 @@ export default function OrcamentoPage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader
-              eyebrow="Prefere falar direto"
               title="Canais diretos"
               lead="Sem formulário, sem intermediário."
             />

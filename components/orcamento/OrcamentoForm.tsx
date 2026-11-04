@@ -267,7 +267,7 @@ export function OrcamentoForm() {
         {enviado ? (
           /* Fallback obrigatório: se o WhatsApp não abriu, a mensagem está aqui. */
           <div className="border-l-2 border-accent pl-6" aria-live="polite">
-            <p className="eyebrow">Abrimos o WhatsApp em outra aba</p>
+            <p className="rotulo">Abrimos o WhatsApp em outra aba</p>
             <p className="measure mt-4 text-muted">
               Se nada abriu, copie a mensagem abaixo e mande para{" "}
               {site.contact.whatsapp} — ou use o telefone e o e-mail ao lado.
@@ -284,7 +284,7 @@ export function OrcamentoForm() {
           </div>
         ) : (
           <div className="border-l-2 border-border pl-6">
-            <p className="eyebrow">O que acontece depois</p>
+            <p className="rotulo">O que acontece depois</p>
             <ol className="measure mt-4 space-y-3 text-muted">
               <li>
                 <span className="spec">01</span> — O formulário monta a mensagem e abre o

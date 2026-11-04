@@ -52,59 +52,59 @@ saturado do que o laranja era, e é a única área cromática da interface.
 
 ## Typography
 
-- **Display — Outfit**, fallback: `Helvetica Neue, Arial, sans-serif`
-- **Corpo — Hanken Grotesk**, fallback: `system-ui, Segoe UI, sans-serif`
+> **Sistema tipográfico v4 (`DEC-050`, 2026-10-09).** Substitui Outfit + Hanken Grotesk.
+
+- **Títulos e corpo — Archivo** (variável, eixo `wdth`), fallback: `Helvetica Neue, Arial, sans-serif`
+- **Rótulos curtos — Michroma**, fallback: Archivo
 - **Cotas e specs — DM Mono**, fallback: `ui-monospace, Menlo, monospace`
 
-**Por que estas três.** A hierarquia não vem da classificação (grotesca × humanista), e sim da curva,
-do peso e da medida — são **duas geométricas de construção diferente, uma de esquadro e uma de
-compasso**, mais a mono do mesmo esqueleto.
+**Por que estas três.** A letra do site passa a rimar com a do logo. A marca 1a é desenhada numa
+Eurostile — quadrada, expandida, de quinas retas. A Outfit, de compasso, brigava com ela sempre que os
+dois apareciam juntos (a capa passou a abrir com o logo).
 
-A **Outfit** desenha o `o` como círculo exato, o `a` em andar único, e mantém a mesma espessura em
-todo o percurso do traço: não há um ponto de modulação na família. Contra a Poppins, que é o mesmo
-princípio geométrico, ela tem altura-x bem mais alta no mesmo corpo — o título de quatro linhas do
-hero segura 18ch de medida sem estourar, e o eyebrow em caixa alta não fica anão ao lado dele.
+A **Archivo** é uma grotesca com eixo de largura. **Expandida (`font-stretch: 115%`) nos títulos**:
+a largura extra é o que a aproxima da Eurostile sem copiar o logo. **Normal (100%) no corpo**: uma
+família só, então título e parágrafo são parentes, e o parágrafo não cansa. Títulos em 700, corpo em 400.
 
-A **Hanken Grotesk** tem o bojo quase circular e o terminal cortado na horizontal: lê como parente da
-Outfit sem ser a mesma letra. Não é a própria Outfit no corpo porque tem largura de avanço maior e
-abertura maior no `c`, no `s` e no `e` — geometria estrita a 17px fecha a contraforma e empasta o
-parágrafo. A Outfit fica acima de 24px, a Hanken abaixo.
+A **Michroma** é a Eurostile livre — a mesma letra do "ESCADAS" do logo. Tem um peso só e é larga
+por natureza, então fica **só em rótulo curto em caixa alta** (`.rotulo-marca`): nome de degrau da capa,
+cidade da barra. Em frase longa ela cansa.
 
-A **DM Mono** mantém a justificativa funcional do papel: cota alinha numeral em coluna, e ela tem
-avanço estreito o bastante para caber dentro do desenho SVG sem cobrir traço. Mesmo esqueleto
-circular das outras duas.
+A **DM Mono** mantém o papel funcional: cota alinha numeral em coluna e cabe dentro do desenho SVG.
 
-**Escala.** Base **17px**, razão **1,2**. Line-height inverso ao tamanho.
+**Escala.** Base **17px**, razão **1,2**. Line-height inverso ao tamanho. O tracking afrouxou com a
+troca: letra expandida apertada a −0,035em encosta uma na outra.
 
 | Papel | Size | Line-height | Weight | Tracking | Face |
 | --- | --- | --- | --- | --- | --- |
-| Display | `clamp(2.6rem, 5.6vw, 4.5rem)` | 0.94 | 600 | `-0.035em` | Outfit |
-| H1 | `2.65rem` — 42px | 1.0 | 600 | `-0.03em` | Outfit |
-| H2 | `2.2rem` — 35px | 1.08 | 600 | `-0.025em` | Outfit |
-| H3 | `1.84rem` — 29px | 1.16 | 600 | `-0.02em` | Outfit |
-| H4 | `1.53rem` — 24px | 1.25 | 600 | `-0.015em` | Hanken Grotesk |
-| Lead | `1.275rem` — 20px | 1.45 | 400 | `-0.01em` | Hanken Grotesk |
-| Body | `1.0625rem` — 17px | 1.55 | 400 | `0` | Hanken Grotesk |
-| Small | `0.885rem` — 14px | 1.45 | 400 | `0.005em` | Hanken Grotesk |
-| Eyebrow | `0.82rem` — 13px | 1.4 | 600 | `0.14em`, uppercase | Hanken Grotesk |
+| Display | `clamp(2.6rem, 5.6vw, 4.5rem)` | 0.94 | 700 | `-0.02em` | Archivo 115% |
+| Capa (H1 da home) | `clamp(2.05rem, 3.5vw, 3.75rem)` | 1.0 | 700 | `-0.02em` | Archivo 115% |
+| H1 | `2.65rem` — 42px | 1.0 | 700 | `-0.02em` | Archivo 115% |
+| H2 | `2.2rem` — 35px | 1.08 | 700 | `-0.015em` | Archivo 115% |
+| H3 | `1.84rem` — 29px | 1.16 | 600 | `-0.01em` | Archivo 115% |
+| H4 | `1.53rem` — 24px | 1.25 | 600 | `-0.01em` | Archivo 100% |
+| Lead | `1.275rem` — 20px | 1.45 | 400 | `-0.01em` | Archivo 100% |
+| Body | `1.0625rem` — 17px | 1.55 | 400 | `0.008em` | Archivo 100% |
+| Small | `0.885rem` — 14px | 1.45 | 400 | `0.005em` | Archivo 100% |
+| Rótulo (`.rotulo`) | `0.885rem` — 14px | 1.45 | 600 | `0` | Archivo 100% |
+| Rótulo de marca (`.rotulo-marca`) | `0.72rem` | 1.5 | 400 | `0.1em`, uppercase | Michroma |
+
+**Sem eyebrow (`DEC-051`).** Nenhum rótulo em caixa alta acima de H2 anunciando a seção, e nenhum
+índice "/0n" de seção. O título carrega a seção sozinho.
 | Cota / spec | `0.885rem` — 14px | 1.3 | 500 | `0.01em` | DM Mono |
 
-**Base 17 e não 16.** O argumento de altura-x caiu — a Hanken tem altura-x alta e 16px já leria bem.
-O que sustenta o 17 é distância de leitura: o cliente lê no celular, em obra, em pé. É a decisão mais
-frágil do sistema.
+Qualquer elemento com a classe `font-display` herda a largura 115% (regra em `globals.css`), então
+card, rótulo e título não divergem.
 
-**Razão 1,2 e não 1,25.** A escada de tamanhos tem dez papéis, e o salto de terça maior abria buraco
-entre H3 e H4 num site que precisa dos dois lado a lado no mesmo card.
-
-**Tamanhos fixos**, com um degrau em 768px para o celular. Não há sizing fluido.
+**Tamanhos fixos**, com um degrau em 768px para o celular. Exceções fluidas: Display e o H1 da capa.
 
 **Medida:** corpo travado em `65ch`. Display em `18ch`.
 
-**Carregamento:** `next/font` com `display: swap`, subset `latin`. **Cinco pesos, nada além:**
-Outfit 600 · Hanken Grotesk 400/500/600 · DM Mono 400/500. A Outfit entra com **um peso só** —
-monolinear e geométrica, ela ganha hierarquia por tamanho, não por peso; dois pesos altos seguidos
-apagariam a diferença entre H1 e H2.
+**Carregamento:** `next/font` com `display: swap`, subset `latin`. Archivo variável (pesos e larguras
+num arquivo) · Michroma 400 · DM Mono 400/500.
 
+**Pendência:** a imagem de Open Graph (`app/opengraph-image.tsx`) ainda usa a Outfit vendorizada em
+`assets/fonts/`. Trocar exige vendorizar o TTF da Archivo.
 
 ## Spacing & layout
 
@@ -119,7 +119,7 @@ apagariam a diferença entre H1 e H2.
 
 ## Components
 
-**Botão.** Retangular, `radius 2px`, altura 48px, padding lateral 24px, label em Hanken Grotesk 500.
+**Botão.** Retangular, `radius 2px`, altura 48px, padding lateral 24px, label em Archivo 500.
 - `primary`: fundo `--accent` (azulão de marcação), texto branco. Um por tela — é o pedido de orçamento.
 - `secondary`: fundo transparente, borda 1px `--primary`, texto `--primary`.
 - `ghost`: só texto `--link` com sublinhado de 1px que engrossa para 2px no hover.
@@ -131,7 +131,7 @@ acima do campo — nunca placeholder como label. Foco: borda `--accent` e fundo 
 erro e CTA não podem dividir a mesma cor. Mensagem que diz o que fazer ("informe o pé-direito em metros, ex.: 2,80"), não o que falhou.
 
 **Card de tipo de escada.** Sem borda e sem sombra: o fundo `--surface` sobre `--bg` já separa.
-Composto de desenho SVG no topo, nome do tipo em Outfit, uma linha de característica em DM Mono, e
+Composto de desenho SVG no topo, nome do tipo em Archivo expandida, uma linha de característica em DM Mono, e
 a cota principal em DM Mono. Clicável inteiro — **sem "Saiba mais →"** repetido como textura.
 
 **Navegação.** Barra fixa de **96px**, fundo `--bg` sólido (sem blur, sem transparência), borda
@@ -203,6 +203,9 @@ Nenhum conteúdo depende de animação para ser lido.
 
 ## Anti-slop — exceções deliberadas
 
+**Atualização (`DEC-050`):** a Outfit e a Hanken saíram; a ressalva abaixo é histórica. A Archivo
+expandida e a Michroma vêm do logo, não do default do gênero.
+
 **Ressalva registrada:** a **Outfit** é uma das faces mais saturadas em geração automática de
 interface — está no mesmo grupo de Inter, DM Sans e Plus Jakarta Sans. Foi escolhida com essa
 ressalva conhecida (`DEC-030`). Hanken Grotesk e DM Mono estão fora do
@@ -210,7 +213,7 @@ stack default (T1) — e a revisão v2 recusou explicitamente Poppins, Montserra
 Open Sans e Futura, que são o centro estatístico do gênero geométrico; as três se distinguem por
 construção (esquadro × compasso × mono do mesmo esqueleto), não por peso da mesma ideia (T2); tracking negativo declarado no display (T3); line-height inverso ao tamanho (T4); quatro
 pesos com papel nomeado (T5); medida travada em `ch` (T6); base e razão declaradas (T7); sem
-gradiente em texto (T8); uppercase restrito a eyebrow (T9); corpo em 400 (T10); sem emoji (T11);
+gradiente em texto (T8); uppercase restrito a `.rotulo-marca` (T9); corpo em 400 (T10); sem emoji (T11);
 corpo alinhado à esquerda (T12); paleta derivada do logo do cliente (U1); sem blob, sem glass, sem
 sombra empilhada (U2/U3/U7); assimetria 7/5 em vez do hero shadcn (U4); grid de três ícones proibido
 (U5); ritmo de seção variável obrigatório (U13); stagger derivado de geometria real, não verniz (U17).

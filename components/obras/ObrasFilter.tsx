@@ -1,42 +1,51 @@
 "use client";
 
 import { useState } from "react";
+import { GaleriaTipo } from "@/components/media/GaleriaTipo";
 import { Chip } from "@/components/ui/Chip";
-import { tipos } from "@/content/tipos";
+import { fotosDo, fotosIntercaladas } from "@/content/galeria";
+import { tipoSlugs, tipos } from "@/content/tipos";
 
 /**
- * Filtro por tipo da galeria de obras.
+ * Galeria geral, filtrável por tipo (DEC-048).
  *
- * O grid ainda não existe: depende de foto real (`CNT-003`) ou de asset gerado
- * aprovado na verificação de `MEDIA_PLAN.md`. O filtro já está de pé porque é
- * estrutura, não conteúdo — e o estado vazio diz a verdade em vez de mostrar
- * uma galeria inventada.
+ * Sem filtro, as fotos vêm intercaladas por tipo — a página abre comparando, não
+ * com sete retas seguidas. O filtro só mostra os tipos que têm foto.
  */
+
+const TODAS = fotosIntercaladas(tipoSlugs);
+const COM_FOTO = tipos.filter((t) => fotosDo(t.slug).length > 0);
+
 export function ObrasFilter() {
   const [ativo, setAtivo] = useState<string | null>(null);
+  const tipoAtivo = tipos.find((t) => t.slug === ativo);
+  const fotos = ativo ? fotosDo(ativo) : TODAS;
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por tipo">
         <Chip active={ativo === null} onClick={() => setAtivo(null)}>
-          Todos
+          Todos <span className="ml-1 opacity-60">{TODAS.length}</span>
         </Chip>
-        {tipos.map((tipo) => (
+        {COM_FOTO.map((tipo) => (
           <Chip
             key={tipo.slug}
             active={ativo === tipo.slug}
             onClick={() => setAtivo(tipo.slug)}
           >
-            {tipo.nome}
+            {tipo.nome} <span className="ml-1 opacity-60">{fotosDo(tipo.slug).length}</span>
           </Chip>
         ))}
       </div>
 
-      <p className="spec mt-10 border-l-2 border-accent pl-4 text-muted" role="status">
-        {ativo
-          ? `SEM OBRAS PUBLICADAS PARA "${tipos.find((t) => t.slug === ativo)?.nome.toUpperCase()}" — AGUARDANDO ACERVO (CNT-003)`
-          : "GALERIA AGUARDANDO ACERVO FOTOGRÁFICO DO CLIENTE (CNT-003)"}
+      <p className="sr-only" role="status">
+        {fotos.length} fotos{tipoAtivo ? ` de escada ${tipoAtivo.nome.toLowerCase()}` : ""}
       </p>
+
+      <div className="mt-10">
+        {/* `key`: trocar o filtro remonta a galeria e fecha um lightbox aberto. */}
+        <GaleriaTipo key={ativo ?? "todas"} fotos={fotos} nome={tipoAtivo?.nome ?? "Todos os tipos"} />
+      </div>
     </div>
   );
 }

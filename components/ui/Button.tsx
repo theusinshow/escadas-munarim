@@ -22,6 +22,8 @@ const BASE =
 const VARIANT = {
   primary: "btn-degrau-primary",
   secondary: "btn-degrau-secondary",
+  /** Cheio e claro, para fundo escuro, quando a ação não é o orçamento. */
+  claro: "btn-degrau-claro",
 } as const;
 
 export type ButtonVariant = keyof typeof VARIANT;

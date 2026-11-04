@@ -197,7 +197,7 @@ export function spiralIn(
  * degradado.
  */
 export function comMovimento(
-  fn: (ctx: { mobile: boolean }) => void,
+  fn: (ctx: { mobile: boolean }) => void | (() => void),
   escopo?: Element | null,
 ) {
   const mm = gsap.matchMedia(escopo ?? undefined);
@@ -208,7 +208,7 @@ export function comMovimento(
       mobile: "(prefers-reduced-motion: no-preference) and (max-width: 767px)",
     },
     (ctx) => {
-      fn({ mobile: Boolean(ctx.conditions?.mobile) });
+      return fn({ mobile: Boolean(ctx.conditions?.mobile) });
     },
   );
 

@@ -32,7 +32,6 @@ export default function ComoFuncionaPage() {
       <Section density="default">
         <SectionHeader
           as="h1"
-          eyebrow="Processo"
           title="Da medição à instalação."
           lead="Quatro etapas. Você aprova o desenho cotado antes de qualquer peça ser fabricada — depois do concreto curado, mudança significa peça nova."
         />
@@ -86,7 +85,6 @@ export default function ComoFuncionaPage() {
       {/* O que está e o que não está incluso — depende da empresa. */}
       <Section density="default" className="border-t border-border">
         <SectionHeader
-          eyebrow="Escopo"
           title="O que está incluso"
           lead="A Munarim fabrica a escada. Para entregar o conjunto completo — projeto, escada, revestimento e corrimão — trabalha em parceria com outras empresas."
         />

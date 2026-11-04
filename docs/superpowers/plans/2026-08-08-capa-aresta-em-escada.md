@@ -12,7 +12,7 @@
 
 - **Não existe test runner neste repositório e nenhum será instalado.** O ciclo de verificação é o que todo `DEC-*` do projeto documenta: `npx tsc --noEmit` + `npx eslint` + `npm run build` + **script de medição em Playwright (Python) contra `npm run start`**. O TDD deste plano é: escrever a medição, rodá-la e vê-la falhar, implementar, rodá-la e vê-la passar.
 - **Playwright:** disponível via Python do sistema (`python -c "import playwright"` funciona). Rodar sempre através de `python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" --server "npm run start" --port 3000 -- python <script>`.
-- **Scripts de medição** vão em `C:\Users\Matheus\AppData\Local\Temp\claude\c--Dev-pessoal-portfolio-escadas-minarum\501fd188-45c0-4e81-ba87-9d478ccd02a0\scratchpad\` — nunca no repositório.
+- **Scripts de medição** vão em `C:\Users\Matheus\AppData\Local\Temp\claude\C--Dev-webdesign-escadas-munarim\501fd188-45c0-4e81-ba87-9d478ccd02a0\scratchpad\` — nunca no repositório.
 - **Nenhuma constante de motion nova.** Só `DUR` (0.28), `STAGGER` (0.18), `EASE` e o teto `STAGGER × 6` de `lib/motion.ts`.
 - **Nenhum fato inventado.** Copy nova permitida apenas a partir da lista verificada do `CLAUDE.md`. As duas frases deste plano — `Escadas pré-moldadas de concreto polido, sob medida.` e `SETE TIPOS · 15 ANOS` — já estão validadas na spec §5.
 - **O H1 novo é, literalmente:** `Segurança e design, na medida exata do seu vão.`
@@ -143,7 +143,7 @@ raise SystemExit(1 if falhas else 0)
 - [ ] **Step 2: Rodar e confirmar que falha**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npm run build && \
+cd c:/Dev/webdesign/escadas-munarim && npm run build && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t1_lockup.py"
 ```
@@ -224,7 +224,7 @@ Nota: a linha de fatos usa a classe `.spec` que já existe (DM Mono, `--text-sma
 - [ ] **Step 6: Rodar a medição e confirmar que passa**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
+cd c:/Dev/webdesign/escadas-munarim && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t1_lockup.py"
 ```
@@ -369,7 +369,7 @@ raise SystemExit(1 if falhas else 0)
 - [ ] **Step 2: Rodar e confirmar que falha**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && \
+cd c:/Dev/webdesign/escadas-munarim && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t2_massa.py"
 ```
@@ -447,7 +447,7 @@ Inserir como **primeiro filho** da `<section>`, antes do `<div className="px-6 l
 - [ ] **Step 5: Rodar a medição e confirmar que passa**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
+cd c:/Dev/webdesign/escadas-munarim && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t2_massa.py"
 ```
@@ -543,7 +543,7 @@ raise SystemExit(1 if falhas else 0)
 - [ ] **Step 2: Rodar e confirmar que falha**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && \
+cd c:/Dev/webdesign/escadas-munarim && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t3_indicador.py"
 ```
@@ -579,7 +579,7 @@ Em `HeroCapa.tsx`, no `<span>` criado na Task 2, acrescentar o atributo — o bl
 - [ ] **Step 4: Rodar a medição e confirmar que passa**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npx tsc --noEmit && npm run build && \
+cd c:/Dev/webdesign/escadas-munarim && npx tsc --noEmit && npm run build && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t3_indicador.py"
 ```
@@ -669,7 +669,7 @@ raise SystemExit(1 if falhas else 0)
 - [ ] **Step 2: Rodar e confirmar que falha**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && \
+cd c:/Dev/webdesign/escadas-munarim && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t4_entrada.py"
 ```
@@ -739,7 +739,7 @@ E depois do `useEffect` do ciclo, este novo efeito:
 - [ ] **Step 6: Rodar a medição e confirmar que passa**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
+cd c:/Dev/webdesign/escadas-munarim && npx tsc --noEmit && npx eslint components/home/HeroCapa.tsx && npm run build && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t4_entrada.py"
 ```
@@ -749,7 +749,7 @@ Esperado: `>>> FALHAS: 0`. Nos quadros iniciais a laje 0 deve estar à frente da
 - [ ] **Step 7: Rodar a medição da Task 3 de novo (não-regressão)**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && \
+cd c:/Dev/webdesign/escadas-munarim && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t3_indicador.py"
 ```
@@ -813,7 +813,7 @@ raise SystemExit(1 if (ruins or estouro) else 0)
 Rodar:
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && \
+cd c:/Dev/webdesign/escadas-munarim && \
 python "C:/Users/Matheus/.claude/skills/webapp-testing/scripts/with_server.py" \
   --server "npm run start" --port 3000 -- python "<scratchpad>/t5_rotas.py"
 ```
@@ -863,7 +863,7 @@ Na estrutura low-fi da capa, trocar a descrição do canto inferior esquerdo de 
 - [ ] **Step 6: Verificação final**
 
 ```bash
-cd c:/Dev/pessoal/portfolio/escadas-minarum && npx tsc --noEmit && npx eslint . && npm run build
+cd c:/Dev/webdesign/escadas-munarim && npx tsc --noEmit && npx eslint . && npm run build
 ```
 
 Esperado: `tsc` limpo, `build` limpo. O ESLint tem **um erro pré-existente em `components/layout/Slideshow.tsx`** que não é deste trabalho — confirmar que nenhum erro novo apareceu, e não corrigir aquele.

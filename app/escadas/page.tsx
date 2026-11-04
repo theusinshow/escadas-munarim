@@ -34,7 +34,6 @@ export default function EscadasPage() {
       <Section density="dense">
         <SectionHeader
           as="h1"
-          eyebrow="Catálogo"
           title="Sete tipos. Um deles resolve o seu vão."
           lead="A escolha depende de três coisas: o espaço disponível, o pé-direito e quantas vezes por dia a escada vai ser usada. Cada tipo abaixo tem o desenho aberto para você comparar."
         />
@@ -52,7 +51,6 @@ export default function EscadasPage() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader
-              eyebrow="Ainda em dúvida"
               title="Não sei qual é o meu caso"
               lead="Três perguntas resolvem a maior parte das dúvidas antes mesmo de falar com alguém."
             />

@@ -31,7 +31,6 @@ export default function DuvidasPage() {
       <Section density="default">
         <SectionHeader
           as="h1"
-          eyebrow="Dúvidas"
           title="O que perguntam antes de encomendar."
           lead="Se é a primeira escada que você compra, comece por aqui. Cada resposta explica o termo técnico antes de usá-lo."
         />
@@ -42,7 +41,7 @@ export default function DuvidasPage() {
           <div className="lg:col-span-8">
             {faq.map((grupo) => (
               <div key={grupo.tema} className="mb-12 last:mb-0">
-                <h2 className="eyebrow">{grupo.tema}</h2>
+                <h2 className="rotulo">{grupo.tema}</h2>
                 <div className="mt-4">
                   {grupo.perguntas.map((p) => (
                     <FAQItem key={p.q} question={p.q}>
@@ -62,7 +61,7 @@ export default function DuvidasPage() {
 
           <aside className="lg:col-span-4">
             <div className="border-l-2 border-border pl-6">
-              <p className="eyebrow">Não achou sua dúvida?</p>
+              <p className="rotulo">Não achou sua dúvida?</p>
               <p className="measure mt-4 text-muted">
                 Manda a pergunta no WhatsApp. Se você não sabe nem por onde começar a
                 medir, também serve — a gente explica.
