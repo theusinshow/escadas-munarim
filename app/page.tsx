@@ -1,6 +1,4 @@
-import { Acervo } from "@/components/home/Acervo";
-import { CapaGaleria } from "@/components/home/CapaGaleria";
-import { ColecoesDestaque } from "@/components/home/ColecoesDestaque";
+import { CapaTriptico } from "@/components/home/CapaTriptico";
 import { EmpresaBloco } from "@/components/home/EmpresaBloco";
 import { Fechamento } from "@/components/home/Fechamento";
 import { Manifesto } from "@/components/home/Manifesto";
@@ -16,12 +14,14 @@ import { TypeGrid } from "@/components/ui/TypeGrid";
 import { faqRespondido } from "@/content/faq";
 
 /**
- * Home (DEC-032 → DEC-048 → DEC-051 → DEC-052).
+ * Home (DEC-032 → DEC-048 → DEC-051 → DEC-052 → DEC-059).
  *
- * Galeria antes de conversão (DEC-052), na estrutura do site de referência do
- * desenvolvedor: capa com fotos em rotação → manifesto → coleções em degrau →
- * catálogo → o que é pré-moldada → processo → acervo → empresa → dúvidas →
- * fechamento. Sem eyebrow e sem "/0n" sobre os títulos (DEC-051).
+ * DEC-059: oito seções. Capa → posicionamento com os 15 anos → os sete tipos
+ * (uma seção só) → pré-moldada → processo → empresa → dúvidas → fechamento.
+ * Coleções e acervo saíram da home: repetiam os tipos e as fotos, e vivem em
+ * /obras.
+ *
+ * Sem eyebrow e sem "/0n" sobre os títulos (DEC-051).
  *
  * O que a referência original tinha e este site não pode ter: contador
  * animado, prêmio, índice de satisfação, depoimento assinado e blog. Onde eles
@@ -35,28 +35,31 @@ export default function Home() {
   return (
     <>
       {/* Sem CTA de conversão na capa: autoridade primeiro (DEC-001). */}
-      <CapaGaleria />
+      <CapaTriptico />
 
       <Manifesto />
 
-      <ColecoesDestaque />
-
       {/* Comparação: os 7 recebem tratamento idêntico DE PROPÓSITO. */}
-      <Section density="default" className="border-t border-border">
-        <SectionHeader
-          title="Sete tipos. Um deles resolve o seu vão."
-          lead="O que decide não é o gosto: é o espaço que você tem, o pé-direito da casa e quantas vezes por dia a escada vai ser usada."
-        />
-        <StepIn className="mt-12" selector="li">
-          <TypeGrid />
-        </StepIn>
-      </Section>
+      <section className="border-t border-border py-24 lg:py-36">
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <h2 className="measure-display lg:col-span-6">
+              Sete tipos. Um deles resolve o seu vão.
+            </h2>
+            <p className="measure text-lg text-muted lg:col-span-5 lg:col-start-8">
+              O que decide não é o gosto: é o espaço que você tem, o pé-direito — a
+              altura de piso a piso — e quantas vezes por dia a escada vai ser usada.
+            </p>
+          </div>
+          <StepIn className="mt-14 lg:mt-20" selector="li">
+            <TypeGrid />
+          </StepIn>
+        </Container>
+      </section>
 
       <PreMoldada />
 
       <ProcessoLinha />
-
-      <Acervo />
 
       <EmpresaBloco />
 

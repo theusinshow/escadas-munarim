@@ -4,7 +4,7 @@ import Link from "next/link";
  * Botão em três variantes.
  *
  * Regras de `DESIGN_SYSTEM.md` que este componente carrega:
- * retangular com radius de 2px, altura 48px, sem sombra nunca, sem ícone
+ * retangular com radius de 2px, altura 56px, rótulo em Michroma caixa alta (DEC-058), sem sombra nunca, sem ícone
  * decorativo, sem seta. `primary` é o pedido de orçamento e aparece **uma vez
  * por tela** — quem chama é responsável por isso.
  *
@@ -16,8 +16,9 @@ import Link from "next/link";
  */
 
 const BASE =
-  "btn-degrau inline-flex h-12 items-center justify-center rounded-(--radius) px-6 " +
-  "font-medium disabled:pointer-events-none disabled:opacity-40";
+  "btn-degrau inline-flex h-14 items-center justify-center rounded-(--radius) px-8 " +
+  "font-label text-[0.78rem] tracking-[0.14em] uppercase " +
+  "disabled:pointer-events-none disabled:opacity-40";
 
 const VARIANT = {
   primary: "btn-degrau-primary",
@@ -110,7 +111,7 @@ export function GhostLink({
   return (
     <Link
       href={href}
-      className={`inline-flex min-h-11 items-center text-link underline decoration-1 underline-offset-4 hover:decoration-2 ${className}`}
+      className={`inline-flex min-h-11 items-center font-label text-[0.74rem] tracking-[0.14em] text-link uppercase underline decoration-1 underline-offset-[6px] hover:decoration-2 ${className}`}
       {...rest}
     >
       {children}

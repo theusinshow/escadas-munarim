@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import { FaixaCta } from "@/components/ui/FaixaCta";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { ColecaoCard } from "@/components/galeria/ColecaoCard";
 import { ObrasFilter } from "@/components/obras/ObrasFilter";
-import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { fotosDo, temReferencia } from "@/content/galeria";
 import { tipos } from "@/content/tipos";
 
@@ -30,28 +30,23 @@ const COM_FOTO = tipos.filter((t) => fotosDo(t.slug).length > 0);
 export default function ObrasPage() {
   return (
     <>
-      <Section density="dense">
-        <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <SectionHeader
-            as="h1"
-            className="lg:col-span-7"
-            title={temReferencia ? "Escadas de concreto, por tipo." : "Escadas instaladas."}
-            lead={
-              temReferencia
-                ? "Fotos verticais organizadas pelos sete tipos do catálogo. Clique para ampliar."
-                : "Projetos entregues na Grande Florianópolis, organizados por tipo de escada."
-            }
-          />
-          {temReferencia && (
-            <p className="spec border-l-2 border-accent pl-4 text-muted lg:col-span-5">
-              IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. O ACERVO DE OBRAS
-              ENTRA AQUI QUANDO CHEGAR (CNT-003)
-            </p>
-          )}
-        </div>
-      </Section>
+      <PageHeader
+        title={temReferencia ? "Escadas de concreto, por tipo." : "Escadas instaladas."}
+        lead={
+          temReferencia
+            ? "Fotos verticais organizadas pelos sete tipos do catálogo. Clique para ampliar."
+            : "Projetos entregues na Grande Florianópolis, organizados por tipo de escada."
+        }
+      >
+        {temReferencia && (
+          <p className="spec border-l-2 border-accent pl-4 text-muted">
+            IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. O ACERVO DE OBRAS ENTRA
+            AQUI QUANDO CHEGAR (CNT-003)
+          </p>
+        )}
+      </PageHeader>
 
-      <Section density="default" className="border-t border-border">
+      <Section density="default">
         <div className="grid items-start gap-14 md:grid-cols-3 md:gap-x-6 md:gap-y-20 lg:gap-x-8">
           {COM_FOTO.map((tipo, i) => (
             <ColecaoCard
@@ -72,19 +67,10 @@ export default function ObrasPage() {
         <ObrasFilter />
       </Section>
 
-      <Section density="airy" className="bg-primary text-primary-fg">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 className="measure-display">Viu o tipo que cabe na sua casa?</h2>
-            <p className="measure mt-5 text-lg opacity-90">
-              O formulário monta a mensagem e abre o seu WhatsApp já preenchido.
-            </p>
-          </div>
-          <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href="/orcamento">Pedir orçamento</ButtonLink>
-          </div>
-        </div>
-      </Section>
+      <FaixaCta
+        title="Viu o tipo que cabe na sua casa?"
+        text="O formulário monta a mensagem e abre o seu WhatsApp já preenchido."
+      />
     </>
   );
 }

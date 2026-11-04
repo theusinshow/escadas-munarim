@@ -28,6 +28,11 @@ export function TypeCard({
   sizes?: string;
 }) {
   const foto = capaDo(tipo.slug);
+  /* Resumo ainda pendente traz a marcação "[CNT-… — …]" no texto. Ela continua
+     visível — slot marcado, nunca placeholder verossímil —, mas como selo, fora
+     da frase. */
+  const [, texto = tipo.resumo, pendencia] =
+    tipo.resumo.match(/^(.*?)\s*\[(CNT-\d+[^\]]*)\]\s*$/) ?? [];
 
   return (
     <Link
@@ -58,13 +63,18 @@ export function TypeCard({
         )}
       </div>
 
-      <div className="flex flex-1 gap-4 p-6">
+      <div className="flex flex-1 gap-4 p-6 lg:p-7">
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-xl font-semibold tracking-[-0.02em]">
             {tipo.nome}
           </h3>
           <p className="mt-1 text-sm font-semibold text-accent">{tipo.destaque}</p>
-          <p className="mt-4 text-sm text-muted">{tipo.resumo}</p>
+          <p className="mt-4 text-[0.95rem] leading-relaxed text-muted">{texto}</p>
+          {pendencia && (
+            <p className="spec mt-3 border-l-2 border-accent pl-3 text-[0.62rem] text-muted">
+              {pendencia}
+            </p>
+          )}
         </div>
         <TipoIcone
           slug={tipo.slug}

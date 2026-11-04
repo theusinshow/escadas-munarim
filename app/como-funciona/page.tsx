@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { FaixaCta } from "@/components/ui/FaixaCta";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Draw } from "@/components/motion/Draw";
 import { ProcessIllustration } from "@/components/technical/ProcessIllustration";
-import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { passos } from "@/content/processo";
@@ -29,13 +30,10 @@ function comDestaque(texto: string) {
 export default function ComoFuncionaPage() {
   return (
     <>
-      <Section density="default">
-        <SectionHeader
-          as="h1"
-          title="Da medição à instalação."
-          lead="Quatro etapas. Você aprova o desenho cotado antes de qualquer peça ser fabricada — depois do concreto curado, mudança significa peça nova."
-        />
-      </Section>
+      <PageHeader
+        title="Da medição à instalação."
+        lead="Quatro etapas. Você aprova o desenho cotado antes de qualquer peça ser fabricada — depois do concreto curado, mudança significa peça nova."
+      />
 
       {/* Um passo por bloco, denso. É o conteúdo de maior valor persuasivo
           do site para o público leigo. */}
@@ -85,6 +83,7 @@ export default function ComoFuncionaPage() {
       {/* O que está e o que não está incluso — depende da empresa. */}
       <Section density="default" className="border-t border-border">
         <SectionHeader
+          split
           title="O que está incluso"
           lead="A Munarim fabrica a escada. Para entregar o conjunto completo — projeto, escada, revestimento e corrimão — trabalha em parceria com outras empresas."
         />
@@ -94,22 +93,10 @@ export default function ComoFuncionaPage() {
         </p>
       </Section>
 
-      <Section density="airy" className="bg-primary text-primary-fg">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 className="measure-display">
-              Já sabe as medidas do seu vão?
-            </h2>
-            <p className="measure mt-5 text-lg opacity-90">
-              Se ainda não sabe, tudo bem — a medição é o primeiro passo e é por nossa
-              conta explicar o que medir.
-            </p>
-          </div>
-          <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href="/orcamento">Pedir orçamento</ButtonLink>
-          </div>
-        </div>
-      </Section>
+      <FaixaCta
+        title="Já sabe as medidas do seu vão?"
+        text="Se ainda não sabe, tudo bem — a medição é o primeiro passo e é por nossa conta explicar o que medir."
+      />
     </>
   );
 }

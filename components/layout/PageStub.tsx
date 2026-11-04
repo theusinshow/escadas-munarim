@@ -1,6 +1,5 @@
 import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 /**
  * TEMPORÁRIO — fases 01–03.
@@ -19,9 +18,7 @@ export function PageStub({
 }) {
   return (
     <>
-      <Section density="dense">
-        <SectionHeader as="h1" title={title} lead={lead} />
-      </Section>
+      <PageHeader title={title} lead={lead} />
 
       <Container>
         <div className="border-t border-border py-8">

@@ -5,7 +5,7 @@ import { Foto } from "@/components/media/Foto";
 import type { FotoAcervo } from "@/content/galeria";
 
 /** Tempo em tela de cada foto. */
-const INTERVALO = 5200;
+export const INTERVALO = 5200;
 
 /**
  * Fotos em rotação, com crossfade (DEC-052).
@@ -27,11 +27,17 @@ export function RotacaoFotos({
   fotos,
   descricao,
   sizes,
+  defasagem = 0,
+  pausado = false,
   className = "",
 }: {
   fotos: FotoAcervo[];
   descricao: string;
   sizes: string;
+  /** Espera antes da primeira troca — várias rotações lado a lado não trocam juntas. */
+  defasagem?: number;
+  /** Pausa pedida pela pessoa (WCAG 2.2.2) — some com a preferência de movimento. */
+  pausado?: boolean;
   className?: string;
 }) {
   // Índice e marca d'água juntos: o próximo `montadas` depende do próximo `indice`.
@@ -41,26 +47,32 @@ export function RotacaoFotos({
   });
 
   useEffect(() => {
-    if (fotos.length < 2) return;
+    if (fotos.length < 2 || pausado) return;
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     let timer = 0;
+    let espera = 0;
 
     function iniciar() {
-      if (timer || query.matches) return;
-      timer = window.setInterval(() => {
-        // Aba em segundo plano não gira nem baixa imagem.
-        if (document.hidden) return;
-        setEstado((atual) => {
-          const proximo = (atual.indice + 1) % fotos.length;
-          return {
-            indice: proximo,
-            montadas: Math.max(atual.montadas, Math.min(proximo + 2, fotos.length)),
-          };
-        });
-      }, INTERVALO);
+      if (timer || espera || query.matches) return;
+      espera = window.setTimeout(() => {
+        espera = 0;
+        timer = window.setInterval(() => {
+          // Aba em segundo plano não gira nem baixa imagem.
+          if (document.hidden) return;
+          setEstado((atual) => {
+            const proximo = (atual.indice + 1) % fotos.length;
+            return {
+              indice: proximo,
+              montadas: Math.max(atual.montadas, Math.min(proximo + 2, fotos.length)),
+            };
+          });
+        }, INTERVALO);
+      }, defasagem);
     }
     function parar() {
+      window.clearTimeout(espera);
       window.clearInterval(timer);
+      espera = 0;
       timer = 0;
     }
 
@@ -71,7 +83,7 @@ export function RotacaoFotos({
       query.removeEventListener("change", aoMudar);
       parar();
     };
-  }, [fotos.length]);
+  }, [fotos.length, defasagem, pausado]);
 
   return (
     <div role="img" aria-label={descricao} className={`relative overflow-hidden ${className}`}>

@@ -60,19 +60,17 @@ const FOTO = fotosDo("reta")[3];
 
 export function PreMoldada() {
   return (
-    <section className="border-t border-border bg-shade py-20 lg:py-28">
+    <section className="border-t border-border bg-shade py-24 lg:py-36">
       <div className="container-site">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <header className="lg:col-span-7">
-            <h2 className="measure-display">O que é uma escada pré-moldada</h2>
-            <p className="measure mt-5 text-xl leading-relaxed">
-              Moldada antes: a escada é concretada em fôrma, curada e polida fora da
-              obra, e chega pronta na sua casa.
-            </p>
-          </header>
-        </div>
+        <header className="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <h2 className="measure-display lg:col-span-6">O que é uma escada pré-moldada</h2>
+          <p className="measure text-lg text-muted lg:col-span-5 lg:col-start-8">
+            Moldada antes: a escada é concretada em fôrma, curada e polida fora da
+            obra, e chega pronta na sua casa.
+          </p>
+        </header>
 
-        <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-12">
+        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-12">
           {FOTO && (
             <div className="relative hidden aspect-[4/5] overflow-hidden lg:col-span-4 lg:block">
               <Foto foto={FOTO} fill sizes="(min-width: 1280px) 400px, 33vw" />

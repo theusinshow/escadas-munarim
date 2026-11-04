@@ -43,22 +43,25 @@
   --container: 1280px;
 
   /* tipografia — base 17px, razão 1,2 (Sistema Visual v3) */
-  --text-display: clamp(2.6rem, 5.6vw, 4.5rem);
-  --text-h1: 2.65rem;         /* 42px */
-  --text-h2: 2.2rem;          /* 35px */
-  --text-h3: 1.84rem;         /* 29px */
+  /* v5 (DEC-058): título em Michroma, a letra do logo. Ela é ~25% mais larga
+     que a Archivo expandida, então a escala de título desce um degrau — a
+     hierarquia vem do salto entre níveis, não do tamanho bruto. */
+  --text-display: clamp(2.1rem, 4.4vw, 3.6rem);
+  --text-h1: 2.2rem;          /* 35px */
+  --text-h2: clamp(1.5rem, 2.4vw, 2rem); /* 24 → 32px */
+  --text-h3: 1.3rem;          /* 21px */
   --text-h4: 1.53rem;         /* 24px */
   --text-lead: 1.275rem;      /* 20px */
   --text-body: 1.0625rem;     /* 17px — base declarada */
   --text-small: 0.885rem;     /* 14px */
   --text-eyebrow: 0.82rem;    /* 13px */
 
-  --lh-display: 0.94;  --lh-h1: 1.0;    --lh-h2: 1.08;
-  --lh-h3: 1.16;       --lh-h4: 1.25;   --lh-lead: 1.45;
+  --lh-display: 1.08;  --lh-h1: 1.14;   --lh-h2: 1.2;
+  --lh-h3: 1.28;       --lh-h4: 1.25;   --lh-lead: 1.45;
   --lh-body: 1.55;     --lh-small: 1.45; --lh-cota: 1.3;
 
-  --tr-display: -0.02em;  --tr-h1: -0.02em;  --tr-h2: -0.015em;
-  --tr-h3: -0.01em;       --tr-h4: -0.01em;  --tr-lead: -0.01em;
+  --tr-display: -0.01em;  --tr-h1: -0.01em;  --tr-h2: -0.005em;
+  --tr-h3: 0;       --tr-h4: -0.01em;  --tr-lead: -0.01em;
   --tr-body: 0;           --tr-small: 0.005em;
   --tr-eyebrow: 0.1em;    --tr-cota: 0.01em;
 
@@ -106,7 +109,8 @@
 
   /* v4 (DEC-050): Archivo expandida nos títulos, normal no corpo; Michroma
      nos rótulos curtos; DM Mono nas cotas. */
-  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  /* v5 (DEC-058): título em Michroma, a mesma letra do logo; corpo continua Archivo. */
+  --font-display: var(--font-michroma), var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   --font-body: var(--font-archivo), system-ui, "Segoe UI", sans-serif;
   --font-label: var(--font-michroma), var(--font-archivo), sans-serif;
   --font-mono: var(--font-dm-mono), ui-monospace, Menlo, monospace;
@@ -162,12 +166,15 @@
      letra rimar com a Eurostile do logo. O tracking afrouxou junto: letra
      larga apertada a -0,035em encosta uma na outra. */
 
+  /* v5 (DEC-058): Michroma tem um peso só. `font-synthesis` desligado para o
+     `font-bold` espalhado nos componentes não virar negrito falso borrado. */
   h1,
   h2,
   h3,
   .font-display {
     font-family: var(--font-display);
-    font-stretch: 115%;
+    font-weight: 400;
+    font-synthesis: none;
   }
 
   h1,
@@ -179,21 +186,21 @@
   h1 {
     font-size: var(--text-h1);
     line-height: var(--lh-h1);
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: var(--tr-h1);
   }
 
   h2 {
     font-size: var(--text-h2);
     line-height: var(--lh-h2);
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: var(--tr-h2);
   }
 
   h3 {
     font-size: var(--text-h3);
     line-height: var(--lh-h3);
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: var(--tr-h3);
   }
 
@@ -210,13 +217,10 @@
      fluidos, então o breakpoint volta. */
   @media (max-width: 768px) {
     h1 {
-      font-size: 2.2rem;
-    }
-    h2 {
-      font-size: 1.84rem;
+      font-size: 1.75rem;
     }
     h3 {
-      font-size: 1.53rem;
+      font-size: 1.15rem;
     }
     h4 {
       font-size: 1.275rem;
@@ -284,7 +288,7 @@
   }
 
   /* Michroma, a Eurostile do "ESCADAS" do logo — só em rótulo curto que já é
-     marca: a cidade da barra. Uppercase e tracking vivem aqui e no nome dos
+     marca: a barra, os rótulos da capa e o tipo na grade. Uppercase e tracking vivem aqui e no nome dos
      degraus da capa, em nenhum outro lugar. */
   .rotulo-marca {
     font-family: var(--font-label);
@@ -781,6 +785,28 @@
     }
   }
 
+  /* ---------- Seção escura (DEC-060) ----------
+     Reescreve os tokens dentro da seção, e tudo o que usa `text-muted`,
+     `border-border`, `text-accent` ou `--text` (o fio do processo) vira a
+     versão sobre navy sem classe nova nos filhos. O acento claro dá 5,6:1
+     sobre o navy. */
+  .secao-escura {
+    --text: var(--primary-fg);
+    --muted: var(--primary-fg-muted);
+    --border: rgb(255 255 255 / 0.16);
+    --accent: #a9c4e6;
+    --link: var(--primary-fg-muted);
+    background: var(--primary);
+    color: var(--text);
+  }
+
+  /* O botão volta aos tokens originais: a inversão de cima é para o texto da
+     seção, não para o botão claro que mora nela. */
+  .secao-escura .btn-degrau {
+    --text: #16222e;
+    --accent: #0f52ba;
+  }
+
   /* ---------- Processo em degraus (DEC-051) ----------
      Quatro etapas, quatro degraus. No desktop cada coluna sobe um espelho em
      relação à anterior: a linha de cima é o piso do degrau, o fio à esquerda é
@@ -894,6 +920,24 @@
     }
   }
 
+
+  /* ---------- Capa tríptico (DEC-053 → DEC-055) ---------- */
+
+  /* Entrada: as colunas sobem em degrau (a mesma `capa-sobe` do lance
+     anterior) e o bloco do título entra com o deslocamento piso/espelho. CSS
+     puro: roda no primeiro paint, não espera hidratação, e com `reduce` não
+     existe. */
+  @media (prefers-reduced-motion: no-preference) {
+    .triptico-coluna {
+      animation: capa-sobe 900ms var(--ease-degrau) both;
+      animation-delay: calc(var(--i) * var(--step-riser) * 10ms);
+    }
+
+    .triptico-entra {
+      animation: capa-entra 720ms var(--ease-degrau) both;
+      animation-delay: calc(300ms + var(--d, 0) * var(--step-riser) * 6ms);
+    }
+  }
 }
 
 /* Pular para o conteúdo */

@@ -131,13 +131,16 @@ acima do campo — nunca placeholder como label. Foco: borda `--accent` e fundo 
 erro e CTA não podem dividir a mesma cor. Mensagem que diz o que fazer ("informe o pé-direito em metros, ex.: 2,80"), não o que falhou.
 
 **Card de tipo de escada.** Sem borda e sem sombra: o fundo `--surface` sobre `--bg` já separa.
-Composto de desenho SVG no topo, nome do tipo em Archivo expandida, uma linha de característica em DM Mono, e
+Composto de desenho SVG no topo, nome do tipo em Michroma (v5, `DEC-058`), uma linha de característica em DM Mono, e
 a cota principal em DM Mono. Clicável inteiro — **sem "Saiba mais →"** repetido como textura.
 
-**Navegação.** Barra fixa de **96px**, fundo `--bg` sólido (sem blur, sem transparência), borda
-inferior permanente. Três zonas em grid de colunas iguais: símbolo da marca + gatilho do menu (num
-retângulo de linha fina, que vira uma escada no hover e no foco) · `São José — Grande Florianópolis`
-ao centro · hora local à direita.
+**Navegação.** Barra fixa de 80px em três células separadas por fio de 1px: símbolo + `MUNARIM` ·
+`MENU` no centro real · `CONTATO` (vai ao rodapé, nunca ao orçamento). Transparente, com texto
+branco, sobre seção marcada com `data-barra="transparente"` (a capa); sólida em `--bg` no resto
+(`DEC-053`).
+
+**Texto sobre foto.** Só na capa e no véu da grade do acervo, sempre sobre véu de tinta; rótulo
+pequeno ganha faixa própria (`DEC-053`).
 
 **Menu.** Tela cheia, dividida ao meio: painel `--primary` com a navegação à esquerda, slideshow das
 escadas à direita. **No painel azul o acento não existe** — `--accent` sobre `--primary` dá 1,40:1.

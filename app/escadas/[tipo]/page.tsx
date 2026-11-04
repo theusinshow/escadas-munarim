@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FaixaCta } from "@/components/ui/FaixaCta";
 import { notFound } from "next/navigation";
 import { Foto } from "@/components/media/Foto";
 import { GaleriaTipo } from "@/components/media/GaleriaTipo";
@@ -8,7 +9,6 @@ import { StepIn } from "@/components/motion/StepIn";
 import { Axonometry } from "@/components/technical/Axonometry";
 import { SectionDrawing } from "@/components/technical/SectionDrawing";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TypeCard } from "@/components/ui/TypeCard";
@@ -148,6 +148,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
       {/* Bloco de autoridade da página. Denso de propósito. */}
       <Section density="dense" id="corte" className="scroll-mt-(--barra-h)">
         <SectionHeader
+          split
           title="As medidas que definem a subida"
           lead={
             <>
@@ -160,7 +161,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
           }
         />
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
+        <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:items-end">
           {/* A axonometria mostra a peça inteira; o corte mostra as medidas. */}
           {capa && (
             <div className="bg-surface p-6 lg:col-span-5">
@@ -239,14 +240,14 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
           </div>
           <div className="measure space-y-5 text-muted lg:col-span-7">
             <p>
-              A escada sai em concreto polido. Para o corrimão, a Munarim trabalha com{" "}
-              <strong className="font-semibold text-text">inox escovado polido</strong> e{" "}
-              <strong className="font-semibold text-text">ferro galvanizado</strong>, além
-              de guarda-corpo e sacada.
+              A Munarim fabrica a escada, em concreto polido. Corrimão, guarda-corpo e
+              revestimento entram por parceria com outras empresas — o corrimão em{" "}
+              <strong className="font-semibold text-text">inox escovado polido</strong> ou{" "}
+              <strong className="font-semibold text-text">ferro galvanizado</strong>.
             </p>
             <p>
-              O revestimento, quando você quiser um, entra pela cadeia de parceiros que
-              entrega o conjunto completo: projeto, escada, revestimento e corrimão.
+              Assim você recebe o conjunto completo — projeto, escada, revestimento e
+              corrimão — com uma conversa só.
             </p>
           </div>
         </div>
@@ -279,20 +280,11 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
       )}
 
       {/* CTA depois de toda a prova da página (DEC-001). Esparso: é o fechamento. */}
-      <Section density="airy" className="bg-primary text-primary-fg">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 className="measure-display">Essa é a escada do seu vão?</h2>
-            <p className="measure mt-5 text-lg opacity-90">
-              O formulário já vai com “{tipo.nome}” marcado. Se você mudar de ideia no
-              caminho, é só trocar.
-            </p>
-          </div>
-          <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href={`/orcamento?tipo=${tipo.slug}`}>Pedir orçamento</ButtonLink>
-          </div>
-        </div>
-      </Section>
+      <FaixaCta
+        title="Essa é a escada do seu vão?"
+        text={<>O formulário já vai com “{tipo.nome}” marcado. Se você mudar de ideia no caminho, é só trocar.</>}
+        href={`/orcamento?tipo=${tipo.slug}`}
+      />
 
       {/* Tipos relacionados. */}
       <Section density="default" className="border-t border-border">

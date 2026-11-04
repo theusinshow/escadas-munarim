@@ -30,6 +30,9 @@ type Props = {
   imgClassName?: string;
 };
 
+/** Toda foto sai em 85 (DEC-057) — o valor tem que constar em `images.qualities`. */
+const QUALIDADE = 85;
+
 const PREFIXO = {
   cliente: "foto-",
   stock: "stock-",
@@ -62,6 +65,7 @@ export function Foto({
       alt={foto.alt}
       fill
       sizes={sizes}
+      quality={QUALIDADE}
       priority={priority}
       placeholder="blur"
       blurDataURL={foto.blur}
@@ -74,6 +78,7 @@ export function Foto({
       width={foto.largura}
       height={foto.altura}
       sizes={sizes}
+      quality={QUALIDADE}
       priority={priority}
       placeholder="blur"
       blurDataURL={foto.blur}

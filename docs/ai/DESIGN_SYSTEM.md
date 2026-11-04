@@ -50,10 +50,15 @@ saturado do que o laranja era, e é a única área cromática da interface.
 
 ## Typography
 
-> **Sistema tipográfico v4 (`DEC-050`, 2026-10-09).** Substitui Outfit + Hanken Grotesk.
+> **Sistema tipográfico v5 (`DEC-058`, 2026-11-04).** Títulos passam da Archivo expandida para a
+> **Michroma**, a letra do logo; escala de título um degrau abaixo (display `clamp(2.1rem, 4.4vw,
+> 3.6rem)`, h1 2.2rem, h2 `clamp(1.5rem, 2.4vw, 2rem)`, h3 1.3rem), peso 400 com `font-synthesis:
+> none` (a Michroma tem um peso só). Parágrafo de destaque e lead em Archivo **300**. Botões com
+> 56px de altura e rótulo em Michroma caixa alta; o `GhostLink` usa o mesmo rótulo. O texto abaixo
+> descreve a v4 e fica como histórico.
 
-- **Títulos e corpo — Archivo** (variável, eixo `wdth`), fallback: `Helvetica Neue, Arial, sans-serif`
-- **Rótulos curtos — Michroma**, fallback: Archivo
+- **Títulos — Michroma** (v5); **corpo — Archivo** (variável, eixo `wdth`), fallback: `Helvetica Neue, Arial, sans-serif`
+- **Rótulos curtos e CTAs — Michroma**, fallback: Archivo
 - **Cotas e specs — DM Mono**, fallback: `ui-monospace, Menlo, monospace`
 
 **Por que estas três.** A letra do site passa a rimar com a do logo. A marca 1a é desenhada numa
@@ -138,17 +143,24 @@ Padding vertical idêntico em todas as seções é defeito documentado (U13), n�
 
 ## Essential Components
 
-**Navbar** — fixa, 96px, fundo `--bg` sólido (sem blur, sem transparência) e **borda inferior 1px
-`--border` permanente**, não condicionada ao scroll. Estruturada em **grid de três colunas iguais**,
-não `justify-between`: só assim o texto do meio fica no centro real da página e não no meio do espaço
-que sobra entre as pontas (medido: desvio de 0px em 1280 e 1440).
+**Navbar** (`DEC-053`) — fixa, `--barra-h` (80px), em **três células separadas por fio de 1px**:
+marca | MENU | CONTATO. Grid `auto 1fr auto`: a célula do meio ocupa o que sobra, então MENU fica no
+centro real da página.
 
-- **Esquerda:** símbolo de 44px (sem wordmark; o nome vai em `sr-only`) + gatilho do menu de 44px
-  dentro de um retângulo de linha fina `--border`, que passa a `--primary` no hover.
-- **Meio:** `São José — Grande Florianópolis` em `.rotulo-marca`. A cidade é onde a fábrica está; a região é
-  a que a empresa declara atender. Escondido abaixo de 1024px.
-- **Direita:** hora local em `--font-mono`, com numeral tabular. **Não é horário de atendimento** —
-  esse é `CNT-011` e continua pendente. Escondida abaixo de 640px.
+- **Esquerda:** símbolo de 32px + `MUNARIM` em Michroma (só o símbolo abaixo de 640px; o nome
+  continua como `sr-only`).
+- **Meio:** `MENU` em Michroma + o gatilho de três pisos.
+- **Direita:** `CONTATO` → `#contato` (o rodapé). Nunca `/orcamento` e nunca WhatsApp: a barra
+  aparece antes de qualquer prova (`DEC-001`).
+- **Dois estados.** *Transparente* — sem fundo, texto branco, fios `white/20` — enquanto uma seção
+  marcada com `data-barra="transparente"` ainda está sob a barra (hoje só a capa da home). *Sólida* —
+  `--bg`, texto `--primary`, fios `--border` — no resto. Transição de cor de 300ms. A barra não sabe
+  qual página é a home: quem quer fundo de foto se marca.
+- Saíram a hora local e `São José — Grande Florianópolis` (a cidade foi para a capa).
+
+**Texto sobre foto.** Regra: não. Exceção (`DEC-053`): a capa da home e o véu da grade do acervo,
+sempre sobre véu de tinta `#1f2d3b`; rótulos pequenos sobre faixa própria (`#1f2d3b`/80, ≥ 7,8:1
+medido). O título da capa fica no canto inferior esquerdo, sobre o véu mais pesado (`DEC-054`).
 
 **Gatilho do menu** — três linhas em repouso. No hover **e no foco de teclado**, elas viram três
 degraus: cada barra vira um piso e dois espelhos crescem para conectá-los, formando a mesma

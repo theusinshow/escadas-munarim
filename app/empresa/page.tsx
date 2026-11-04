@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { ButtonLink, GhostLink } from "@/components/ui/Button";
+import { FaixaCta } from "@/components/ui/FaixaCta";
+import { FaixaFatos } from "@/components/ui/FaixaFatos";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { GhostLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TextLink } from "@/components/ui/TextLink";
@@ -16,24 +19,25 @@ export const metadata: Metadata = {
  * Valores, missão, visão e o modelo de parceria vêm do site atual.
  * Nada de "equipe própria" ou "fábrica própria" — ver DEC-017 e CNT-014.
  */
-const valores = [
-  "Comprometimento",
-  "Credibilidade",
-  "Eficiência",
-  "Transparência",
-  "Melhoria contínua",
-  "Cumprimento de prazo",
+/* Os valores declarados viraram o fato que os sustenta (DEC-059): adjetivo não
+   prova nada, processo prova. Tudo já está em `content/processo.ts`; prazo é
+   CNT-005 e fica de fora. */
+const COMO = [
+  "Mede o vão, o pé-direito e o apoio no local.",
+  "Você aprova o desenho cotado antes da fabricação.",
+  "A escada chega pronta: concretada e polida fora da obra.",
 ];
 
 export default function EmpresaPage() {
   return (
     <>
+      <PageHeader
+        title={`${site.yearsInMarket} anos fabricando escadas em ${site.address.city}.`}
+        lead="Escada pré-moldada em concreto polido, sob medida, para a Grande Florianópolis. A Munarim faz uma coisa só — a escada de concreto."
+      />
+
       <Section density="default">
-        <SectionHeader
-          as="h1"
-          title={`${site.yearsInMarket} anos fabricando escadas em São José.`}
-          lead="Escadas pré-moldadas em concreto polido sob medida, para a Grande Florianópolis."
-        />
+        <FaixaFatos />
       </Section>
 
       <Section density="dense" className="border-t border-border">
@@ -69,18 +73,15 @@ export default function EmpresaPage() {
       <Section density="default" className="border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeader
-              title="O que a empresa diz sobre si"
-              lead="Reproduzidos como a própria Munarim os declara."
-            />
+            <SectionHeader title="Como a gente trabalha" />
           </div>
           <ul className="lg:col-span-7">
-            {valores.map((valor) => (
+            {COMO.map((fato) => (
               <li
-                key={valor}
-                className="border-b border-border py-4 font-display text-2xl font-semibold tracking-tight first:border-t"
+                key={fato}
+                className="border-b border-border py-6 text-[clamp(1.25rem,2vw,1.6rem)] leading-snug font-light first:border-t"
               >
-                {valor}
+                {fato}
               </li>
             ))}
           </ul>
@@ -119,18 +120,7 @@ export default function EmpresaPage() {
         </div>
       </Section>
 
-      <Section density="airy" className="bg-primary text-primary-fg">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 className="measure-display">
-              Vamos falar sobre a sua escada.
-            </h2>
-          </div>
-          <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href="/orcamento">Pedir orçamento</ButtonLink>
-          </div>
-        </div>
-      </Section>
+      <FaixaCta title="Vamos falar sobre a sua escada." />
     </>
   );
 }

@@ -13,14 +13,17 @@ import { passos } from "@/content/processo";
  *
  * No celular a escada deita: lista vertical com a linha à esquerda.
  * O detalhe de cada etapa continua em `/como-funciona`.
+ *
+ * É a única seção navy antes do fechamento (DEC-060): quebra a sequência de
+ * fundos claros e dá peso à etapa em que o cliente aprova o desenho.
  */
 export function ProcessoLinha() {
   return (
-    <section className="border-t border-border py-20 lg:py-28">
+    <section className="secao-escura py-24 lg:py-36">
       <div className="container-site">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <h2 className="measure-display lg:col-span-6">Da medição à instalação</h2>
-          <p className="measure text-lg text-muted lg:col-span-6">
+          <p className="measure text-lg text-muted lg:col-span-5 lg:col-start-8">
             Quatro etapas. Você aprova o desenho cotado antes de qualquer peça ser
             fabricada.
           </p>
@@ -33,7 +36,7 @@ export function ProcessoLinha() {
                 Etapa {i + 1}
               </p>
               <h3 className="mt-2 text-xl lg:text-2xl">{p.titulo}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{p.resumo}</p>
+              <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">{p.resumo}</p>
             </li>
           ))}
         </ol>

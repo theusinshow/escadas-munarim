@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { FAQItem } from "@/components/ui/FAQItem";
 import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { faq, faqRespondido } from "@/content/faq";
 import { whatsappLink } from "@/lib/site";
 
@@ -28,15 +28,12 @@ const faqLd = {
 export default function DuvidasPage() {
   return (
     <>
-      <Section density="default">
-        <SectionHeader
-          as="h1"
-          title="O que perguntam antes de encomendar."
-          lead="Se é a primeira escada que você compra, comece por aqui. Cada resposta explica o termo técnico antes de usá-lo."
-        />
-      </Section>
+      <PageHeader
+        title="O que perguntam antes de encomendar."
+        lead="Se é a primeira escada que você compra, comece por aqui. Cada resposta explica o termo técnico antes de usá-lo."
+      />
 
-      <Section density="dense" className="border-t border-border">
+      <Section density="dense">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-8">
             {faq.map((grupo) => (

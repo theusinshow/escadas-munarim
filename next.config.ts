@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // 85 para foto (DEC-057): o 75 padrão, em cima do AVIF do pipeline, deixava a escada mole.
+    qualities: [75, 85],
   },
 };
 

@@ -26,6 +26,10 @@
 
 ### Low-fidelity structure
 
+> **Vigente (`DEC-053`):** Capa tríptico + letreiro → Acervo em grade sangrada (29 fotos) →
+> Manifesto → Coleções em degrau → Sete tipos → Pré-moldada → Processo → Empresa → Dúvidas →
+> Fechamento. O diagrama abaixo é histórico.
+
 ```text
 [Navbar]
 [Capa]              navy, SANGRANDO, 100svh cheios (passa por baixo da barra
@@ -90,8 +94,8 @@
   container de 1280px: medida de leitura é o que o público leigo precisa.
 - Capa: colunas do grid empilham no celular na ordem card → texto → desenho → lista. A persiana abre
   igual em qualquer ponteiro. Com `prefers-reduced-motion` ela nasce aberta e o ciclo não avança.
-- **Nenhum texto fica sobre foto.** O card é o único elemento com imagem, e os rótulos dele são
-  chips navy sólidos. Contraste garantido por construção, não por medição.
+- Capa (`DEC-053`): tríptico de fotos verticais (uma coluna no celular) com o letreiro ESCADAS /
+  MUNARIM. Texto sobre foto só aqui e na grade, sobre véu de tinta; rótulos em faixa própria.
 - Grid de tipos: 4 col → 2 col (768px) → 2 col compacto (480px). Nunca 1 coluna: a comparação
   depende de ver mais de um tipo ao mesmo tempo.
 - "O que é": duas colunas de texto → uma coluna, medida 65ch.

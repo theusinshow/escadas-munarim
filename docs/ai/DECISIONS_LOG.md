@@ -2377,6 +2377,267 @@ CSS `.capa-*` em `globals.css` fica sem uso enquanto `HeroCapa` não voltar.
 
 ---
 
+## DEC-053 — Capa em tríptico com letreiro, acervo em grade sangrada e barra em três células
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (referência visual enviada pelo desenvolvedor: Nord Arch)
+**Decisão:**
+
+1. **Capa** (`CapaTriptico`): três colunas de foto vertical, borda a borda, cada uma em rotação
+   defasada (0 · ⅓ · ⅔ do intervalo) e sem foto repetida entre elas. No celular, uma coluna.
+   Letreiro **ESCADAS / MUNARIM** em Michroma, sete letras por linha na largura toda. Rótulos:
+   cidade, "Concreto polido sob medida", "Role a página". Sem botões e sem orçamento.
+2. **O H1 vira o nome por extenso** (`sr-only`); as letras do letreiro ficam ocultas para leitor de
+   tela. O logo sai do H1 — altera o item da `DEC-050` que fazia do logo a primeira parte dele.
+3. **Texto sobre foto**, até aqui proibido, passa a ser permitido **só** na capa e no véu da grade,
+   sobre véu de tinta `#1f2d3b` (85% no topo e na base da capa). Rótulos pequenos ganham faixa
+   própria (`#1f2d3b`/80). O letreiro não passa 3:1 sobre as escadas brancas mesmo no véu máximo;
+   ele é nome de marca, oculto para leitor de tela, e fica isento pelo 1.4.3 do WCAG (logotipo).
+4. **Acervo em grade sangrada** (`AcervoGrade`), logo depois da capa: as 29 fotos em moldura 2:3,
+   fio de 1px, o tipo no hover (fixo no canto, no toque). A última linha fecha com "Ver os sete
+   tipos", nunca com foto repetida. Substitui a alvenaria da `DEC-052` item 6.
+5. **Barra em três células** — marca | MENU | CONTATO —, transparente sobre seção marcada com
+   `data-barra="transparente"` e sólida no resto. CONTATO vai ao rodapé (`#contato`), não ao
+   orçamento, e não há WhatsApp na barra (`DEC-001`). Saem a hora local e a cidade.
+6. **"Vão"** passa a ser definido no `Manifesto`, que virou o primeiro uso da palavra na home
+   (`DEC-002`).
+
+**Contraste medido** (1440×900, pior caso em ~57 s de rotação, branco contra o percentil 95 do
+fundo): rótulos 7,84 · 8,27 · 8,93:1; letreiro de cima 1,84:1 e de baixo 3,00:1 (isento, item 3).
+
+**Why:** o desenvolvedor pediu a capa no pique da referência — foto em tela cheia, letreiro gigante,
+galeria logo em seguida. O acervo é todo vertical, e uma foto vertical esticada numa dobra 16:9
+perde 60% da altura; três colunas lado a lado têm quase a proporção do arquivo, então a dobra
+enche sem cortar a escada. A Michroma já era a fonte de rótulo e é da mesma família da letra da
+referência: nenhuma fonte nova entrou.
+
+**Affects:** `components/home/{CapaTriptico,AcervoGrade}.tsx` (novos) ·
+`components/media/RotacaoFotos.tsx` (`defasagem`) · `components/layout/{Navbar,Footer}.tsx` ·
+`components/home/Manifesto.tsx` · `app/page.tsx` · `app/globals.css` (`.triptico-*`) ·
+`DESIGN_SYSTEM.md` · `DESIGN.md` · `PAGE_BLUEPRINTS.md`. Ficam sem uso: `CapaGaleria`, `Acervo`,
+`HoraLocal`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-054 — O título da capa desce para o canto inferior esquerdo
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (segunda referência do desenvolvedor: bloco de título no canto
+inferior esquerdo, sobre a foto)
+**Decisão:** sai o letreiro ESCADAS / MUNARIM da `DEC-053`. O tríptico fica; no canto inferior
+esquerdo entra um bloco único: linha de contexto em DM Mono (`Escadas de concreto · São José — SC ·
+Há 15 anos`), H1 com a tagline em Archivo extra-negrito expandida (**SEGURANÇA / E DESIGN**, nome da
+empresa em `sr-only` no começo), parágrafo que define "vão" (`DEC-002` — o `Manifesto` volta ao
+texto anterior), botão **Pausar/Continuar** das três colunas e "↓ Role para ver".
+
+- A palavra de destaque vai **em contorno** branco, o gesto do logo 1a. A referência usa vermelho;
+  aqui o acento azul dá ~1,9:1 sobre o véu de tinta, e cor nova não entra no sistema.
+- O botão de pausa atende o WCAG 2.2.2 (movimento automático por mais de 5 s), que a rotação da
+  `DEC-052` não atendia. Some com `prefers-reduced-motion`, quando a rotação nem começa.
+- Véus: curto no topo (barra) e pesado no canto inferior esquerdo; o resto da foto fica limpo.
+  Sem rótulos soltos sobre a foto, o item 3 da `DEC-053` (faixas, isenção de logotipo) deixa de
+  ser necessário.
+
+**Why:** o desenvolvedor pediu o título "igual a essa ref", no canto inferior esquerdo da capa.
+
+**Affects:** `components/home/CapaTriptico.tsx` · `components/home/TripticoRotacao.tsx` (novo) ·
+`components/media/RotacaoFotos.tsx` (`pausado`) · `components/home/Manifesto.tsx` ·
+`app/globals.css` (`.triptico-contorno`, `.triptico-entra`) · `DESIGN_SYSTEM.md`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-055 — Capa clean: só o nome da empresa
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (pedido do desenvolvedor: "algo clean na hero, apenas o nome da
+empresa")
+**Decisão:** o bloco do canto inferior esquerdo da `DEC-054` fica só com o H1 **ESCADAS / MUNARIM**
+(Archivo extra-negrito expandida, branco sólido). Saem a linha de contexto, a tagline em contorno,
+o parágrafo e o "Role para ver". Ficam, pequenos, o botão Pausar/Continuar (WCAG 2.2.2) e o aviso
+`CNT-003` enquanto houver imagem de referência. O véu inferior fica mais curto (55%). A definição de
+"vão" volta para o `Manifesto`, de novo o primeiro uso na home (`DEC-002`).
+
+**Why:** pedido direto do desenvolvedor.
+
+**Affects:** `components/home/CapaTriptico.tsx` · `components/home/Manifesto.tsx` ·
+`app/globals.css` (sai `.triptico-contorno`).
+
+**Reversível:** sim.
+
+---
+
+## DEC-056 — Card de vidro com o logo e o selo de 15 anos na capa
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (pedido do desenvolvedor: "um div transparente no Escadas
+Munarim" com o logo original traduzido)
+**Decisão:** o nome em texto da `DEC-055` vira um card translúcido (`bg-white/10`,
+`backdrop-blur-md`, fio `white/20`) no canto inferior esquerdo com o logo 1a
+(`munarim-1a-sobre-escuro.svg`, que já é a versão vetorial do logo da empresa) e, separado por um
+fio, o selo **15 anos · Confiança · Qualidade** redesenhado em SVG (`SeloAnos`) nas cores do logo.
+O logo é o H1, com nome e tagline no `alt`, como na `DEC-050`. "15 anos" é fato verificado
+(`DEC-004`); "Confiança" e "Qualidade" são do selo da própria empresa.
+
+**Revisão (mesmo dia):** o selo de 15 anos saiu a pedido do desenvolvedor; o card fica só com o
+logo. `SeloAnos.tsx` foi removido.
+
+**Why:** pedido direto do desenvolvedor, a partir da imagem do logo antigo.
+
+**Affects:** `components/home/CapaTriptico.tsx`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-057 — Fotos em resolução e qualidade de capa cheia
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (pedido do desenvolvedor: "melhorar a qualidade de todos os
+elementos")
+**Decisão:** o pipeline (`npm run media`) passa de lado maior 1600px / AVIF 55 para **2400px /
+AVIF 70**, e o `next/image` entrega toda foto em **qualidade 85** (era o 75 padrão; `qualities:
+[75, 85]` no `next.config.ts`, constante em `Foto`). Tamanho e qualidade entram na assinatura do
+cache do pipeline, para que mudar um deles reconverta tudo. O `sizes` da capa no celular vai de
+`100vw` para `125vw`: a coluna é mais estreita que a foto, e o `cover` a renderiza mais larga que a
+tela.
+
+**Why:** a coluna da capa em tela retina pede ~2160px de altura; com 1600 a foto chegava ampliada e
+comprimida duas vezes (55 no pipeline, 75 no next/image). O acervo em `public/media` fica em 5,0 MB.
+O original `reta1.png` (1035×1839) continua sendo o teto daquela foto.
+
+**Affects:** `scripts/media.mjs` · `next.config.ts` · `components/media/Foto.tsx` ·
+`components/home/TripticoRotacao.tsx` · `public/media/escadas/**` · `content/galeria.generated.ts`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-058 — Logo original em vetor, home de volta à ordem da DEC-052 e tipografia v5
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, fase 1 (feedback anotado pelo desenvolvedor na página)
+**Decisão:**
+
+1. **Logo da capa e do rodapé redesenhado em vetor** no estilo do logo original da empresa:
+   MUNARIM pesado e expandido em cromado, ESCADAS cromado claro, linha em degrau, ® e "Segurança e
+   Design". Texto em contorno real (Michroma engrossada por traço; tagline em Archivo 400/108%),
+   gerado com fontTools a partir das fontes do próprio site (SIL OFL), sem depender de fonte no
+   navegador. Arquivo: `public/marca/munarim-capa-sobre-escuro.svg`. O `1a` fica só no
+   `HeroCapa`, sem uso.
+2. **Sai a marca de três degraus do `Manifesto`**; o parágrafo ocupa a largura.
+3. **Home volta à ordem da `DEC-052`** com a capa nova: capa → manifesto → coleções em degrau →
+   sete tipos → pré-moldada → processo → acervo em alvenaria → empresa → dúvidas → fechamento. A
+   grade sangrada da `DEC-053` sai (arquivo removido).
+4. **Tipografia v5:** títulos (h1–h3 e `.font-display`) em Michroma, a letra do logo; escala de
+   título um degrau abaixo, com salto claro entre níveis; peso 400 e `font-synthesis: none`.
+   Texto de destaque mais leve: `Manifesto` e lead do `SectionHeader` em Archivo 300.
+5. **CTAs mais fortes:** botões passam de 48 para 56px, `px-8`, rótulo em Michroma caixa alta com
+   tracking 0,14em (o mesmo da barra). `GhostLink` usa o mesmo rótulo, sublinhado.
+6. Número do WhatsApp no rodapé com tamanho fluido e sem quebra (a Michroma é larga).
+
+**Why:** o desenvolvedor pediu o logo "em SVG no mesmo estilo, máximo de resolução e qualidade",
+retirar a marca do Manifesto, voltar à estrutura anterior e rever CTAs e tipografia — marcou
+"alinhar ao logo novo", "botões mais fortes", "hierarquia confusa" e "texto pesado demais".
+
+**Affects:** `public/marca/munarim-capa-sobre-escuro.svg` (novo) · `components/home/{CapaTriptico,Manifesto}.tsx` ·
+`components/home/AcervoGrade.tsx` (removido) · `app/page.tsx` · `app/globals.css` (escala e família
+de título) · `components/ui/{Button,SectionHeader}.tsx` · `components/layout/Footer.tsx` ·
+`DESIGN_SYSTEM.md` · `DESIGN.md`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-059 — Home em oito seções, 15 anos depois da capa e fato no lugar de adjetivo
+
+**Data:** 2026-11-04
+**Etapa:** copywriting da home (skill `brand`)
+**Decisão:**
+
+1. **Uma seção só para os sete tipos:** fica o `TypeGrid`; `ColecoesDestaque` sai da home.
+2. **O acervo sai da home** (vive em `/obras`).
+3. **Os 15 anos abrem a página:** o `Manifesto` vira posicionamento logo depois da capa.
+4. **A lista "Comprometimento · Credibilidade · Transparência · Cumprimento de prazo" vira fato**
+   ("Como a gente trabalha"): mede no local, você aprova o desenho cotado, a escada chega pronta.
+   Prazo fica de fora (CNT-005).
+5. `EmpresaBloco` deixa de repetir os 15 anos: "Fabricada em São José, entregue na Grande
+   Florianópolis" + "A Munarim faz uma coisa só: a escada de concreto".
+
+Ordem: capa → posicionamento → tipos → pré-moldada → processo → empresa → dúvidas → fechamento.
+
+**Why:** respostas do desenvolvedor às quatro perguntas de estrutura e copy da home.
+
+**Affects:** `app/page.tsx` · `components/home/{Manifesto,EmpresaBloco}.tsx`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-060 — Passe "institucional premium" na home
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, pedido do desenvolvedor ("página institucional premium e profissional")
+**Decisão:**
+
+1. **Abertura editorial:** o `Manifesto` ganha uma faixa com três números sob fio (15 anos, 07
+   tipos, 04 etapas). Todos vêm do conteúdo (`site.yearsInMarket`, `tipos.length`,
+   `passos.length`), nada de métrica nova, nada de contador animado. Uma foto vertical do acervo
+   ao lado, sem legenda.
+2. **Cabeçalho de seção padronizado em duas colunas:** título nas colunas 1–6, apoio nas 8–12,
+   alinhados pela base. Vale para tipos, pré-moldada, processo e empresa.
+3. **Ritmo de fundo:** o processo vira a única seção navy antes do fechamento (`.secao-escura`,
+   que reescreve os tokens dentro da seção; acento claro `#a9c4e6`, 5,6:1 sobre navy).
+4. **Mais respiro:** seções em `py-24 lg:py-36`; texto dos cards e das etapas sobe de 14px para
+   ~15px.
+
+**Why:** a home lia como template: fundos iguais em sequência, cabeçalhos com formato diferente a
+cada seção e muito texto pequeno. Site institucional premium é escala, ritmo e consistência.
+
+**Affects:** `components/home/{Manifesto,PreMoldada,ProcessoLinha,EmpresaBloco}.tsx` ·
+`components/ui/TypeCard.tsx` · `app/page.tsx` · `app/globals.css` (`.secao-escura`).
+
+**Reversível:** sim.
+
+---
+
+## DEC-061 — O padrão da home passa para as páginas internas
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site, pedido do desenvolvedor ("passa o padrão novo para as outras páginas")
+**Decisão:**
+
+1. **`PageHeader`** abre todas as páginas internas (escadas, empresa, como funciona, obras,
+   dúvidas, orçamento, stubs): H1 em display nas colunas 1–7, apoio nas 9–12, alinhados pela
+   base, fio fechando o bloco. Aviso de pendência (CNT) entra embaixo do apoio.
+2. **`FaixaCta`** substitui as cinco faixas navy copiadas à mão: `.secao-escura` + botão claro,
+   o mesmo pedido de orçamento do `Fechamento` da home, com fio separando do rodapé.
+3. **`FaixaFatos`** (15 anos · 07 tipos · 04 etapas) sai do `Manifesto` e entra também em
+   `/empresa`.
+4. **`SectionHeader split`**: cabeçalho de seção em duas colunas para seções em largura cheia
+   (corte cotado do tipo, "O que está incluso").
+5. **`Section`** ganha o respiro da home em tela grande (dense 64→96, default 96→144,
+   airy 128→192px).
+6. `/empresa`: a lista de adjetivos vira "Como a gente trabalha", como na home (DEC-059).
+7. Página de tipo: corrimão, guarda-corpo e revestimento passam a ser ditos como parceria — o
+   texto antigo dizia "a Munarim trabalha com inox…", lido como produto dela.
+8. `TypeCard`: a marcação "[CNT-…]" sai do meio da frase e vira selo discreto embaixo do resumo.
+
+**Why:** pedido do desenvolvedor, e consistência é o que mais pesa num site institucional premium.
+Cada página abria e fechava de um jeito, e o pedido de orçamento tinha cinco cópias.
+
+**Affects:** `components/ui/{PageHeader,FaixaCta,FaixaFatos}.tsx` (novos) ·
+`components/ui/{Section,SectionHeader,TypeCard}.tsx` · `components/home/Manifesto.tsx` ·
+`components/layout/PageStub.tsx` · `app/{escadas,escadas/[tipo],empresa,como-funciona,obras,duvidas,orcamento}/page.tsx` ·
+`app/globals.css` (botão dentro de `.secao-escura`).
+
+**Reversível:** sim.
+
+---
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

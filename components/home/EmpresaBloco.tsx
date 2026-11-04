@@ -5,34 +5,40 @@ import { site } from "@/lib/site";
  * A empresa (DEC-051).
  *
  * A Munarim tem uma prova social real — 15 anos — e nenhuma outra (sem
- * depoimento, sem logo de cliente, sem certificação). O bloco antigo diluía
- * isso em dois parágrafos. Agora é estrutura: o número em destaque como fato,
- * e embaixo três coisas que a empresa declara, cada uma com a forma dela —
- * o conjunto entregue, os valores, o endereço onde ela existe.
+ * depoimento, sem logo de cliente, sem certificação). Desde a DEC-059 ela abre
+ * a home; aqui fica o resto da prova: o que a empresa faz e o que não faz,
+ * como ela trabalha e onde ela existe. Os valores declarados ("comprometimento,
+ * transparência…") viraram o fato que os sustenta — adjetivo não prova nada,
+ * processo prova.
  *
  * Tudo aqui é fato declarado pela empresa (`CLAUDE.md`, `DEC-017`): fabrica a
  * escada; projeto, revestimento e corrimão entram por parceria.
  */
 
 const CONJUNTO = ["Projeto", "Escada", "Revestimento", "Corrimão"];
-const VALORES = ["Comprometimento", "Credibilidade", "Transparência", "Cumprimento de prazo"];
+/* Cada linha é o fato por trás de um valor declarado, e todas já estão no
+   processo do site (`content/processo.ts`). Prazo fica de fora: é CNT-005. */
+const COMO = [
+  "Mede o vão, o pé-direito e o apoio no local.",
+  "Você aprova o desenho cotado antes da fabricação.",
+  "A escada chega pronta: concretada e polida fora da obra.",
+];
 const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   `${site.address.street}, ${site.address.district}, ${site.address.city} - ${site.address.state}`,
 )}`;
 
 export function EmpresaBloco() {
   return (
-    <section className="border-t border-border py-20 lg:py-28">
+    <section className="border-t border-border py-24 lg:py-36">
       <div className="container-site">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <h2 className="measure-display lg:col-span-7">
-            {site.yearsInMarket} anos fabricando escadas de concreto em{" "}
-            {site.address.city}.
+          <h2 className="measure-display lg:col-span-6">
+            Fabricada em {site.address.city}, entregue na Grande Florianópolis.
           </h2>
-          <div className="measure text-muted lg:col-span-5">
+          <div className="measure text-lg text-muted lg:col-span-5 lg:col-start-8">
             <p>
-              A Munarim fabrica escadas pré-moldadas em concreto polido, sob medida, e
-              atende a Grande Florianópolis.
+              A Munarim faz uma coisa só: a escada de concreto. Projeto, revestimento e
+              corrimão entram por parceria com outras empresas.
             </p>
             <p className="mt-4">
               <GhostLink href="/empresa">Conhecer a empresa</GhostLink>
@@ -40,7 +46,7 @@ export function EmpresaBloco() {
           </div>
         </div>
 
-        <div className="mt-14 grid border-t border-text lg:grid-cols-3">
+        <div className="mt-14 grid border-t border-text lg:mt-20 lg:grid-cols-3">
           <div className="border-b border-border py-8 lg:border-r lg:border-b-0 lg:pr-10">
             <h3 className="text-xl">O conjunto completo</h3>
             <p className="mt-2 text-sm text-muted">
@@ -64,9 +70,9 @@ export function EmpresaBloco() {
           </div>
 
           <div className="border-b border-border py-8 lg:border-r lg:border-b-0 lg:px-10">
-            <h3 className="text-xl">O que a empresa declara</h3>
-            <ul className="mt-6 space-y-2">
-              {VALORES.map((v) => (
+            <h3 className="text-xl">Como a gente trabalha</h3>
+            <ul className="mt-6 space-y-3">
+              {COMO.map((v) => (
                 <li key={v} className="flex items-baseline gap-3">
                   <span aria-hidden="true" className="size-1.5 shrink-0 translate-y-[-2px] bg-accent" />
                   {v}

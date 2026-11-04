@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { ButtonLink, GhostLink } from "@/components/ui/Button";
+import { FaixaCta } from "@/components/ui/FaixaCta";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { GhostLink } from "@/components/ui/Button";
 import { StepIn } from "@/components/motion/StepIn";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -31,13 +33,10 @@ const perguntasQueDefinem = [
 export default function EscadasPage() {
   return (
     <>
-      <Section density="dense">
-        <SectionHeader
-          as="h1"
-          title="Sete tipos. Um deles resolve o seu vão."
-          lead="A escolha depende de três coisas: o espaço disponível, o pé-direito e quantas vezes por dia a escada vai ser usada. Cada tipo abaixo tem o desenho aberto para você comparar."
-        />
-      </Section>
+      <PageHeader
+        title="Sete tipos. Um deles resolve o seu vão."
+        lead="A escolha depende de três coisas: o espaço disponível, o pé-direito — a altura de piso a piso — e quantas vezes por dia a escada vai ser usada."
+      />
 
       {/* Grid comparativo: os 7 recebem tratamento idêntico DE PROPÓSITO —
           é o único lugar do site onde isso é a intenção, não descuido. */}
@@ -81,21 +80,10 @@ export default function EscadasPage() {
         </div>
       </Section>
 
-      <Section density="airy" className="bg-primary text-primary-fg">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 className="measure-display">
-              Já sabe qual tipo é o seu?
-            </h2>
-            <p className="measure mt-5 text-lg opacity-90">
-              Se não souber, marque “não sei ainda” no formulário. A gente define junto.
-            </p>
-          </div>
-          <div className="lg:col-span-5 lg:text-right">
-            <ButtonLink href="/orcamento">Pedir orçamento</ButtonLink>
-          </div>
-        </div>
-      </Section>
+      <FaixaCta
+        title="Já sabe qual tipo é o seu?"
+        text="Se não souber, marque “não sei ainda” no formulário. A gente define junto."
+      />
     </>
   );
 }

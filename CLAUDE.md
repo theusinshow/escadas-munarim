@@ -28,6 +28,15 @@ Before making changes, read:
   `DECISIONS_LOG.md` com **Why** e **Affects**.
 - Reporte arquivos alterados e pendências ao fim de cada fase.
 
+## Fluxo de trabalho (pedido do desenvolvedor, 2026-11-04)
+
+- Trabalhar sempre na `main` — sem branch, sem worktree.
+- Ser o mais rápido possível na alteração: assim que souber o que fazer, implementar direto.
+- **Não fazer spec nem plano** (nada de `docs/superpowers/specs|plans`, brainstorming longo ou
+  writing-plans). Pergunta só quando a decisão é realmente do desenvolvedor.
+- Sempre inline, sem subagentes.
+- Testes apenas os necessários: `tsc`/`build` e um screenshot quando a mudança é visual.
+
 ## As cinco regras específicas deste projeto
 
 1. **O objetivo é autoridade, não volume de lead.** O CTA de orçamento nunca aparece antes de um

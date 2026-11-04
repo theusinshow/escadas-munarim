@@ -34,15 +34,15 @@ const link = "text-primary-fg-muted hover:text-primary-fg hover:underline underl
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-fg">
+    <footer id="contato" className="scroll-mt-(--barra-h) bg-primary text-primary-fg">
       <div className="container-site">
         <div className="grid gap-10 border-b border-primary-fg/15 py-14 lg:grid-cols-12 lg:items-end lg:py-20">
           <div className="lg:col-span-6">
             <Image
-              src="/marca/munarim-1a-sobre-escuro.svg"
+              src="/marca/munarim-capa-sobre-escuro.svg"
               alt={`${site.name} — ${site.tagline}`}
-              width={525}
-              height={155}
+              width={1022}
+              height={248}
               unoptimized
               className="h-auto w-full max-w-[24rem]"
             />
@@ -53,7 +53,7 @@ export function Footer() {
               href={whatsappLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 inline-block font-display text-3xl font-bold tracking-[-0.015em] underline-offset-[6px] hover:underline lg:text-4xl"
+              className="mt-1 inline-block font-display text-[clamp(1.25rem,5.8vw,2.25rem)] whitespace-nowrap underline-offset-[6px] hover:underline"
             >
               {site.contact.whatsapp}
             </a>

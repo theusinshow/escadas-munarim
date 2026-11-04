@@ -10,12 +10,12 @@ import { Container } from "./Container";
  */
 
 const PADDING = {
-  /** 64px — blocos educativos, passos do processo, FAQ. */
-  dense: "py-16",
-  /** 96px — grids e galerias. */
-  default: "py-24",
-  /** 160px — prova, posicionamento, respiro depois de um bloco denso. */
-  airy: "py-40",
+  /** 64 → 96px — blocos educativos, passos do processo, FAQ. */
+  dense: "py-16 lg:py-24",
+  /** 96 → 144px — grids e galerias (DEC-060). */
+  default: "py-24 lg:py-36",
+  /** 128 → 192px — prova, posicionamento, respiro depois de um bloco denso. */
+  airy: "py-32 lg:py-48",
 } as const;
 
 export type Density = keyof typeof PADDING;

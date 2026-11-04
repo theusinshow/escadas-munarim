@@ -2,7 +2,7 @@
  * Pipeline do acervo de fotos — `npm run media`.
  *
  * Você solta a imagem em `media-src/{tipo}/` e roda o comando. Ele converte para
- * AVIF (lado maior 1600px, nunca amplia), grava em `public/media/escadas/{tipo}/`
+ * AVIF (lado maior 2400px, nunca amplia), grava em `public/media/escadas/{tipo}/`
  * e regenera `content/galeria.generated.ts`, que é de onde o site inteiro lê as
  * fotos: capa da home, catálogo, página de tipo, galeria e menu.
  *
@@ -60,7 +60,11 @@ const ROTULO = {
   referencia: "imagem de referência",
 };
 
-const LADO_MAIOR = 1600;
+/* 2400 cobre a coluna da capa em tela retina (1080 × 2 = 2160px de altura).
+   Com 1600 a foto chegava ampliada e, comprimida duas vezes (aqui e no
+   next/image), mole (DEC-057). */
+const LADO_MAIOR = 2400;
+const QUALIDADE = 70;
 const EXT = /\.(png|jpe?g|webp|avif|tiff?)$/i;
 
 const lerJson = (arquivo, padrao) => {
@@ -115,7 +119,8 @@ async function main() {
       const nomeSaida = `${fonte.prefixo}-${slug}-${n}.avif`;
       const caminhoSaida = path.join(saida, nomeSaida);
       const stat = fs.statSync(fonte.caminho);
-      const assinatura = `${path.relative(ORIGEM, fonte.caminho)}|${stat.size}|${stat.mtimeMs}`;
+      // Tamanho e qualidade entram na assinatura: mudar um deles reconverte tudo.
+      const assinatura = `${path.relative(ORIGEM, fonte.caminho)}|${stat.size}|${stat.mtimeMs}|${LADO_MAIOR}|${QUALIDADE}`;
       const chave = `${slug}/${nomeSaida}`;
       const emCache = cacheAntigo[chave];
 
@@ -132,7 +137,7 @@ async function main() {
         });
         const info = await pipeline
           .clone()
-          .avif({ quality: 55, effort: 4 })
+          .avif({ quality: QUALIDADE, effort: 5 })
           .toFile(caminhoSaida);
         const blur = await pipeline
           .clone()
