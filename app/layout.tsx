@@ -3,6 +3,9 @@ import { Archivo, DM_Mono, Michroma } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
+import { SCRIPT_INTRO } from "@/components/motion/intro";
+import { Revela } from "@/components/motion/Revela";
+import { Suave } from "@/components/motion/Suave";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -87,21 +90,28 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pt-BR"
       className={`${archivo.variable} ${michroma.variable} ${dmMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">
+      <head>
+        {/* Marca a intro antes do primeiro paint (DEC-067). */}
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_INTRO }} />
+      </head>
+      <body className="min-h-full">
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
         <Navbar />
-        {/* `pt-(--barra-h)` reserva no fluxo o espaço que a barra fixa ocupa
-            fora dele. O token e não `pt-20`: a barra, esta reserva e o
-            `-mt-(--barra-h)` da capa são o mesmo número em três arquivos
-            (`app/globals.css`). */}
-        <main id="conteudo" className="flex-1 pt-(--barra-h)">
-          {children}
-        </main>
-        <Footer />
+        {/* Tudo o que rola fica dentro da rolagem suave; o que é fixo (barra,
+            WhatsApp) fica fora, ou deixaria de ser fixo.
+            `pt-(--barra-h)` reserva o espaço da barra fixa. */}
+        <Suave>
+          <main id="conteudo" className="pt-(--barra-h)">
+            {children}
+          </main>
+          <Footer />
+        </Suave>
         <WhatsAppFab />
+        <Revela />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}

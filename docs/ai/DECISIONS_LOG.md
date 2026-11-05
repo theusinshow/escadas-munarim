@@ -2719,6 +2719,712 @@ estrutura", "não entendi", "blur azul" e a referência de rodapé.
 
 ---
 
+## DEC-064 — Capa em foto única, tela cheia (em teste)
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site — capa da home
+**Decisão:**
+
+1. A capa troca o tríptico rotativo (`CapaTriptico`) por uma foto só, em tela cheia
+   (`components/home/CapaFoto.tsx`): a escada dupla em curva, iL02 do site antigo. Mesmo card de
+   vidro com o logo no canto inferior esquerdo, véu de tinta só no topo e no pé, entrada com a
+   `capa-sobe` (a foto se revela de baixo para cima).
+2. O arquivo de 1920×1505 foi tratado localmente: limpeza de ruído/JPEG, ampliação para 2560
+   (Lanczos) e nitidez na luminância. Não é foto gerada nem reconstruída por IA.
+3. Sem o aviso de referência: o próprio site do cliente publica a foto em "Algumas escadas
+   realizadas por nossa empresa". Sem legenda factual mesmo assim.
+4. O conteúdo de `/nossas-escadas/` do site antigo foi copiado para `docs/ai/SITE_ANTIGO.md`. As
+   fotos de lá **não** entram no acervo: o desenvolvedor mantém as atuais.
+
+`CapaTriptico` e `TripticoRotacao` ficam no repo até o teste ser aprovado.
+
+**Why:** pedido do desenvolvedor ("usar essa imagem full screen na hero, vamos testar"). Uma foto
+simétrica em tela cheia é mais limpa que a rotação e encerra a pendência de pausa (WCAG 2.2.2,
+DEC-062), porque não há mais movimento contínuo.
+
+**Affects:** `components/home/CapaFoto.tsx` (novo) · `public/media/capa/capa-escada-dupla.jpg`
+(novo) · `app/page.tsx` · `app/globals.css` · `docs/ai/SITE_ANTIGO.md` (novo).
+
+**Reversível:** sim — voltar `<CapaTriptico />` em `app/page.tsx`.
+
+---
+
+## DEC-065 — O projeto é da Munarim; parceiro é o acabamento
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site — correção de fato do cliente
+**Decisão:** a Munarim **projeta e fabrica** a escada. Corrimão e guarda-corpo (e sacada) vêm de
+empresas parceiras. O revestimento continua como parceria, que é o que o site antigo diz
+("revestimentos à altura de nossas Escadas" por parceria) — a confirmar com o cliente. A tabela
+"quem faz o quê" da home passa a ter duas linhas Munarim (projeto e escada).
+
+**Why:** correção do desenvolvedor: "o projeto faz eles, o que eles não fazem é o corrimão". A
+leitura anterior (projeto por parceiro) vinha da frase do site antigo "conta com a parceria de
+outras empresas […] contemplando projeto, escada, revestimento e corrimão", que lista o conjunto,
+não quem faz cada parte.
+
+**Affects:** `components/home/EmpresaBloco.tsx` · `app/empresa/page.tsx` ·
+`app/escadas/[tipo]/page.tsx` · `app/como-funciona/page.tsx` · `content/faq.ts`.
+
+**Reversível:** sim.
+
+---
+
+## DEC-066 — Barra com mega-menu, sobre a referência chesapeakeplywood.com
+
+**Data:** 2026-11-04
+**Etapa:** refactor do site — navegação
+**Decisão:** a barra de três células com overlay de tela cheia (DEC-053) sai. Entra a estrutura
+da referência trazida pelo desenvolvedor (https://chesapeakeplywood.com/):
+
+1. Barra **sólida** navy, fixa, 112px no desktop (88px no celular), fio branco 40% embaixo.
+   A capa deixa de passar por baixo dela e passa a medir `100svh - barra`.
+2. Marca à esquerda (o logo mono como máscara, herdando a cor), itens em caixa alta no centro —
+   ESCADAS ▾ · GALERIA · EMPRESA ▾ · DÚVIDAS — e o botão CONTATO à direita.
+3. Hover ou clique em item com seta abre um **mega-menu de três colunas**: chamada com botão,
+   lista numerada (os sete tipos; ou empresa/como funciona/dúvidas/orçamento) e card com foto,
+   título e botão. Abre com `clip-path` de cima para baixo; fecha ao sair da barra, com Esc ou
+   ao perder o foco.
+4. Botão `.btn-chanfro`: retângulo de concreto claro que chanfra as pontas no hover (o degrau de
+   lado), como o botão inclinado da referência.
+5. Celular: duas linhas finas que viram X; gaveta de tela cheia com os itens grandes em sanfona,
+   o botão e endereço/telefone no pé.
+
+Fora da cópia: a **busca** (sete páginas — o menu já é o índice) e a linha-guia vertical da
+página, que não é da barra. O botão leva ao rodapé (#contato), não ao orçamento (DEC-001).
+`MenuOverlay` e `Slideshow` foram removidos.
+
+**Why:** pedido do desenvolvedor ("esse site é muito bom, quero copiar a navbar de forma completa").
+
+**Affects:** `components/layout/Navbar.tsx` (reescrito) · `components/layout/{MenuOverlay,Slideshow}.tsx`
+(removidos) · `app/globals.css` (`--barra-h`, `.btn-chanfro`, `.mega`, `.gaveta`, `.hamburguer`;
+sai o ícone de três degraus) · `components/home/{CapaFoto,CapaTriptico}.tsx`.
+
+**Ajuste:** a barra usa `--barra` (#18263a), navy mais fundo que o `--primary` da marca, e o
+logo vetorizado da capa (DEC-058) em vez do mono, que ficava fino e cortava o topo do degrau.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-067 — Estrutura e motion da referência chesapeakeplywood.com no site inteiro
+
+**Data:** 2026-11-04
+**Etapa:** refactor de estrutura — home, rodapé, cabeçalhos internos e motion global
+**Decisão:** o site adota a estrutura de seções e o vocabulário de motion da referência trazida
+pelo desenvolvedor. Copiados o **layout e os comportamentos**; textos, fotos, marca, fontes e código
+são da Munarim (nada da referência foi reaproveitado).
+
+**Home**, na sequência da referência, alternando navy profundo (`--barra`), concreto claro
+(`--chrome`) e branco:
+capa (foto de ponta a ponta, título enorme em caixa alta, apoio, "role para explorar", selo dos
+15 anos) → sobre (rótulo + frase grande; foto e texto desencontrados) → lema que se preenche
+linha a linha com a rolagem → os sete tipos em sanfona horizontal (nome na vertical, número no
+pé; vertical no celular) → galeria em trilho com setas → como funciona em quatro cartões com o
+desenho técnico → pré-moldada ou no local em acordeão com foto → quem faz o quê (sem logos) →
+foto de ponta a ponta com paralaxe e frase → dúvidas em linhas → rodapé.
+
+**Rodapé:** chamada enorme + marca e telefone; três caminhos (orçamento, WhatsApp, e-mail);
+tagline, Instagram e endereço; navegação no lugar da newsletter; política, assinatura e "voltar ao
+topo".
+
+**Motion (GSAP 3.15, já instalado):** tela de carregamento com porcentagem só na 1ª página da
+sessão; barra que desce e título da capa que sobe linha a linha na entrada; rolagem suave
+(ScrollSmoother, só com ponteiro fino); revelação por desfoque em tudo com `data-revela`; fio dos
+rótulos que se desenha; título preenchido por scroll; paralaxe na foto cheia; sanfona e acordeão
+animados; linha-guia vertical fixa à esquerda.
+
+**Não copiado, de propósito:** depoimentos e logos de parceiros (seria prova fabricada), blog
+(DEC-006), newsletter e busca (site estático), chat. O orçamento continua só depois da prova
+(DEC-001) e todo termo técnico continua definido no primeiro uso (DEC-002).
+
+**Substitui em parte:** DEC-010 (motion só da geometria) e DEC-018 (não animar o que já está
+visível) — o desenvolvedor pediu o motion da referência. Tudo continua respeitando `reduce` e o
+estado inicial continua aplicado por JS: sem JS, a página está pronta.
+
+**Why:** pedido do desenvolvedor: "a estrutura desse site tá muito perfeita… copie esse site,
+animations, motion, tudo que for possível".
+
+**Affects:** `app/{layout,page}.tsx` · `app/globals.css` (tokens `--chrome`; botões, rótulo,
+sanfona, acordeão, trilho, intro e carregamento; h1/h2 em caixa alta) ·
+`components/home/{CapaFoto,SobreBloco,LemaBloco,TiposSanfona,GaleriaTrilho,ProcessoCards,PreMoldadaAcordeao,QuemFaz,FraseImagem,DuvidasLinhas}.tsx` ·
+`components/motion/{Suave,Revela,Carregando,Preenche}.tsx` (novos) · `components/ui/{Rotulo,PageHeader,FaixaCta}.tsx` ·
+`components/layout/{Footer,Navbar}.tsx`. Removidos: `components/home/{Manifesto,PreMoldada,ProcessoLinha,EmpresaBloco,Fechamento,CapaTriptico,TripticoRotacao}.tsx`,
+`components/motion/{LanceProcesso,RevelaDegrau}.tsx`.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-068 — Menos azul: grafite e concreto neutro; revisão de assets em /revisao
+
+**Data:** 2026-11-04
+**Etapa:** ajuste de paleta depois do DEC-067
+**Decisão:**
+
+1. As seções escuras saem do navy profundo para **grafite** (`--barra: #16181b`) e as faixas claras
+   para **concreto neutro** (`--chrome: #c9cccf`, `--chrome-muted: #45484c`). Tinta e texto
+   secundário perdem o tom azulado (`--text: #17191c`, `--muted: #5c6066`,
+   `--primary-fg-muted: #c6c8cb`). `.secao-escura` e os cartões do `TypeGrid` passam para `--barra`.
+2. O navy `#2c445f` (`--primary`) continua só onde é detalhe: hover do botão escuro, botão do
+   WhatsApp, chip ativo e os traços dos desenhos. A marca não muda.
+3. Rota `/revisao` (fora do menu, do sitemap, com `noindex` e bloqueada no `robots`) lista cada
+   foto, logo e desenho com um código (F, M, D) e onde ele aparece, para a revisão um a um.
+   Sai do projeto quando a revisão terminar.
+
+**Why:** pedido do desenvolvedor: "tá muito azul na minha opinião e quero revisar os assets
+separadamente um a um". Escolheu "grafite + concreto" entre três paletas.
+
+**Affects:** `app/globals.css` (tokens e `.secao-escura`) · `components/ui/TypeGrid.tsx` ·
+`app/revisao/page.tsx` (novo) · `app/robots.ts`.
+
+**Reversível:** sim, pelos tokens.
+
+---
+
+## DEC-069 — Marca mais sólida; carregamento em lance que se preenche
+
+**Data:** 2026-11-04
+**Etapa:** pente fino depois do DEC-068
+**Decisão:**
+
+1. **Marca.** O logo vetorizado (DEC-058) troca o MUNARIM cromado e fino pela mesma Michroma
+   engrossada até o peso de um Black Extended, em cor chapada (sem degradê), com a linha-degrau
+   grossa e ESCADAS mais pesado. Duas versões: `public/marca/munarim-marca-escuro.svg` (barra) e
+   `munarim-marca-claro.svg` (rodapé, linha-degrau em navy). Gerador: `scripts/gera-marca.py`
+   (variante A; B e C, em Orbitron, ficaram como alternativa não adotada). A letra continua a do
+   logo original — muda o peso, não a identidade.
+2. **Carregamento.** Sai o losango com a porcentagem ao lado; entra um lance pré-moldado em perfil
+   (8 degraus, espelho 18 / piso 28) que se preenche da esquerda para a direita, com a porcentagem
+   subindo em cima do degrau da vez. No 100%, o miolo some e a tela sai em oito colunas que sobem
+   defasadas — a borda de baixo desenha uma escada. Corrigido junto: a tela sumia de uma vez no
+   instante da saída (`display` ligado a `data-intro="espera"`); agora ela fica até `data-carregou`.
+
+**Why:** "essa página de carregamento vamos mudar… subindo escada… depois a transição" · "a marca
+precisamos mudar, deixar mais evidente, talvez mais grosso, mais polido, mais sólido".
+
+**Affects:** `public/marca/munarim-marca-{escuro,claro}.svg` (novos) · `scripts/gera-marca.py` ·
+`components/layout/{Navbar,Footer}.tsx` · `components/motion/Carregando.tsx` · `app/globals.css`
+(`.carregando`).
+
+**Reversível:** sim; os arquivos antigos da marca continuam em `public/`.
+
+---
+
+## DEC-070 — Desenhos técnicos refeitos como sólidos isométricos (método Anatomy)
+
+**Data:** 2026-11-04
+**Etapa:** pente fino depois do DEC-068
+**Decisão:** os pictogramas (`TipoIcone`), a axonometria em arame (`Axonometry`) e as ilustrações
+do processo (`ProcessIllustration`) dão lugar a **figuras sólidas** geradas por
+`scripts/figuras/build.mjs` (`npm run figuras`), no método da skill Anatomy
+(skills.wheresryan.sh/anatomy, MIT, kit copiado em `scripts/figuras/kit/`):
+
+- sólidos pintados de trás para frente, nada de arame nem linha oculta;
+- quatro tons por orientação + topo claro; a escada é o assunto (traço mais forte), chão, parede e
+  laje recuam; superfícies curvas com tom contínuo;
+- peças reais e com função: consolo e dente de apoio do lance, alças de içamento, chanfro do
+  bocel, juntas do piso, furos de tirante da parede, régua no módulo do piso (risco longo a cada
+  28 cm), pilar e base do caracol;
+- **uma câmera e uma escala para os sete tipos** (DEC-009); as quatro etapas enquadram cada uma a
+  sua cena (medição a laser e trena, prancheta com o perfil, fôrma metálica, içamento com cintas);
+- o único acento é o navy da marca (feixe do laser, cintas, o desenho na folha, o polimento da
+  premium). Corrimão da premium em tom de estrutura: é de parceiro, não produto Munarim.
+
+Saída em `components/technical/figuras.generated.ts`, desenhada por `components/technical/Figura.tsx`
+(tema claro e escuro por `data-tema`). Medidas de desenho, não especificação (CNT-009).
+`TipoIcone`, `Axonometry` e `ProcessIllustration` ficam no repositório sem uso.
+
+**Why:** "dar uma boa melhorada nos desenhos em si, estão bastante IA sloping… utilize essa
+habilidade (Anatomy)".
+
+**Affects:** `scripts/figuras/` (novo) · `components/technical/{Figura.tsx,figuras.generated.ts}` (novos) ·
+`components/ui/TypeCard.tsx` · `components/home/ProcessoCards.tsx` · `app/escadas/[tipo]/page.tsx` ·
+`app/como-funciona/page.tsx` · `app/revisao/page.tsx` · `app/globals.css` (`.figura`) · `package.json`.
+
+**Substitui em parte:** DEC-016 e DEC-063 (axonometria em arame e pictograma oblíquo).
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-071 — Botões numa família só; acento navy; ajustes de tipografia
+
+**Data:** 2026-11-04
+**Etapa:** pente fino depois do DEC-068
+**Decisão:**
+
+1. **Botões.** Saem os botões "degrau" do `Button` (sete lajes subindo, em azulão `#0f52ba`). Todo
+   botão do site é da família chanfrada: `btn-chanfro-escuro` (primário, grafite → navy no hover),
+   `btn-chanfro-contorno` (secundário, novo: fio de 1px que enche de grafite) e `btn-chanfro`
+   (concreto claro, para fundo escuro). Altura 48px, rótulo 0,72rem com 0,16em.
+2. **Cores.** O acento deixa de ser o azulão saturado e passa a ser o navy da marca
+   (`--accent: #2c445f`, `--accent-hover: #1f3247`); `--link` também navy; `--ring` `#5b7ea6`,
+   visível no branco e no grafite.
+3. **Tipografia.** O h4 estava maior que o h3 (1,53rem × 1,3rem): agora 1,15rem. Nenhum texto
+   abaixo de 0,68rem (≈11px) — os avisos em 0,55–0,62rem subiram.
+
+**Why:** "queria olhar os botões e também a tipografia e dar um pente fino nas cores".
+
+**Affects:** `components/ui/Button.tsx` · `app/globals.css` (tokens, `.btn-chanfro-*`, h4) ·
+textos pequenos em `components/home/*`, `components/ui/TypeCard.tsx`, `app/revisao/page.tsx`.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-072 — O azul da marca volta a ser a cor principal, em dose medida
+
+**Data:** 2026-11-04
+**Etapa:** ajuste de paleta depois do DEC-068/071
+**Decisão:** `--barra` passa do grafite (`#16181b`, DEC-068) para o **azul da marca `#2C445F`**:
+barra do topo, carregamento, sobre, os sete tipos, dúvidas, faixa de orçamento e cartão escuro do
+catálogo ficam azuis, e títulos e rodapé usam o mesmo azul como tinta (`text-barra`). Para não
+voltar ao "muito azul" do DEC-067, duas seções do miolo da home viram claras com letra azul: o
+lema (branco, preenchimento em azul) e "quem faz o quê" (concreto claro). Concreto neutro
+(`--chrome`) e tinta grafite (`--text`) ficam como no DEC-068. Hover do botão escuro vai para
+`--accent-hover` (`#1f3247`), já que fundo e acento agora são o mesmo azul.
+
+**Why:** "tá bom, mas a cor principal do site tem que ser azul" — depois de "tá muito azul" (DEC-068).
+O problema era a quantidade de seções azuis, não o azul.
+
+**Affects:** `app/globals.css` (`--barra`, hover do `.btn-chanfro-escuro`) ·
+`components/home/{LemaBloco,QuemFaz,TiposSanfona}.tsx`.
+
+**Substitui:** o item 1 do DEC-068 (grafite nas seções escuras).
+
+**Reversível:** sim, pelo token.
+
+---
+
+## DEC-073 — Menos azul nas seções; carregamento menor; botão degrau de volta; avaliações
+
+**Data:** 2026-11-04
+**Etapa:** ajuste depois do DEC-072
+**Decisão:**
+
+1. **Seções.** O azul fica na barra, nos sete tipos, na faixa de orçamento das internas e na tinta
+   dos títulos. Na home, sobre e dúvidas viram brancas; lema, quem faz o quê, como funciona e o
+   rodapé ficam em concreto (`--chrome`); galeria e pré-moldada ficam brancas. Sequência:
+   foto → branco → concreto → azul → branco → concreto → branco → concreto → foto → branco →
+   concreto (avaliações + rodapé).
+2. **Carregamento.** Sem porcentagem e sem rótulo: só uma escadinha de 6,5rem que enche degrau a
+   degrau (`steps(8)`). Saída mais forte: duas camadas de colunas — azul e, 0,16s atrás, concreto —
+   subindo defasadas com `power4.inOut`; a borda de cada camada é uma escada.
+3. **Botão.** Volta o gesto do degrau (DEC-038), refinado e sem markup extra: no hover/foco o
+   preenchimento entra da esquerda com a frente em quatro degraus (espelho 1/4 da altura, piso na
+   razão 28/18) e para cobrindo o botão; a tinta troca depois que a laje passou. Sai o chanfro do
+   DEC-066/071. Vale para `.btn-chanfro`, `.btn-chanfro-escuro` e `.btn-chanfro-contorno` (os nomes
+   ficaram para não mexer nos ~30 usos). Primário enche de azul fundo `#172636`; claro enche de
+   branco; contorno enche de azul.
+4. **Avaliações.** Fileira de cartões igual à da referência (avatar com inicial, nome, quando, "G",
+   estrelas com selo, texto em quatro linhas com "ler mais", seta), antes do rodapé, sem título.
+   Só entra avaliação real do Google (`content/avaliacoes.ts`); enquanto vazia, quatro vagas
+   marcadas com CNT-015. **Nenhuma avaliação foi escrita por nós** — regra do projeto.
+
+**Why:** "a tela de loading tá muito grande e não precisa ter essa porcentagem, a transição está
+fraca, faz uma escadinha menorzinha" · "site tá muito azul… mais branco do que azul em algumas
+partes" · "colocar as avaliações igualzinho o site de referência, voltar o motion do botão para ser
+o degrau e refinar ele".
+
+**Affects:** `components/home/{SobreBloco,LemaBloco,GaleriaTrilho,QuemFaz,DuvidasLinhas,AvaliacoesTrilho}.tsx` ·
+`content/avaliacoes.ts` (novo) · `app/page.tsx` · `components/motion/Carregando.tsx` ·
+`app/globals.css` (botões) · `docs/ai/CONTENT_PENDING.md` (CNT-015).
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-074 — Luz da capa: sombra neutra localizada; sai o selo "15 anos"
+
+**Data:** 2026-11-04
+**Etapa:** ajuste depois do DEC-073
+**Decisão:**
+
+1. **Luz.** Sai o véu azul-marinho uniforme sobre a foto, que achatava a escada e tingia o concreto.
+   Entram duas sombras neutras (quase preto, sem azul) só onde há texto: de baixo para cima até ~70%
+   da altura e da esquerda até ~65% da largura. O resto da foto fica com a luz própria; a foto ganha
+   um leve contraste (1,06) e perde um pouco de saturação (0,92) para o concreto ler cinza.
+2. **Selo.** Sai o "15 anos de mercado" da capa. O número segue no primeiro parágrafo do "sobre",
+   logo abaixo (DEC-004, CNT-002).
+
+**Why:** "essa iluminação de fundo no hero tá meio ruim" · "quero remover também esse 15 anos na hero".
+
+**Affects:** `components/home/CapaFoto.tsx`.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-075 — Cinza chumbo, botão que sobe, marca sem tagline e a home revista
+
+**Data:** 2026-11-04
+**Etapa:** revisão da home pelo desenvolvedor (15 anotações)
+**Decisão:**
+
+1. **Cinzas.** Sai o concreto médio `#c9cccf` ("cinza envelhecido"). Entram dois tons:
+   `--chumbo #363b41` (faixa escura neutra — lema, como funciona, chamada do rodapé) e o pé do
+   rodapé um tom abaixo (`--chumbo-fundo #25282c`); o `--chrome` vira um cinza claro e frio
+   (`#eceef0`) para quem faz o quê e avaliações. Sequência da home: foto → branco → chumbo → azul →
+   branco → chumbo → branco → cinza claro → foto → branco → cinza claro → chumbo/chumbo fundo.
+   O azul continua sendo a marca, os títulos e a seção-âncora dos sete tipos.
+2. **Botão.** O degrau agora sobe de baixo: a laje entra pela base com a borda de cima em quatro
+   pisos de 1/4 da largura (espelho 0,55rem), subindo para a direita. O botão claro deixa o
+   concreto e vira branco com tinta azul, enchendo do azul fundo `#172636`.
+3. **Marca.** Sem "Segurança e Design" (a tagline segue no rodapé, em texto). ESCADAS maior
+   (0,44 da altura de MUNARIM) e justificado na largura de MUNARIM; ® menor, no alto do último
+   degrau. viewBox 1049×248.
+4. **Capa.** Apoio curto ("Pré-moldadas em concreto polido, projetadas e fabricadas pela Munarim
+   para casas da Grande Florianópolis.") e sem o "role para explorar".
+5. **Sobre.** Frase em cima; embaixo, texto + botão à esquerda e mosaico de três fotos à direita
+   (uma alta, duas empilhadas), com o aviso de referência. Sai o desencontro vertical e o vazio.
+6. **Sete tipos.** A sanfona fica mais alta (até 44rem, limitada pela tela) e a foto ocupa a altura
+   que sobra, em retrato — as fotos do acervo são quase todas 2:3. No celular, 4:5.
+7. **Pré-moldada.** A foto mede a altura do acordeão (fica presa na rolagem) e troca com o item:
+   reta para pré-moldada, in loco para no local e obra parada.
+8. **Quem faz o quê.** Células da Munarim em azul, as de parceiro em branco, sobre o cinza claro.
+9. **Rodapé.** Chamada e caminhos em chumbo; endereço, navegação e fecho no chumbo fundo — o
+   contato se separa do rodapé e da faixa azul de orçamento das internas.
+
+**Why:** anotações do desenvolvedor na home: "o hover de escada de todos os botões tem que ser
+verticalmente" · "melhorar esse logo, tirar o segurança e design" · "deixar texto menor com um copy
+melhor" · "role para explorar — remover, IA slop" · "melhorar essa estrutura sobre a empresa,
+adicionar mais imagens… desconexo e espaço verticalmente" · "trocar esse cinza por um cinza mais
+chumbo, não esse envelhecido" · "as imagens podem ser maiores verticalmente, tá cortando" ·
+"melhorar a estrutura para a imagem se comportar melhor" · "mudar cor para diferenciar footer de
+CTA section".
+
+**Affects:** `app/globals.css` (tokens, botões, sanfona) · `scripts/gera-marca.py` ·
+`public/marca/munarim-marca-{escuro,claro}.svg` · `components/layout/{Navbar,Footer}.tsx` ·
+`components/home/{CapaFoto,SobreBloco,LemaBloco,TiposSanfona,ProcessoCards,PreMoldadaAcordeao,QuemFaz,AvaliacoesTrilho}.tsx`.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-076 — Azul mais limpo na tela
+
+**Data:** 2026-11-04
+**Etapa:** revisão no celular
+**Decisão:** o azul da interface sai do `#2C445F` (o do logo antigo, cinzento: saturação ~37%) para
+`#1B3D65` — mesmo matiz, mais saturado e um pouco mais fundo. Acompanham: hover/laje do botão
+`#112A4B` (era `#172636`), acento hover `#142F52` (era `#1F3247`), foco `#4A7DBB` (era `#5B7EA6`).
+Vale para barra, seção dos sete tipos, títulos, botões, favicon, OG, desenho técnico e a linha-degrau
+da marca clara. Branco sobre o novo azul: 11:1.
+
+O `#2C445F` continua registrado como a cor do material da marca do cliente; o que muda é a cor de
+tela do site.
+
+**Why:** "esse azul tá meio envelhecido, pelo menos vendo do iPhone essa é a impressão".
+
+**Affects:** `app/globals.css` · `app/icon.svg` · `app/opengraph-image.tsx` ·
+`lib/geometry/svgString.ts` · `components/home/AvaliacoesTrilho.tsx` · `scripts/gera-marca.py` ·
+`public/marca/munarim-marca-claro.svg`.
+
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-077 — Dúvidas fora da home
+
+**Data:** 2026-11-04
+**Etapa:** revisão da home
+**Decisão:** sai a seção de dúvidas da home. As três perguntas (vão, pé-direito, espelho e piso)
+repetiam o vocabulário que o acordeão "pré-moldada ou no local" acabou de definir, e o acordeão já
+leva a `/duvidas` ("Todas as dúvidas"). A home fica: … quem faz o quê → foto → avaliações → rodapé.
+A linha de pendências da página passa para a seção de avaliações, com CNT-015 incluída.
+`components/home/DuvidasLinhas.tsx` fica no repositório, sem uso, caso volte.
+
+**Why:** "pode tirar as dúvidas da home", depois da recomendação de tirar pela repetição.
+
+**Affects:** `app/page.tsx` · `components/home/AvaliacoesTrilho.tsx`.
+
+**Reversível:** sim — recolocar `<DuvidasLinhas />` em `app/page.tsx`.
+
+---
+
+## DEC-078 — Linha-guia na borda do conteúdo
+
+**Data:** 2026-11-04
+**Decisão:** a linha vertical fixa da página deixa de ficar solta na margem (2,3rem antes do texto)
+e passa exatamente na borda esquerda do conteúdo. Ela agora é medida pelo próprio `container-site`
+dentro de uma camada fixa, e não por `100vw` (que conta a barra de rolagem e desalinharia alguns
+pixels).
+**Why:** "esse risco que corta o site verticalmente é muito mais à esquerda, não?" — opção
+"alinhada ao texto" escolhida.
+**Affects:** `app/layout.tsx` · `app/globals.css` (`.guia`).
+**Reversível:** sim, pelo git.
+
+**Substituída no mesmo dia:** a linha saiu de vez — "não tá legal essa linha vertical, pode
+remover". Removidos o elemento em `app/layout.tsx` e a classe `.guia`.
+
+---
+
+## DEC-079 — Sobre em cartões de número
+
+**Data:** 2026-11-04
+**Decisão:** o "sobre" troca o mosaico de três fotos (DEC-075) pela fileira da referência
+good-fella.com: quatro cartões altos — uma foto e três números grandes com a legenda no pé —
+entre a frase grande e o texto. Os números são **só os verificados**: 15 (anos de mercado, DEC-004)
+e 7 (tipos). O terceiro é vaga marcada, "00+" apagado com a legenda "aguardando o número
+(CNT-016)". O desenvolvedor pediu "simulando dados"; a regra do projeto proíbe número verossímil
+inventado, então a simulação é visível como vaga, não como dado.
+**Why:** "a sessão de sobre pode ser assim ou algo parecido com isso, simulando dados obviamente:
+https://good-fella.com/".
+**Affects:** `components/home/SobreBloco.tsx` · `docs/ai/CONTENT_PENDING.md` (CNT-016).
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-080 — Azul do meio
+
+**Data:** 2026-11-04
+**Decisão:** o `#1B3D65` do DEC-076 ficou forte demais em área grande (a seção dos sete tipos). O
+azul de tela passa a `#213A58` — entre o `#2C445F` original (acinzentado) e o `#1B3D65` (vivo):
+saturação ~45%, luminosidade ~24%. Acompanham: hover `#182E48`, laje do botão `#12253C`. Foco
+continua `#4A7DBB`. Branco sobre o novo azul: 11,6:1. Mesmos arquivos do DEC-076.
+**Why:** "esse azul dessa section tá errado, tá muito forte".
+**Affects:** os mesmos do DEC-076.
+**Reversível:** sim, pelo git.
+
+---
+
+## DEC-081 — Carregamento em CSS puro, contínuo (2026-11-05)
+
+**Decisão:** a tela de carregamento deixa o GSAP e passa a ser CSS só com `transform`/`opacity`. O
+perfil da escada se enche num movimento contínuo (janela deslizando sobre o desenho cheio), não mais em
+oito saltos (`steps(8)`); na saída sobem duas placas inteiras — azul levando o desenho, concreto logo
+atrás — com a borda de baixo recortada em escada, no lugar das 16 colunas. O script inline do layout
+solta a capa no `animationstart` da placa azul e esconde a tela no `animationend` da de concreto; a
+trava de 6s continua.
+
+**Why:** o desenvolvedor achou o carregamento "travado". A animação só começava depois da hidratação do
+React (a tela ficava parada esperando o JS, pior no celular e no `next dev`), e o enchimento em degraus
+lia como engasgo. Em CSS ela começa no primeiro paint e roda no compositor, mesmo com a página ainda
+carregando o JS.
+
+**Affects:** `components/motion/Carregando.tsx` (sem `"use client"`, sem GSAP), `app/globals.css`
+(bloco "Carregamento e intro").
+
+## DEC-082 — Sem tela de carregamento (2026-11-05)
+
+**Decisão:** a tela de carregamento sai do site, e a versão em CSS do DEC-081 não fica. A página abre
+direto; só a entrada da barra e da capa (`data-intro`) continua, solta dois quadros depois do primeiro
+paint. O script passa para `components/motion/intro.ts`.
+
+**Why:** o desenvolvedor não gostou nem da versão em GSAP ("travado") nem da refeita em CSS ("não ficou
+muito bom"). Mais 2 segundos na frente da capa não pagam o que custam.
+
+**Affects:** `components/motion/Carregando.tsx` (apagado), `components/motion/intro.ts` (novo),
+`app/layout.tsx`, `app/globals.css`, `app/revisao/page.tsx` (sai a ficha do selo do carregamento).
+Substitui o DEC-081 e a parte de carregamento do DEC-067, DEC-069 e DEC-073.
+
+## DEC-083 — Home enxuta, rótulo novo, avaliações reais e rodapé refeito (2026-11-05)
+
+**Decisão:** lote de anotações do desenvolvedor sobre a home.
+- **Capa:** título menor; sai a linha de apoio.
+- **Sobre:** saem a frase grande, o texto corrido com o botão "A empresa" e o aviso de foto de
+  referência. Ficam o rótulo, logo acima, e os quatro cartões.
+- **Lema:** seção mais baixa e lema menor.
+- **Sete tipos:** saem o rótulo, o "Comparar os sete" e o aviso de referência. "Ver o tipo" vira
+  "Conhecer a escada".
+- **Galeria:** sai o aviso de referência.
+- **Como funciona:** o rótulo e o título ficam na mesma linha e sai o botão "O processo". As etapas
+  ganham painel do desenho em 4:3 e, no pé, número, nome e resumo numa grade só.
+- **Pré-moldada:** foto com proporção fixa à esquerda, presa na rolagem. À direita ficam o rótulo, um
+  título visível ("Duas formas de fazer a mesma escada") e o acordeão, alinhados ao topo da foto.
+- **Seções retiradas:** "Quem faz o quê" e a foto de ponta a ponta saem da home (os componentes
+  ficam no repositório, sem uso).
+- **Rótulo de seção:** troca o fio embaixo por uma escadinha sólida de três degraus antes do texto,
+  que se desenha ao entrar.
+- **Avaliações:** sai a linha de pendências. Entram quatro avaliações reais copiadas do Perfil da
+  Empresa no Google em 2026-11-05, texto literal, com a nota 4,9 e o total de 68 no alto e o botão
+  "Ver no Google".
+- **Rodapé:** a chamada vira "Vamos medir a sua escada.", com uma linha de apoio e o botão de
+  orçamento à esquerda e, à direita, os canais em linhas clicáveis (WhatsApp, telefone, e-mail,
+  Instagram). O pé passa a ter quatro colunas: marca, navegação, os sete tipos e endereço.
+
+**Why:** pedidos diretos do desenvolvedor (anotações na home). Os avisos "imagens de referência" e a
+linha de pendências saem do site a pedido dele. A pendência continua registrada em CONTENT_PENDING
+(CNT-003): as fotos de referência precisam ser trocadas por obras da Munarim antes de publicar.
+Avaliação só entra copiada do Google como está. Ficou de fora a que cita uma concorrente pelo nome.
+
+**Affects:** `components/home/{CapaFoto,SobreBloco,LemaBloco,TiposSanfona,GaleriaTrilho,ProcessoCards,PreMoldadaAcordeao,AvaliacoesTrilho}.tsx`,
+`app/page.tsx`, `app/globals.css` (`.rotulo-secao`), `components/motion/Revela.tsx` (comentário),
+`components/layout/Footer.tsx`, `content/avaliacoes.ts`, `docs/ai/CONTENT_PENDING.md` (CNT-015).
+
+## DEC-084 — Sanfona dos tipos sem a frase de destaque (2026-11-05)
+
+**Decisão:** o painel aberto de cada tipo na sanfona da home mostra só a foto e o botão "Conhecer a
+escada". Sai a frase curta de destaque ("Lance único", "Concretada no local"…), no desktop e no
+celular. O campo `destaque` continua em `content/tipos.ts` para as outras páginas.
+
+**Why:** pedido do desenvolvedor ("remover esse texto de todas as escadas").
+
+**Affects:** `components/home/TiposSanfona.tsx`.
+
+## DEC-085 — Barra mais baixa (2026-11-05)
+
+**Decisão:** `--barra-h` cai de 88px para 68px no celular e de 112px para 80px no desktop; a marca na
+barra cai de 48/60px para 36/44px de altura. Os alvos de toque continuam com 44px.
+
+**Why:** pedido do desenvolvedor ("diminuir o tamanho dessa navbar").
+
+**Affects:** `app/globals.css` (`--barra-h`), `components/layout/Navbar.tsx` (`Marca`). Tudo o que usa
+`--barra-h` (capa, gaveta, mega-menu, sanfona, `scroll-mt`) acompanha sozinho.
+
+## DEC-086 — Capa com duas fotos alternando (2026-11-05)
+
+**Decisão:** a capa da home passa a alternar duas fotos: a escada dupla de antes e uma escada reta com
+guarda-corpo de vidro, enviada pelo desenvolvedor (`public/media/capa/capa-escada-vidro.jpg`). A troca
+é um fade lento (~1,2s a cada 7s), e as duas fotos têm um zoom leve e contínuo. É só CSS, com
+opacity/transform. Com `reduce`, fica só a primeira, parada.
+
+**Why:** pedido do desenvolvedor ("adicionar essa foto no hero também passando").
+
+**Riscos registrados:** a foto nova tem 1170×780 e, em tela larga, aparece ampliada e mais suave
+que a outra. A origem não está confirmada (CNT-003). Os degraus parecem de madeira, e a Munarim
+faz escada de concreto (DEC-052). Se a foto não for de obra da Munarim, deve ser trocada antes de
+publicar.
+
+**Affects:** `components/home/CapaFoto.tsx`, `app/globals.css` (`.capa-slide`, `.capa-zoom`),
+`public/media/capa/capa-escada-vidro.jpg`.
+
+## DEC-087 — Capa com quatro fotos (2026-11-05)
+
+**Decisão:** a rotação da capa (DEC-086) passa de duas para quatro fotos, todas enviadas ou
+aprovadas pelo desenvolvedor:
+- a escada dupla;
+- a reta com guarda-corpo de vidro;
+- uma escada em curva com degraus claros iluminados (`capa-escada-marmore.jpg`);
+- uma em curva de degraus brancos vista de cima (`capa-escada-caracol.jpg`).
+
+O ciclo é de 28s, ~7s por foto, com o mesmo keyframe defasado em cada camada.
+
+**Why:** pedido do desenvolvedor.
+
+**Riscos registrados:**
+- As três fotos novas têm cerca de 1050–1170px de largura e aparecem ampliadas em tela larga.
+- A origem não está confirmada (CNT-003).
+- Duas parecem de outro material: degraus de madeira e degraus de mármore iluminados, ao lado do
+  título "Escadas de concreto". Precisam ser confirmadas como obras da Munarim, ou trocadas, antes
+  de publicar.
+
+**Affects:** `components/home/CapaFoto.tsx`, `app/globals.css` (`.capa-slide`),
+`public/media/capa/capa-escada-{marmore,caracol}.jpg`.
+
+## DEC-088 — Capa com placeholders de banco, cartões que viram e hélice de fotos (2026-11-05)
+
+**Decisão:**
+- **Capa:** saem as três fotos do DEC-087 (madeira, mármore e uma sem origem). No lugar entram três
+  placeholders do Pexels no mesmo tom claro e frio da iL02: degraus brancos em balanço (6444266),
+  caracol branca vista de baixo (5826451) e perfil de escada branca contra tijolo (259830). Os
+  arquivos ficam em `public/media/capa/stock-capa-*.jpg`, com 2400×1600. Continua a rotação do
+  DEC-086, em quatro fotos.
+- **Como funciona:** cada etapa vira um cartão que gira, no gesto do FlipCard do React Bits. Clique,
+  toque, Enter ou Espaço viram o cartão, e com o mouse ele inclina na direção do ponteiro. A frente
+  tem o desenho, o número e o nome; o verso, em azul, tem o resumo, a primeira explicação e o link
+  para a página. O componente é próprio (`components/ui/CartaoVira.tsx`), em CSS 3D, sem a
+  biblioteca `motion` do original.
+- **Lema:** à direita do texto entra uma hélice de 14 fotos do acervo, no gesto do Infinite Spiral do
+  React Bits, lida como escada caracol: cada foto é um degrau tangente à volta. Ela gira sozinha,
+  anda com a rolagem e para fora da tela ou com o mouse em cima. Também é componente próprio
+  (`components/motion/EspiralFotos.tsx`), com transform 3D escrito por quadro.
+
+Com `reduce`, o cartão vira sem girar e a hélice fica parada.
+
+**Why:** pedidos do desenvolvedor: placeholders no mesmo pique da foto atual, o flip card numa seção
+e a espiral "que já parece uma escada caracol" em outra. Os componentes foram reescritos em vez de
+instalados: o React Bits usa `motion` (dependência nova) e tem licença MIT + Commons Clause.
+
+**Riscos registrados:** as três fotos novas da capa são de banco de imagem, não são obras da Munarim
+(CNT-003), e saem quando chegarem fotos reais. Elas não levam legenda.
+
+**Affects:** `components/home/{CapaFoto,ProcessoCards,LemaBloco}.tsx`, `components/ui/CartaoVira.tsx`,
+`components/motion/EspiralFotos.tsx`, `app/globals.css` (`.vira*`, `.espiral*`), `public/media/capa/`.
+
+## DEC-089 — Cartão que vira sem cortar o verso (2026-11-05)
+
+**Decisão:** as duas faces do `CartaoVira` ficam empilhadas na mesma célula de uma grade, e não mais
+posicionadas por cima de uma caixa de proporção fixa. O cartão tem no mínimo 3:4 e cresce até caber
+a face mais alta, e os cartões da mesma fileira ficam com a mesma altura. As etapas do "Como
+funciona" vão para quatro colunas só a partir do `xl` (1280px), antes era o `lg`.
+
+**Why:** o desenvolvedor viu o verso cortado. Na medição, o texto do verso pedia 414px num cartão de
+376px no desktop, e 535px num de 291px em 1024px. A altura mínima de 3:4 vem de um calço invisível
+(`::before` com `padding-top` em %), e não de `aspect-ratio`: numa célula de grade esticada, o
+`aspect-ratio` alargava o cartão por cima do vizinho.
+
+**Affects:** `app/globals.css` (`.vira*`), `components/home/ProcessoCards.tsx`.
+
+## DEC-090 — Barra ainda mais baixa (2026-11-05)
+
+**Decisão:** `--barra-h` passa a 56px no celular e 64px no desktop (eram 68 e 80, DEC-085). A marca
+na barra fica com 32/36px de altura, e o botão "Contato" da barra fica com 40px de altura e
+respiro lateral menor. O botão de menu do celular continua com 44px.
+
+**Why:** pedido do desenvolvedor ("ta muito grande").
+
+**Affects:** `app/globals.css` (`--barra-h`), `components/layout/Navbar.tsx`.
+
+## DEC-091 — Revisão geral: tela sem marcas de pendência e menos peças (2026-11-05)
+
+**Decisão:** revisão completa pedida pelo desenvolvedor antes de publicar.
+
+- **Marcas de pendência saem da tela.** Os avisos "conteúdo provisório", "foto de referência" e os
+  códigos CNT-xxx deixam de aparecer para o visitante (tipo, empresa, como funciona, obras,
+  orçamento, galeria). A pendência continua registrada em `CONTENT_PENDING.md`; o que não tem fato
+  verificado simplesmente não é dito.
+- **Sobre:** o cartão vago "00+" (CNT-016) dá lugar à nota pública no Google (4,9 em 68
+  avaliações, conferida em 2026-11-05, `content/avaliacoes.ts`). O número de escadas entregues entra
+  quando a Munarim informar.
+- **Dúvidas:** a página mostra só as perguntas com resposta. Título encurtado ("antes de pedir a
+  escada") porque "ENCOMENDAR" em caixa alta não cabia em 390px.
+- **Espelho e piso:** a resposta e o texto de abertura das páginas de tipo citam a regra da NBR 9050
+  (espelho de 16 a 18 cm, piso de 28 a 32 cm, 2 espelhos + 1 piso entre 63 e 65 cm) — norma
+  pública, não promessa da empresa.
+- **Premium:** o resumo deixa de prometer itens que a Munarim não confirmou; diz que os detalhes
+  saem do projeto.
+- **FaixaCta removida** de todas as páginas internas. O rodapé já tem a chamada; o link de orçamento
+  do rodapé fica contextual (`LinkOrcamento`: na página de um tipo leva a `/orcamento?tipo=<slug>`,
+  e some na própria página de orçamento).
+- **Política de privacidade** reescrita a partir do que o código faz: nada é guardado, sem cookies
+  e sem análise de acesso; o formulário só monta a mensagem no aparelho e abre o WhatsApp.
+- **Orçamento:** a seção "Canais diretos" sai da página (o rodapé logo abaixo já lista telefone,
+  WhatsApp, e-mail e Instagram como links simples, sem JS). Desvio consciente do
+  `PAGE_BLUEPRINTS.md`, que pedia a seção.
+- **Grade dos tipos** em `/escadas`: duas colunas até o xl (em 1024px as quatro ficavam apertadas).
+- **Componentes sem uso apagados:** `ColecaoIndice`, `RotacaoFotos`, `Spiral`, `Axonometry`,
+  `TipoIcone`, `FaixaCta`, `DuvidasLinhas`, `FraseImagem`, `QuemFaz`.
+
+**Why:** o site ia ao ar com marcas de rascunho visíveis para o cliente final, e o pedido foi uma
+revisão "sem inventar nada". Tirar a marca da tela sem pôr um fato inventado no lugar atende às
+duas coisas.
+
+**Affects:** `app/*/page.tsx`, `components/home/SobreBloco.tsx`, `components/layout/Footer.tsx`,
+`components/layout/LinkOrcamento.tsx`, `components/ui/TypeGrid.tsx`, `content/faq.ts`,
+`content/tipos.ts`, `app/politica-de-privacidade/page.tsx`, `app/orcamento/page.tsx`,
+`CONTENT_PENDING.md`.
+
+## DEC-092 — Barra simplificada (2026-11-05)
+
+**Decisão:** a barra segue a lógica da referência trazida pelo desenvolvedor (effortel.com): poucos
+itens, um único menu com painel e um botão.
+
+- Itens: **Escadas** (único com painel), **Galeria**, **Como funciona**, **Empresa**; à direita,
+  **Contato** (continua indo ao rodapé, `#contato`, por causa do `DEC-001`).
+- O painel de Escadas tem duas colunas: os sete tipos numerados com "Comparar os sete" e, ao lado,
+  um cartão com foto "Não sabe qual é o seu caso?" → `/escadas#nao-sei`.
+- O painel de Empresa saiu; Dúvidas sai da barra do desktop e fica no rodapé e na gaveta do celular,
+  junto de "Pedir orçamento", como links secundários menores.
+- Cor do painel passa a `bg-barra` (o `#1f2d3b` solto saiu).
+- A troca de rota fecha painel e gaveta ajustando o estado no render, não num efeito.
+
+**Why:** "menos informação, hierarquia clara e navegação simples", preservando os caminhos de
+conversão (tipos, galeria, processo, contato).
+
+**Affects:** `components/layout/Navbar.tsx`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

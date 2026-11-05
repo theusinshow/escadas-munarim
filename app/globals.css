@@ -14,25 +14,30 @@
   --shade: #e3e5e8;           /* concreto bruto — texto sobre ele 12,78:1 */
 
   /* texto */
-  --text: #16222e;            /* tinta — 14,39:1 sobre --bg */
-  --muted: #5a6672;           /* 5,24:1 sobre --bg · 4,65:1 sobre --shade */
+  --text: #17191c;            /* tinta grafite (DEC-068) — 15,9:1 sobre --bg */
+  --muted: #5c6066;           /* 5,6:1 sobre --bg · 4,9:1 sobre --shade */
   --border: #d3d7db;          /* concreto médio — GRÁFICO APENAS */
 
   /* marca */
-  --primary: #2c445f;         /* navy Munarim — cor real do logo */
+  --primary: #213a58;         /* navy Munarim (DEC-076 → DEC-080): entre o #2C445F, acinzentado, e o #1B3D65, forte demais */
   --primary-fg: #ffffff;      /* 10,0:1 sobre --primary */
-  --primary-fg-muted: #c4cbd2; /* secundário sobre navy — 6,11:1 ✓ AA */
+  --barra: #213a58;           /* azul da marca nas seções escuras e na tinta dos títulos (DEC-072 → DEC-080) — branco 11,6:1 */
+  --chrome: #eceef0;          /* cinza claro e frio das faixas claras (DEC-075) — --barra sobre ele 9,1:1 */
+  --chumbo: #363b41;          /* cinza chumbo das faixas escuras (DEC-075) — branco 11,1:1 */
+  --chumbo-fundo: #25282c;    /* o pé do rodapé, um tom abaixo do chumbo */
+  --chrome-muted: #45484c;    /* texto secundário sobre --chrome — 6,4:1 */
+  --primary-fg-muted: #c6c8cb; /* secundário sobre grafite — 11:1 · sobre navy 6,1:1 */
 
   /* acento — azulão de marcação (o giz que se estala na laje antes de cortar).
      Ponto quente sem cor quente: teto de croma 0,08 na paleta, 0,176 aqui. */
-  --accent: #0f52ba;          /* branco sobre ela 7,15:1 · 6,38:1 sobre --bg */
-  --accent-hover: #0a3f91;    /* 9,85:1 com branco */
-  --accent-wash: #e2e9f6;     /* GRÁFICO APENAS */
+  --accent: #213a58;          /* DEC-071: o acento é o navy da marca, não mais o azulão — branco 10:1 */
+  --accent-hover: #182e48;    /* 13:1 com branco */
+  --accent-wash: #e6e9ed;     /* GRÁFICO APENAS */
   --accent-on-primary: #ffffff; /* o CTA dentro da faixa navy inverte de valor */
 
   /* interação */
-  --link: #35688c;            /* 5,34:1 sobre --bg · 4,74:1 sobre --shade */
-  --ring: #4a7fa8;            /* GRÁFICO APENAS — 3,83:1, passa em não-texto */
+  --link: #213a58;            /* navy da marca — 10:1 sobre --bg (DEC-071) */
+  --ring: #4a7dbb;            /* foco: 4,1:1 sobre branco e 4,3:1 sobre grafite (DEC-071) */            /* GRÁFICO APENAS — 3,83:1, passa em não-texto */
   --inox: #b9c0c7;            /* GRÁFICO APENAS — traço de corrimão */
 
   /* elevação — única sombra do sistema */
@@ -50,7 +55,7 @@
   --text-h1: 2.2rem;          /* 35px */
   --text-h2: clamp(1.5rem, 2.4vw, 2rem); /* 24 → 32px */
   --text-h3: 1.3rem;          /* 21px */
-  --text-h4: 1.53rem;         /* 24px */
+  --text-h4: 1.15rem;         /* 18px — abaixo do h3, como deve (DEC-071) */
   --text-lead: 1.275rem;      /* 20px */
   --text-body: 1.0625rem;     /* 17px — base declarada */
   --text-small: 0.885rem;     /* 14px */
@@ -86,7 +91,14 @@
      80px e não 96: o conteúdo da barra são dois alvos de 44px lado a lado, que
      é o piso de toque acessível; 80 deixa 18px de respiro em cima e embaixo
      deles, e devolve 16px de dobra para a capa. */
-  --barra-h: 80px;
+  --barra-h: 56px; /* DEC-085 → DEC-090: mais baixa (era 88, depois 68). */
+}
+
+/* Barra um pouco mais alta no desktop (DEC-066), mais baixa desde o DEC-085 e o DEC-090 (era 112, depois 80). */
+@media (min-width: 64rem) {
+  :root {
+    --barra-h: 64px;
+  }
 }
 
 @theme inline {
@@ -97,6 +109,11 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-primary: var(--primary);
+  --color-barra: var(--barra);
+  --color-chrome: var(--chrome);
+  --color-chumbo: var(--chumbo);
+  --color-chumbo-fundo: var(--chumbo-fundo);
+  --color-chrome-muted: var(--chrome-muted);
   --color-primary-fg: var(--primary-fg);
   --color-primary-fg-muted: var(--primary-fg-muted);
   --color-accent: var(--accent);
@@ -183,6 +200,12 @@
     text-wrap: balance;
   }
 
+  /* DEC-067: título em caixa alta, largo e leve — a voz da referência. */
+  h1,
+  h2 {
+    text-transform: uppercase;
+  }
+
   h1 {
     font-size: var(--text-h1);
     line-height: var(--lh-h1);
@@ -223,7 +246,7 @@
       font-size: 1.15rem;
     }
     h4 {
-      font-size: 1.275rem;
+      font-size: 1.1rem;
     }
   }
 
@@ -319,48 +342,490 @@
     letter-spacing: var(--tr-display);
   }
 
-  /* Gatilho do menu: três linhas que viram três degraus.
-     As barras são os pisos e os dois espelhos crescem para conectá-las —
-     o mesmo motivo do degrau que já está no logo. Só `transform`, que é
-     animável em SVG em qualquer navegador (x1/x2 de <line> não são). */
-  .menu-icone rect {
-    transform-box: fill-box;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ================= DEC-067 — estrutura e motion da referência ================= */
+
+  /* ---------- Botões (DEC-073): a laje sobe em degraus ----------
+     Três variantes, um gesto só. No hover e no foco o preenchimento sobe de
+     baixo (DEC-075) com a borda de cima em quatro degraus e para quando cobre
+     o botão inteiro. Ao sair, desce pelo mesmo caminho. Só `transform` num
+     pseudo-elemento: nenhum markup extra nos 30 lugares que usam botão. */
+  .btn-chanfro,
+  .btn-chanfro-escuro,
+  .btn-chanfro-contorno {
+    --btn-espelho: 0.55rem;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.9rem;
+    background: var(--btn-fundo);
+    color: var(--btn-tinta);
+    box-shadow: inset 0 0 0 1px var(--btn-fio, transparent);
+    font-family: var(--font-label);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* a tinta só troca quando a laje já passou por baixo do rótulo */
+    transition: color 200ms linear 260ms, transform 120ms var(--ease-degrau);
+  }
+  .btn-chanfro::before,
+  .btn-chanfro-escuro::before,
+  .btn-chanfro-contorno::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: -1;
+    /* Sobe de baixo (DEC-075): a frente é uma escada de quatro pisos de 1/4
+       da largura, subindo para a direita. +2px: sem a sobra, o degrau mais
+       baixo para encostado na borda de cima e deixa um fio. */
+    height: calc(100% + var(--btn-espelho) * 3 + 2px);
+    background: var(--btn-enche);
+    clip-path: polygon(
+      0 calc(var(--btn-espelho) * 3), 25% calc(var(--btn-espelho) * 3),
+      25% calc(var(--btn-espelho) * 2), 50% calc(var(--btn-espelho) * 2),
+      50% var(--btn-espelho), 75% var(--btn-espelho),
+      75% 0, 100% 0, 100% 100%, 0 100%
+    );
+    transform: translateY(100%);
+    /* entra e sai em ritmo parelho, para a borda em degraus ser vista passando */
+    transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .btn-chanfro:hover,
+  .btn-chanfro:focus-visible,
+  .btn-chanfro-escuro:hover,
+  .btn-chanfro-escuro:focus-visible,
+  .btn-chanfro-contorno:hover,
+  .btn-chanfro-contorno:focus-visible {
+    color: var(--btn-tinta-cheia);
+  }
+  .btn-chanfro:hover::before,
+  .btn-chanfro:focus-visible::before,
+  .btn-chanfro-escuro:hover::before,
+  .btn-chanfro-escuro:focus-visible::before,
+  .btn-chanfro-contorno:hover::before,
+  .btn-chanfro-contorno:focus-visible::before {
+    transform: translateY(0);
+  }
+  /* No clique o botão desce um espelho de 1px — sem sombra, o sistema é chapado. */
+  .btn-chanfro:active,
+  .btn-chanfro-escuro:active,
+  .btn-chanfro-contorno:active {
+    transform: translateY(1px);
   }
 
-  .menu-icone .piso {
-    transform-origin: left center;
+  /* Primário: azul da marca; a laje que sobe é o azul mais fundo. */
+  .btn-chanfro-escuro {
+    --btn-fundo: var(--barra);
+    --btn-tinta: var(--primary-fg);
+    --btn-enche: #12253c;
+    --btn-tinta-cheia: var(--primary-fg);
   }
-
-  .menu-icone .espelho {
-    transform-origin: bottom center;
-    transform: scaleY(0);
+  /* Claro, para fundo azul ou chumbo: branco com tinta azul; enche do azul
+     fundo (DEC-075 — sai o concreto acinzentado). */
+  .btn-chanfro {
+    --btn-fundo: var(--primary-fg);
+    --btn-tinta: var(--barra);
+    --btn-enche: #12253c;
+    --btn-tinta-cheia: var(--primary-fg);
   }
-
-  /* Cada piso vai de face a face do espelho que o encontra — é o que fecha o
-     canto. Por isso as escalas diferem: o piso do meio encosta em dois. */
-  .menu-gatilho:hover .piso-1,
-  .menu-gatilho:focus-visible .piso-1 {
-    transform: translate(12.2px, -1px) scaleX(0.433);
+  /* Contorno: fio de 1px na cor da tinta; enche de azul. */
+  .btn-chanfro-contorno {
+    --btn-fundo: transparent;
+    --btn-tinta: var(--barra);
+    --btn-fio: currentColor;
+    --btn-enche: var(--barra);
+    --btn-tinta-cheia: var(--primary-fg);
   }
-  .menu-gatilho:hover .piso-2,
-  .menu-gatilho:focus-visible .piso-2 {
-    transform: translate(5.2px, 0.5px) scaleX(0.478);
+  .secao-escura .btn-chanfro-contorno,
+  .bg-barra .btn-chanfro-contorno,
+  .bg-chumbo .btn-chanfro-contorno,
+  .bg-chumbo-fundo .btn-chanfro-contorno {
+    --btn-tinta: var(--primary-fg);
+    --btn-enche: var(--primary-fg);
+    --btn-tinta-cheia: var(--barra);
   }
-  .menu-gatilho:hover .piso-3,
-  .menu-gatilho:focus-visible .piso-3 {
-    transform: translate(-1px, 2px) scaleX(0.433);
-  }
-  .menu-gatilho:hover .espelho,
-  .menu-gatilho:focus-visible .espelho {
-    transform: scaleY(1);
-  }
-
-  /* Com `reduce`, a escada ainda se forma — só sem transição, na hora.
-     A preferência é por menos movimento, não por menos affordance: tirar o
-     estado de hover esconderia informação de quem já a recebe. */
   @media (prefers-reduced-motion: reduce) {
-    .menu-icone rect {
+    .btn-chanfro::before,
+    .btn-chanfro-escuro::before,
+    .btn-chanfro-contorno::before {
+      transition: none;
+    }
+  }
+
+  /* Rótulo de seção com o fio embaixo, que se desenha ao entrar. */
+  /* Rótulo de seção (DEC-083): uma escadinha sólida de três degraus antes do
+     texto, no lugar do fio embaixo. Ela se desenha da esquerda para a direita
+     quando entra na tela (`--fio`, posto pelo Revela). */
+  .rotulo-secao {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-family: var(--font-label);
+    font-size: 0.78rem;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .rotulo-secao::before {
+    content: "";
+    flex: none;
+    width: 1.3rem;
+    height: 0.87rem;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 12'%3E%3Cpath d='M0 12V8h6V4h6V0h6v12z'/%3E%3C/svg%3E")
+      no-repeat center / contain;
+    clip-path: inset(0 calc((1 - var(--fio, 1)) * 100%) 0 0);
+    transition: clip-path 900ms var(--ease-degrau);
+  }
+
+  /* Título que se preenche linha a linha com a rolagem. A camada de cor é
+     cópia `aria-hidden` por cima do texto apagado. */
+  .preenche-linha {
+    position: relative;
+    display: block;
+  }
+  .preenche-cor {
+    position: absolute;
+    inset: 0;
+    color: var(--preenche, var(--primary-fg));
+  }
+
+  /* Sete tipos em sanfona horizontal. */
+  .sanfona-h {
+    display: flex;
+    /* alto o bastante para a foto (quase toda 2:3) não virar faixa (DEC-075) */
+    height: min(44rem, calc(100svh - var(--barra-h) - 6rem));
+    min-height: 34rem;
+  }
+  .sanfona-h > li {
+    flex: 0 0 5.5rem;
+    min-width: 0;
+    transition: flex-grow 800ms var(--ease-degrau), flex-basis 800ms var(--ease-degrau);
+  }
+  .sanfona-h > li[data-ativo="true"] {
+    flex: 1 1 0;
+  }
+  .sanfona-h .sanfona-corpo {
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  .sanfona-h > li[data-ativo="true"] .sanfona-corpo {
+    opacity: 1;
+    transition: opacity 500ms ease 350ms;
+  }
+  .titulo-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  /* Acordeão vertical: a altura abre por grid-template-rows. */
+  .abre {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 600ms var(--ease-degrau);
+  }
+  .abre[data-aberto="true"] {
+    grid-template-rows: 1fr;
+  }
+  .abre > div {
+    overflow: hidden;
+  }
+  .sinal-mais {
+    position: relative;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 999px;
+    background: var(--barra);
+  }
+  .sinal-mais::before,
+  .sinal-mais::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.85rem;
+    height: 1.5px;
+    margin: -0.75px 0 0 -0.425rem;
+    background: var(--primary-fg);
+    transition: transform 400ms var(--ease-degrau);
+  }
+  .sinal-mais::after {
+    transform: rotate(90deg);
+  }
+  [aria-expanded="true"] > .sinal-mais::after,
+  [aria-expanded="true"] .sinal-mais::after {
+    transform: rotate(0deg);
+  }
+
+  /* Carrossel por scroll-snap: o navegador faz o arrasto, as setas só rolam. */
+  .trilho {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .trilho::-webkit-scrollbar {
+    display: none;
+  }
+  .trilho > * {
+    scroll-snap-align: start;
+    flex: none;
+  }
+
+  /* ---------- Intro da capa ----------
+     O script inline do <head> marca `data-intro`: "espera" segura a barra e a
+     capa; "vai" solta. Sem JS nada disso existe e a página está pronta.
+     A tela de carregamento saiu (DEC-082). */
+  /* Hélice de fotos (DEC-088, `EspiralFotos`). As posições vêm do JS a cada
+     quadro; sem JS as fotos ficam apagadas (são decorativas). */
+  .espiral {
+    position: relative;
+    overflow: hidden;
+    perspective: 1400px;
+  }
+  .espiral-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(7rem, 11vw, 10rem);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    opacity: 0;
+    background: rgb(255 255 255 / 0.06);
+    box-shadow: 0 1.25rem 2.5rem -1rem rgb(0 0 0 / 0.55);
+    will-change: transform, opacity;
+  }
+  .espiral-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  /* Cartão que vira (DEC-088, `CartaoVira`). O de fora dá a perspectiva; o
+     do meio inclina com o mouse (rápido); o de dentro gira 180° com uma
+     curva que passa um pouco do ponto e volta, como uma mola. */
+  .vira {
+    position: relative;
+    display: grid;
+    perspective: 1100px;
+  }
+  .vira-incl {
+    display: grid;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 220ms ease-out;
+  }
+  /* As duas faces na mesma célula da grade: o cartão tem a altura da face
+     mais alta — o verso nunca corta (DEC-089). A altura mínima vem do calço
+     abaixo — `aspect-ratio` num item de grade esticado (ou com `min-height`)
+     passa a mexer na largura e o cartão invade o vizinho. Sem altura fixa em nenhum nível: cada um é grade e
+     estica até o de fora, então numa fileira os cartões ficam iguais. */
+  .vira-rotor {
+    position: relative;
+    display: grid;
+    transform-style: preserve-3d;
+    transition: transform 900ms cubic-bezier(0.25, 1.35, 0.4, 1);
+  }
+  .vira[data-virado="true"] .vira-rotor {
+    transform: rotateY(180deg);
+  }
+  /* Calço invisível na mesma célula: dá a altura mínima de 3:4 pela largura
+     (padding em % é da largura), sem `aspect-ratio`. */
+  .vira-rotor::before {
+    content: "";
+    grid-area: 1 / 1;
+    padding-top: calc(100% / var(--vira-proporcao, 0.75));
+  }
+  .vira-face {
+    position: relative;
+    grid-area: 1 / 1;
+    min-width: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    box-shadow: 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.45);
+    transition: box-shadow 300ms ease;
+  }
+  .vira:hover .vira-face {
+    box-shadow: 0 2rem 3.5rem -1.5rem rgb(0 0 0 / 0.6);
+  }
+  .vira-face--verso {
+    transform: rotateY(180deg);
+  }
+  .vira-face:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vira-incl,
+    .vira-rotor {
+      transition: none;
+    }
+  }
+
+  /* Capa com fotos que se alternam (DEC-086 → DEC-087). A primeira fica no
+     fundo; cada uma das outras sobe por cima na sua vez, fica ~7s e sai num
+     fade de ~1,2s. Ciclo de 28s para quatro fotos: cada camada usa o mesmo
+     keyframe, defasada 7s. Só opacity/transform, no compositor. */
+  .capa-slide:not([data-slide="0"]) {
+    opacity: 0;
+    animation: capa-troca 28s ease-in-out infinite;
+  }
+  .capa-slide[data-slide="1"] {
+    animation-delay: 6s;
+  }
+  .capa-slide[data-slide="2"] {
+    animation-delay: 13s;
+  }
+  .capa-slide[data-slide="3"] {
+    animation-delay: 20s;
+  }
+  .capa-zoom {
+    animation: capa-zoom 14s ease-in-out infinite alternate;
+  }
+  @keyframes capa-troca {
+    0% {
+      opacity: 0;
+    }
+    4.3%,
+    25% {
+      opacity: 1;
+    }
+    29.3%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes capa-zoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+
+  .sobe-linha {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+  .sobe-linha > span {
+    display: block;
+    transition: transform 1100ms var(--ease-degrau);
+    transition-delay: calc(var(--l, 0) * 120ms + 150ms);
+  }
+  html[data-intro="espera"] .sobe-linha > span {
+    transform: translateY(110%);
+  }
+
+  .intro-desce {
+    transition: transform 900ms var(--ease-degrau);
+  }
+  html[data-intro="espera"] .intro-desce {
+    transform: translateY(-100%);
+  }
+
+  .intro-aparece {
+    transition: opacity 900ms ease, filter 900ms ease;
+    transition-delay: calc(var(--d, 0) * 120ms + 500ms);
+  }
+  html[data-intro="espera"] .intro-aparece {
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-chanfro-escuro,
+    .btn-chanfro,
+    .btn-chanfro-contorno,
+    .rotulo-secao::before,
+    .sanfona-h > li,
+    .sanfona-h .sanfona-corpo,
+    .abre,
+    .sinal-mais::before,
+    .sinal-mais::after,
+    .sobe-linha > span,
+    .intro-desce,
+    .intro-aparece {
+      transition: none;
+    }
+    .capa-slide:not([data-slide="0"]) {
+      display: none;
+    }
+    .capa-zoom {
+      animation: none;
+    }
+  }
+
+  /* ---------- Barra com mega-menu (DEC-066) ---------- */
+
+  /* Painel: abre de cima para baixo, como uma placa descendo no vão. */
+  .mega {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    transition: clip-path 450ms var(--ease-degrau), visibility 0s linear 450ms;
+  }
+  .mega[data-aberto="true"] {
+    clip-path: inset(0 0 -1px 0);
+    visibility: visible;
+    transition: clip-path 450ms var(--ease-degrau);
+  }
+
+  /* Gaveta do celular: mesmo gesto, da barra para baixo. */
+  .gaveta {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    transition: clip-path 500ms var(--ease-degrau), visibility 0s linear 500ms;
+  }
+  .gaveta[data-aberto="true"] {
+    clip-path: inset(0);
+    visibility: visible;
+    transition: clip-path 500ms var(--ease-degrau);
+  }
+
+  /* Duas linhas longas e finas que se cruzam em X. */
+  .hamburguer {
+    position: relative;
+  }
+  .hamburguer-linha {
+    position: absolute;
+    left: 50%;
+    width: 2.1rem;
+    height: 1.5px;
+    margin-left: -1.05rem;
+    background: currentColor;
+    transition: transform 400ms var(--ease-degrau);
+  }
+  .hamburguer-linha:nth-of-type(2) {
+    transform: translateY(-4px);
+  }
+  .hamburguer-linha:nth-of-type(3) {
+    transform: translateY(4px);
+  }
+  .hamburguer[data-aberto="true"] .hamburguer-linha:nth-of-type(2) {
+    transform: rotate(14deg);
+  }
+  .hamburguer[data-aberto="true"] .hamburguer-linha:nth-of-type(3) {
+    transform: rotate(-14deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-chanfro,
+    .mega,
+    .mega[data-aberto="true"],
+    .gaveta,
+    .gaveta[data-aberto="true"],
+    .hamburguer-linha {
       transition: none;
     }
   }
@@ -578,17 +1043,17 @@
     --text: var(--primary-fg);
     --muted: var(--primary-fg-muted);
     --border: rgb(255 255 255 / 0.16);
-    --accent: #a9c4e6;
+    --accent: #e4e6e9;
     --link: var(--primary-fg-muted);
-    background: var(--primary);
+    background: var(--barra);
     color: var(--text);
   }
 
   /* O botão volta aos tokens originais: a inversão de cima é para o texto da
      seção, não para o botão claro que mora nela. */
   .secao-escura .btn-degrau {
-    --text: #16222e;
-    --accent: #0f52ba;
+    --text: #17191c;
+    --accent: #213a58;
   }
 
   /* ---------- Processo em degraus (DEC-051) ----------
@@ -685,6 +1150,11 @@
      puro: roda no primeiro paint, não espera hidratação, e com `reduce` não
      existe. */
   @media (prefers-reduced-motion: no-preference) {
+    /* Capa em foto única (DEC-064): a mesma subida de baixo para cima. */
+    .capa-foto {
+      animation: capa-sobe 1100ms var(--ease-degrau) both;
+    }
+
     .triptico-coluna {
       animation: capa-sobe 900ms var(--ease-degrau) both;
       animation-delay: calc(var(--i) * var(--step-riser) * 10ms);
@@ -712,3 +1182,73 @@
 .skip-link:focus {
   left: 0;
 }
+
+/* ---------- Figuras técnicas sólidas (DEC-070) ----------
+   Método Anatomy: faces pintadas em quatro tons por orientação + topo claro.
+   s = a escada (assunto, traço mais forte) · m = estrutura de apoio ·
+   c = contexto (chão, parede, laje), que recua · l = superfície polida.
+   O único acento é o navy da marca: o que o leitor deve olhar. */
+.figura {
+  --fg-edge: #17191c;
+  --fg-edge-c: #9a9ea3;
+  --fg-acc: #213a58;
+  --fg-s-t: #fbfbfa; --fg-s-3: #eceeef; --fg-s-2: #dee1e3; --fg-s-1: #cfd3d6; --fg-s-0: #bfc4c8;
+  --fg-m-t: #f0f1f2; --fg-m-3: #dcdfe1; --fg-m-2: #ced2d5; --fg-m-1: #c0c5c9; --fg-m-0: #b2b8bd;
+  --fg-c-t: #f5f6f6; --fg-c-3: #e9ebec; --fg-c-2: #e0e3e5; --fg-c-1: #d7dadd; --fg-c-0: #ced2d5;
+  --fg-l-t: #ffffff;
+  --fg-halo: #17191c;
+  display: block;
+  overflow: visible;
+}
+.figura[data-tema="escuro"] {
+  --fg-edge: #eef0f2;
+  --fg-edge-c: #5f646a;
+  --fg-acc: #a9c0dc;
+  --fg-s-t: #4a4e54; --fg-s-3: #3f4349; --fg-s-2: #36393e; --fg-s-1: #2e3135; --fg-s-0: #272a2e;
+  --fg-m-t: #3a3d42; --fg-m-3: #33363b; --fg-m-2: #2d3034; --fg-m-1: #282a2e; --fg-m-0: #232528;
+  --fg-c-t: #24262a; --fg-c-3: #212327; --fg-c-2: #1e2023; --fg-c-1: #1b1d20; --fg-c-0: #191b1e;
+  --fg-l-t: #5a5f66;
+  --fg-halo: #000;
+}
+.figura path,
+.figura circle { vector-effect: non-scaling-stroke; }
+.figura .f { stroke: var(--fg-edge); stroke-width: 0.8; stroke-linejoin: round; }
+.figura .f[data-p="c"] { stroke: var(--fg-edge-c); stroke-width: 0.6; }
+.figura .f[data-p="m"] { stroke-width: 0.7; }
+.figura .f[data-liso] { stroke-width: 0.6; }
+.figura .fe { fill: none; stroke: var(--fg-edge); stroke-width: 0.8; stroke-linejoin: round; }
+.figura .fe[data-p="c"] { stroke: var(--fg-edge-c); }
+.figura .f[data-p="s"][data-s="t"] { fill: var(--fg-s-t); }
+.figura .f[data-p="s"][data-s="3"] { fill: var(--fg-s-3); }
+.figura .f[data-p="s"][data-s="2"] { fill: var(--fg-s-2); }
+.figura .f[data-p="s"][data-s="1"] { fill: var(--fg-s-1); }
+.figura .f[data-p="s"][data-s="0"] { fill: var(--fg-s-0); }
+.figura .f[data-p="m"][data-s="t"] { fill: var(--fg-m-t); }
+.figura .f[data-p="m"][data-s="3"] { fill: var(--fg-m-3); }
+.figura .f[data-p="m"][data-s="2"] { fill: var(--fg-m-2); }
+.figura .f[data-p="m"][data-s="1"] { fill: var(--fg-m-1); }
+.figura .f[data-p="m"][data-s="0"] { fill: var(--fg-m-0); }
+.figura .f[data-p="c"][data-s="t"] { fill: var(--fg-c-t); }
+.figura .f[data-p="c"][data-s="3"] { fill: var(--fg-c-3); }
+.figura .f[data-p="c"][data-s="2"] { fill: var(--fg-c-2); }
+.figura .f[data-p="c"][data-s="1"] { fill: var(--fg-c-1); }
+.figura .f[data-p="c"][data-s="0"] { fill: var(--fg-c-0); }
+.figura .f[data-p="l"] { fill: var(--fg-l-t); stroke: var(--fg-acc); }
+.figura .ln { fill: none; stroke-width: 0.6; stroke-linecap: round; stroke-linejoin: round; }
+.figura .ln[data-t="hi"] { stroke: var(--fg-edge); }
+.figura .ln[data-t="mid"] { stroke: var(--fg-edge); opacity: 0.6; }
+.figura .ln[data-t="lo"] { stroke: var(--fg-edge); opacity: 0.35; }
+.figura .ln[data-t="faint"] { stroke: var(--fg-edge); opacity: 0.18; }
+.figura .ln[data-t="acc"] { stroke: var(--fg-acc); stroke-width: 1; }
+.figura .ln[data-dotted] { stroke-dasharray: 0.01 3.2; stroke-width: 1.4; }
+.figura .ln[data-dashed] { stroke-dasharray: 4 3; }
+.figura .dt circle { fill: var(--fg-edge); }
+.figura .dt[data-t="lo"] circle { opacity: 0.3; }
+.figura .dt[data-t="mid"] circle { opacity: 0.55; }
+.figura .dt[data-t="acc"] circle { fill: var(--fg-acc); }
+.figura .halo { fill: var(--fg-halo); opacity: 0.16; filter: blur(7px); transform: translateY(2px); }
+/* A régua do chão vem pronta do kit. */
+.figura .iso-fill { fill: var(--fg-c-t); }
+.figura .iso-shade, .figura .iso-top { fill: var(--fg-c-2); stroke: none; }
+.figura .iso-top { fill: var(--fg-c-t); }
+.figura .iso-line { fill: none; stroke: var(--fg-edge-c); stroke-width: 0.6; }

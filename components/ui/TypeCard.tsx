@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Foto } from "@/components/media/Foto";
-import { Axonometry } from "@/components/technical/Axonometry";
-import { TipoIcone } from "@/components/technical/TipoIcone";
+import { Figura } from "@/components/technical/Figura";
 import { capaDo } from "@/content/galeria";
 import type { Tipo } from "@/content/tipos";
 
@@ -45,8 +44,8 @@ export function TypeCard({
             imgClassName="transition-transform duration-700 ease-degrau group-hover:scale-[1.04] motion-reduce:transition-none"
           />
         ) : (
-          <div className="absolute inset-0 p-8">
-            <Axonometry slug={tipo.slug} title={tipo.nome} className="h-full w-full" />
+          <div className="absolute inset-0 flex items-center p-6">
+            <Figura nome={tipo.slug} titulo={tipo.nome} className="w-full" />
           </div>
         )}
       </div>
@@ -57,17 +56,17 @@ export function TypeCard({
             <h3 className="text-[1.35rem] leading-tight">{tipo.nome}</h3>
             <p className="mt-2 text-sm text-muted">{tipo.destaque}</p>
           </div>
-          <TipoIcone
-            slug={tipo.slug}
-            title={`Pictograma da escada ${tipo.nome.toLowerCase()}`}
-            className="h-12 w-[3.375rem] shrink-0 text-primary transition-colors duration-300 group-hover:text-accent"
+          <Figura
+            nome={tipo.slug}
+            titulo={`Desenho da escada ${tipo.nome.toLowerCase()}`}
+            className="w-24 shrink-0"
           />
         </div>
         {detalhe && (
           <>
             <p className="mt-5 text-[0.95rem] leading-relaxed text-muted">{texto}</p>
             {pendencia && (
-              <p className="spec mt-3 border-l border-accent pl-3 text-[0.62rem] text-muted">
+              <p className="spec mt-3 border-l border-accent pl-3 text-[0.68rem] text-muted">
                 {pendencia}
               </p>
             )}

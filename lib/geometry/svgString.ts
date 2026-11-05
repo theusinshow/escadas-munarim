@@ -11,7 +11,7 @@ import { drawings } from "./stairs";
  */
 export function axonometriaSvg(
   slug: string,
-  { stroke = "#2C445F", inox = "#B9C0C7", border = "#D9D6D1", width = 2 } = {},
+  { stroke = "#213a58", inox = "#B9C0C7", border = "#D9D6D1", width = 2 } = {},
 ): string | null {
   const drawing = drawings[slug];
   if (!drawing) return null;

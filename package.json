@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "media": "node scripts/media.mjs"
+    "media": "node scripts/media.mjs",
+    "figuras": "node scripts/figuras/build.mjs"
   },
   "dependencies": {
     "gsap": "^3.13.0",

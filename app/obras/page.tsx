@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { FaixaCta } from "@/components/ui/FaixaCta";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ColecaoCard } from "@/components/galeria/ColecaoCard";
 import { ObrasFilter } from "@/components/obras/ObrasFilter";
@@ -34,17 +33,10 @@ export default function ObrasPage() {
         title={temReferencia ? "Escadas de concreto, por tipo." : "Escadas instaladas."}
         lead={
           temReferencia
-            ? "Fotos verticais organizadas pelos sete tipos do catálogo. Clique para ampliar."
+            ? "Fotos organizadas pelos sete tipos do catálogo. Toque em uma foto para ampliar."
             : "Projetos entregues na Grande Florianópolis, organizados por tipo de escada."
         }
-      >
-        {temReferencia && (
-          <p className="spec border-l border-accent pl-4 text-muted">
-            IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. O ACERVO DE OBRAS ENTRA
-            AQUI QUANDO CHEGAR (CNT-003)
-          </p>
-        )}
-      </PageHeader>
+      />
 
       <Section density="default">
         <div className="grid items-start gap-14 md:grid-cols-3 md:gap-x-6 md:gap-y-20 lg:gap-x-8">
@@ -67,10 +59,6 @@ export default function ObrasPage() {
         <ObrasFilter />
       </Section>
 
-      <FaixaCta
-        title="Viu o tipo que cabe na sua casa?"
-        text="O formulário monta a mensagem e abre o seu WhatsApp já preenchido."
-      />
     </>
   );
 }

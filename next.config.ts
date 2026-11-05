@@ -8,6 +8,8 @@ import type { NextConfig } from "next";
  * antes do go-live, ou o corte do blog derruba o SEO acumulado em 404.
  */
 const nextConfig: NextConfig = {
+  // Só no `next dev`: deixa abrir o servidor local pelo celular na mesma rede.
+  allowedDevOrigins: ["192.168.0.2"],
   async redirects() {
     return [
       { source: "/nossas-escadas", destination: "/escadas", permanent: true },

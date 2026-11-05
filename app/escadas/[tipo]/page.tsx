@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { FaixaCta } from "@/components/ui/FaixaCta";
 import { notFound } from "next/navigation";
 import { Foto } from "@/components/media/Foto";
 import { GaleriaTipo } from "@/components/media/GaleriaTipo";
 import { Draw } from "@/components/motion/Draw";
-import { Spiral } from "@/components/motion/Spiral";
 import { StepIn } from "@/components/motion/StepIn";
-import { Axonometry } from "@/components/technical/Axonometry";
+import { Figura } from "@/components/technical/Figura";
 import { SectionDrawing } from "@/components/technical/SectionDrawing";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TypeCard } from "@/components/ui/TypeCard";
-import { fotosDo, temReferencia } from "@/content/galeria";
+import { fotosDo } from "@/content/galeria";
 import { getTipo, tipos } from "@/content/tipos";
 import { site } from "@/lib/site";
 
@@ -39,10 +37,10 @@ export async function generateMetadata({
 }
 
 /** Âncoras do sumário do hero — quem chega do Google pula para o que veio buscar. */
-function sumario(totalFotos: number) {
+function sumario(totalFotos: number, temEscolha: boolean) {
   return [
     { href: "#corte", rotulo: "Desenho e medidas" },
-    { href: "#escolher", rotulo: "Quando escolher" },
+    ...(temEscolha ? [{ href: "#escolher", rotulo: "Quando escolher" }] : []),
     ...(totalFotos > 0 ? [{ href: "#galeria", rotulo: `Galeria (${totalFotos})` }] : []),
   ];
 }
@@ -52,7 +50,6 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
   const tipo = getTipo(slug);
   if (!tipo) notFound();
 
-  const ehCaracol = tipo.slug === "caracol";
   /* Três outros tipos, na ordem do catálogo, para a comparação continuar. */
   const relacionados = tipos.filter((t) => t.slug !== tipo.slug).slice(0, 3);
   const fotos = fotosDo(tipo.slug);
@@ -71,15 +68,11 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
     category: "Escada pré-moldada de concreto",
   };
 
-  /* O caracol gira; os outros se desenham. Um gesto por verdade. */
-  const desenho = ehCaracol ? (
-    <Spiral>
-      <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
-    </Spiral>
-  ) : (
-    <Draw>
-      <Axonometry slug={tipo.slug} title={tipo.nome} className="aspect-square w-full" />
-    </Draw>
+  /* A figura sólida do tipo (DEC-070): mesma câmera e escala nos sete. */
+  const desenho = (
+    <div data-revela>
+      <Figura nome={tipo.slug} titulo={`Desenho da escada ${tipo.nome.toLowerCase()}`} className="w-full" />
+    </div>
   );
 
   return (
@@ -102,19 +95,13 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
               <p className="spec text-accent">{tipo.destaque}</p>
               <h1 className="type-display measure-display mt-4">Escada {tipo.nome}</h1>
               <p className="measure mt-6 text-xl leading-relaxed text-muted">{tipo.resumo}</p>
-
-              {!tipo.validado && (
-                <p className="spec mt-8 border-l border-accent pl-4 text-muted">
-                  CONTEÚDO PROVISÓRIO — AGUARDA VALIDAÇÃO TÉCNICA DA EMPRESA (CNT-009)
-                </p>
-              )}
             </div>
 
             <nav
               aria-label="Nesta página"
               className="flex flex-wrap gap-x-6 border-t border-border pt-3"
             >
-              {sumario(galeria.length).map((item) => (
+              {sumario(galeria.length, tipo.quandoEscolher.length > 0).map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
@@ -155,8 +142,9 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
               O <strong className="font-semibold text-text">espelho</strong> é a altura
               de cada degrau e o{" "}
               <strong className="font-semibold text-text">piso</strong> é a profundidade
-              onde você apoia o pé. A relação entre os dois é o que faz uma escada ser
-              confortável ou cansativa.
+              onde você apoia o pé. A relação entre os dois decide se a subida é
+              confortável ou cansativa. A referência no Brasil (ABNT NBR 9050) é espelho de
+              16 a 18 cm e piso de 28 a 32 cm.
             </>
           }
         />
@@ -184,53 +172,50 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
                 <SectionDrawing
                   slug={tipo.slug}
                   title={tipo.nome}
-                  className="w-full min-w-[520px]"
+                  className="w-full min-w-[460px]"
                 />
               </Draw>
             </div>
             <p className="spec mt-4 text-muted">
-              CORTE — DESENHO ILUSTRATIVO, MEDIDAS REAIS SOB CONSULTA (CNT-009)
+              CORTE ILUSTRATIVO. AS MEDIDAS DA SUA ESCADA SAEM DA MEDIÇÃO NO LOCAL.
+              <span className="sm:hidden"> ARRASTE PARA O LADO PARA VER O DESENHO INTEIRO.</span>
             </p>
           </div>
         </div>
       </Section>
 
-      <Section
-        density="default"
-        id="escolher"
-        className="scroll-mt-(--barra-h) border-t border-border"
-      >
-        <div className="grid gap-12 lg:grid-cols-2">
-          <div>
-            <h2>Quando escolher</h2>
-            {tipo.quandoEscolher.length > 0 ? (
+      {/* Premium ainda não tem os critérios da empresa (CNT-009): sem eles, a
+          seção não aparece em vez de mostrar "pendente" (DEC-091). */}
+      {tipo.quandoEscolher.length > 0 && (
+        <Section
+          density="default"
+          id="escolher"
+          className="scroll-mt-(--barra-h) border-t border-border"
+        >
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div>
+              <h2>Quando escolher</h2>
               <ul className="measure mt-5 space-y-3 text-muted">
                 {tipo.quandoEscolher.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            ) : (
-              <p className="spec mt-5 text-muted">PENDENTE — CNT-009</p>
-            )}
-          </div>
+            </div>
 
-          {/* Bloco obrigatório — DEC-012. Não remover, não suavizar. */}
-          <div>
-            <h2>
-              Quando <em className="not-italic text-accent">não</em> escolher
-            </h2>
-            {tipo.quandoNaoEscolher.length > 0 ? (
+            {/* Bloco obrigatório — DEC-012. Não remover, não suavizar. */}
+            <div>
+              <h2>
+                Quando <em className="not-italic text-accent">não</em> escolher
+              </h2>
               <ul className="measure mt-5 space-y-3 text-muted">
                 {tipo.quandoNaoEscolher.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            ) : (
-              <p className="spec mt-5 text-muted">PENDENTE — CNT-009</p>
-            )}
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      )}
 
       {/* Acabamentos — lista declarada pela própria empresa. */}
       <Section density="dense" className="border-t border-border">
@@ -240,7 +225,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
           </div>
           <div className="measure space-y-5 text-muted lg:col-span-7">
             <p>
-              A Munarim fabrica a escada, em concreto polido. Corrimão, guarda-corpo e
+              A Munarim projeta e fabrica a escada, em concreto polido. Corrimão, guarda-corpo e
               revestimento entram por parceria com outras empresas — o corrimão em{" "}
               <strong className="font-semibold text-text">inox escovado polido</strong> ou{" "}
               <strong className="font-semibold text-text">ferro galvanizado</strong>.
@@ -266,25 +251,12 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
               className="lg:col-span-7"
               title={`Escada ${tipo.nome.toLowerCase()} dentro de casa`}
             />
-            {temReferencia && (
-              <p className="spec border-l border-accent pl-4 text-muted lg:col-span-5">
-                IMAGENS DE REFERÊNCIA — NÃO SÃO OBRAS DA MUNARIM. LEGENDA SÓ COM O
-                TIPO (DEC-008 · CNT-003)
-              </p>
-            )}
           </div>
           <div className="mt-10">
             <GaleriaTipo fotos={galeria} nome={tipo.nome} />
           </div>
         </Section>
       )}
-
-      {/* CTA depois de toda a prova da página (DEC-001). Esparso: é o fechamento. */}
-      <FaixaCta
-        title="Essa é a escada do seu vão?"
-        text={<>O formulário já vai com “{tipo.nome}” marcado. Se você mudar de ideia no caminho, é só trocar.</>}
-        href={`/orcamento?tipo=${tipo.slug}`}
-      />
 
       {/* Tipos relacionados. */}
       <Section density="default" className="border-t border-border">

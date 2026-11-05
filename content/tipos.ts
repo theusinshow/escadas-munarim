@@ -97,7 +97,7 @@ export const tipos: Tipo[] = [
     slug: "premium",
     nome: "Premium",
     resumo:
-      "Linha de acabamento superior. [CNT-009 — a empresa precisa definir o que caracteriza a linha]",
+      "Linha de acabamento superior da Munarim. Os detalhes de cada peça são definidos no projeto, junto com você.",
     destaque: "Acabamento superior",
     quandoEscolher: [],
     quandoNaoEscolher: [],

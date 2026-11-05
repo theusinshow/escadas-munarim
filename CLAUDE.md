@@ -45,8 +45,9 @@ Before making changes, read:
    uso. Escrever para especificador é erro de público (`DEC-002`).
 3. **O desenho técnico é o conteúdo, não a decoração.** Os SVGs dos 7 tipos são a espinha do site;
    os 7 precisam ter a mesma escala, ângulo e peso de traço para serem comparáveis (`DEC-009`).
-4. **Motion vem da geometria da escada.** `stepIn` usa a razão real do degrau (espelho 18 / piso 28).
-   Fade-up genérico é defeito, não estilo (`DEC-010`).
+4. **Motion segue a referência adotada (`DEC-067`).** Rolagem suave, revelação por
+   desfoque (`data-revela`), título preenchido por scroll, sanfona e paralaxe. Sempre com `reduce`
+   respeitado e estado inicial aplicado por JS (`DEC-010` foi substituído em parte).
 5. **Imagem de IA é permitida, inclusive em obra** (`DEC-008`) — mas **sem legenda factual**, sem
    pessoa identificável e sem prova social fabricada. Todo arquivo gerado leva prefixo `gen-` e passa
    pela verificação de geometria de `MEDIA_PLAN.md`.

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { FaixaCta } from "@/components/ui/FaixaCta";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Draw } from "@/components/motion/Draw";
-import { ProcessIllustration } from "@/components/technical/ProcessIllustration";
+import { Figura } from "@/components/technical/Figura";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { passos } from "@/content/processo";
@@ -47,9 +45,9 @@ export default function ComoFuncionaPage() {
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-3">
               <p className="spec text-muted">Passo {passo.numero}</p>
-              <Draw className="mt-6 hidden lg:block">
-                <ProcessIllustration step={passo.step} className="h-40 w-full" />
-              </Draw>
+              <div data-revela className="mt-6 hidden lg:block">
+                <Figura nome={passo.step} titulo={`Desenho da etapa: ${passo.titulo}`} className="w-full" />
+              </div>
             </div>
 
             <div className="lg:col-span-9">
@@ -66,14 +64,10 @@ export default function ComoFuncionaPage() {
                   <p key={j}>{comDestaque(p)}</p>
                 ))}
               </div>
-              {passo.pendente && (
-                <p className="spec mt-8 border-l border-accent pl-4 text-muted">
-                  {passo.pendente}
-                </p>
-              )}
-              <ProcessIllustration
-                step={passo.step}
-                className="mt-10 h-32 w-full lg:hidden"
+              <Figura
+                nome={passo.step}
+                titulo={`Desenho da etapa: ${passo.titulo}`}
+                className="mt-10 w-full max-w-md lg:hidden"
               />
             </div>
           </div>
@@ -84,19 +78,11 @@ export default function ComoFuncionaPage() {
       <Section density="default" className="border-t border-border">
         <SectionHeader
           split
-          title="O que está incluso"
-          lead="A Munarim fabrica a escada. Para entregar o conjunto completo — projeto, escada, revestimento e corrimão — trabalha em parceria com outras empresas."
+          title="Quem faz cada parte"
+          lead="A Munarim projeta e fabrica a escada. Corrimão, guarda-corpo e revestimento vêm de empresas parceiras, para o conjunto chegar completo."
         />
-        <p className="spec mt-8 border-l border-accent pl-4 text-muted">
-          DETALHAMENTO DO ESCOPO E PRAZO POR ETAPA — AGUARDANDO A EMPRESA (CNT-005,
-          CNT-014)
-        </p>
       </Section>
 
-      <FaixaCta
-        title="Já sabe as medidas do seu vão?"
-        text="Se ainda não sabe, tudo bem — a medição é o primeiro passo e é por nossa conta explicar o que medir."
-      />
     </>
   );
 }

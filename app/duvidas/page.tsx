@@ -25,30 +25,31 @@ const faqLd = {
   })),
 };
 
+/* Na tela, só pergunta com resposta (DEC-091). As que dependem de número da
+   empresa (carga, peso, prazo, quem instala) seguem em content/faq.ts e
+   entram sozinhas quando a resposta chegar (CNT-005, CNT-006, CNT-014). */
+const GRUPOS = faq
+  .map((g) => ({ ...g, perguntas: g.perguntas.filter((p) => p.resposta) }))
+  .filter((g) => g.perguntas.length > 0);
+
 export default function DuvidasPage() {
   return (
     <>
       <PageHeader
-        title="O que perguntam antes de encomendar."
-        lead="Se é a primeira escada que você compra, comece por aqui. Cada resposta explica o termo técnico antes de usá-lo."
+        title="O que perguntam antes de pedir a escada."
+        lead="Se é a primeira escada que você encomenda, comece por aqui. Cada resposta explica o termo técnico antes de usá-lo."
       />
 
       <Section density="dense">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            {faq.map((grupo) => (
+            {GRUPOS.map((grupo) => (
               <div key={grupo.tema} className="mb-12 last:mb-0">
                 <h2 className="rotulo">{grupo.tema}</h2>
                 <div className="mt-4">
                   {grupo.perguntas.map((p) => (
                     <FAQItem key={p.q} question={p.q}>
-                      {p.resposta ? (
-                        <p>{p.resposta}</p>
-                      ) : (
-                        <p className="spec text-muted">
-                          RESPOSTA AGUARDANDO VALIDAÇÃO TÉCNICA DA EMPRESA ({p.pendencia})
-                        </p>
-                      )}
+                      <p>{p.resposta}</p>
                     </FAQItem>
                   ))}
                 </div>
@@ -60,8 +61,8 @@ export default function DuvidasPage() {
             <div className="border-l-2 border-border pl-6">
               <p className="rotulo">Não achou sua dúvida?</p>
               <p className="measure mt-4 text-muted">
-                Manda a pergunta no WhatsApp. Se você não sabe nem por onde começar a
-                medir, também serve — a gente explica.
+                Mande a pergunta pelo WhatsApp. Se você ainda não sabe nem por onde
+                começar a medir, também serve: a Munarim explica.
               </p>
               <p className="mt-6">
                 <GhostLink

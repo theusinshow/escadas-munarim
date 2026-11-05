@@ -295,13 +295,10 @@ export function OrcamentoForm() {
                 com o que a Munarim precisa para orçar.
               </li>
               <li>
-                <span className="spec">03</span> — Se faltar medida, alguém explica o que
-                medir antes de qualquer visita.
+                <span className="spec">03</span> — Se faltar alguma medida, a Munarim
+                explica o que medir antes de qualquer visita.
               </li>
             </ol>
-            <p className="spec mt-6 text-muted">
-              TEMPO MÉDIO DE RESPOSTA A CONFIRMAR (CNT-005)
-            </p>
           </div>
         )}
       </aside>

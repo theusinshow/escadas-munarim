@@ -27,6 +27,8 @@ pendente aparece como slot marcado, jamais como texto plausível inventado.
 | CNT-012 | Autorização para citar construtoras clientes | não | prova social — destravaria muito |
 | CNT-013 | Acesso ao DNS / hospedagem | sim, para go-live | deploy |
 | CNT-014 | Quem instala: equipe própria ou parceiro | sim | `/como-funciona`, `/empresa`, home, FAQ |
+| CNT-015 | Avaliações do Google | parcial (2026-11-05) | home (avaliações) |
+| CNT-016 | Número de escadas entregues | não | home (sobre) |
 
 ---
 
@@ -66,6 +68,9 @@ material gerado (`DEC-008`) — funciona, mas é o maior risco de credibilidade 
 público é leigo, desconfiado, e imagem sintética erra geometria estrutural.
 **Used in:** `/obras`, `/escadas/[tipo]` galeria, `/` bloco de obras
 **Current placeholder:** assets `gen-` conforme `MEDIA_PLAN.md`, todos marcados para substituição.
+**Note (2026-11-05):** a capa da home usa quatro fotos de banco (Pexels, `stock-capa-*` e
+`capa-escada-dupla`) e o aviso "foto de referência" saiu da tela (DEC-088, DEC-091). Substituir
+por obras da Munarim continua sendo a prioridade.
 **Requirements:** 12–20 fotos de escadas instaladas, identificando o tipo de cada uma. Celular serve —
 luz natural, sem flash, escada inteira no enquadramento, sem morador na foto. Confirmar autorização
 do proprietário para uso das imagens.
@@ -130,7 +135,9 @@ acumulado em 404. Bloqueia go-live.
 **Impact:** o formulário coleta nome e telefone — LGPD se aplica. Publicar texto jurídico genérico
 como se fosse aprovado seria exatamente o tipo de conteúdo inventado que este projeto não produz.
 **Used in:** `/politica-de-privacidade`, aviso no formulário
-**Current placeholder:** rascunho não publicado.
+**Current placeholder:** texto publicado escrito a partir do que o código faz (sem cookies, sem
+análise, formulário que só abre o WhatsApp — DEC-091). Falta a empresa revisar e aprovar, e o
+CNPJ (CNT-001) para identificar o controlador.
 **Requirements:** revisão e aprovação do cliente, e definição de quem é o controlador dos dados.
 
 ---
@@ -221,3 +228,36 @@ não serve é o silêncio, porque o silêncio virou invenção uma vez.
 
 Confirmar junto: **existe fábrica/pátio de produção próprio?** O site declara que a empresa fabrica,
 mas nunca menciona uma planta física. Se existir, `CNT-004` (fotos) fica ainda mais valioso.
+
+---
+
+### CNT-015 — Avaliações do Google
+
+**Type:** prova social
+**Status:** Parcial — 4 avaliações e a nota (4,9 · 68) copiadas do perfil em 2026-11-05 (DEC-083)
+**Impact:** a home tem a fileira de avaliações no formato da referência (DEC-073), logo antes do
+rodapé. Sem avaliação real, os quatro cartões aparecem como vagas marcadas.
+**Used in:** `/` (`components/home/AvaliacoesTrilho.tsx`), dados em `content/avaliacoes.ts`
+**Current placeholder:** nenhum — as vagas só voltam se a lista ficar vazia. Pendente: atualizar a
+nota, o total e o "quando" de cada avaliação antes de publicar (envelhecem); confirmar com a Munarim
+que pode citar avaliações que nomeiam funcionários (Dione, Rodrigo, Lucas). Uma avaliação 5 estrelas
+ficou de fora por citar uma concorrente pelo nome.
+**Requirements:** as avaliações do Perfil da Empresa no Google da Munarim, copiadas como estão: nome
+de quem escreveu, quando, nota e texto literal. Nada escrito, resumido ou corrigido por nós.
+**Fonte indicada pelo desenvolvedor (2026-11-04):** o painel de avaliações da busca "escadas
+munarim" no Google (perfil `0x952735ea5bdd41d9:0x59a1e02c9043ff8`). O site é estático (DEC-007):
+a atualização é manual — copiar as avaliações novas para `content/avaliacoes.ts` e publicar.
+
+---
+
+### CNT-016 — Número de escadas entregues
+
+**Type:** fato de negócio
+**Status:** Not received
+**Impact:** o "sobre" da home tem três cartões de número (DEC-079). Desde o DEC-091 são 15 anos, 7
+tipos e a nota do Google; este número entra quando existir.
+**Used in:** `/` (`components/home/SobreBloco.tsx`)
+**Current placeholder:** nenhum na tela — o cartão vago saiu (DEC-091).
+**Requirements:** quantas escadas a Munarim já entregou (pode ser aproximado para baixo, "mais de
+X"), e de onde sai a conta. Alternativa aceita: outro número verificável que a empresa prefira
+mostrar (obras no ano, cidades atendidas).

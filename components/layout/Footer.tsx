@@ -1,18 +1,24 @@
 import Link from "next/link";
-import { site, whatsappLink } from "@/lib/site";
+import { LinkOrcamento } from "@/components/layout/LinkOrcamento";
+import { tipos } from "@/content/tipos";
+import { addressLine, site, whatsappLink } from "@/lib/site";
 
 /**
- * Rodapé (DEC-051 → DEC-063).
+ * Rodapé (DEC-051 → DEC-075 → DEC-083).
  *
- * Sobre a referência trazida pelo desenvolvedor: três colunas no alto —
- * contato à esquerda, navegação centralizada em caixa alta, links de serviço
- * sublinhados à direita —, a assinatura centralizada no meio e o nome da
- * empresa gigante sangrando no pé, cortado pela borda. O nome é a peça
- * gráfica; por isso o logo em imagem saiu daqui.
+ * Duas faixas, para o contato não se confundir com o rodapé (DEC-075): a
+ * chamada em chumbo e o pé um tom abaixo.
  *
- * O WhatsApp continua em corpo de título: é por ele que a conversa acontece
- * (DEC-007). Texto secundário em `--primary-fg-muted` (6,11:1 sobre navy),
- * não em opacidade.
+ * DEC-083: a chamada é o título, uma linha de apoio e o botão de orçamento à
+ * esquerda; à direita, os canais diretos em linhas (WhatsApp, telefone,
+ * e-mail, Instagram), cada linha inteira clicável. Sem os três cartões com
+ * título e botão repetindo a mesma coisa. O pé tem quatro colunas: a marca
+ * com a tagline, a navegação, os sete tipos e o endereço; embaixo, o fecho.
+ *
+ * O orçamento aparece aqui em toda página — depois do conteúdo, nunca antes
+ * da prova (DEC-001). É o único fechamento das internas: a faixa azul que
+ * repetia o pedido logo acima saiu (DEC-091). CNT-001 (razão social, CNPJ) e CNT-011 (horário) entram
+ * na coluna do endereço quando chegarem.
  */
 
 const ROTAS = [
@@ -24,103 +30,129 @@ const ROTAS = [
   { href: "/orcamento", label: "Orçamento" },
 ];
 
-const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  `${site.address.street}, ${site.address.district}, ${site.address.city} - ${site.address.state}`,
-)}`;
+const CANAIS = [
+  { canal: "WhatsApp", valor: site.contact.whatsapp, href: whatsappLink(), externo: true },
+  { canal: "Telefone", valor: site.contact.phone, href: site.contact.phoneHref, externo: false },
+  { canal: "E-mail", valor: site.contact.email, href: `mailto:${site.contact.email}`, externo: false },
+  { canal: "Instagram", valor: site.contact.instagram, href: site.contact.instagramUrl, externo: true },
+];
 
-const sublinhado =
-  "inline-flex min-h-11 items-center text-primary-fg underline decoration-primary-fg/40 decoration-1 underline-offset-[6px] hover:decoration-primary-fg";
+function Coluna({ titulo, children }: { titulo: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="font-label text-[0.72rem] tracking-[0.16em] text-primary-fg-muted uppercase">{titulo}</p>
+      <div className="mt-5">{children}</div>
+    </div>
+  );
+}
+
+const linkPe = "inline-flex min-h-10 items-center text-[0.95rem] hover:underline hover:underline-offset-4";
 
 export function Footer() {
   return (
-    <footer
-      id="contato"
-      className="relative scroll-mt-(--barra-h) overflow-hidden bg-primary text-primary-fg"
-    >
-      <div className="container-site grid gap-14 pt-20 lg:grid-cols-3 lg:gap-12 lg:pt-28">
-        <div>
-          <p className="text-sm text-primary-fg-muted">Fale direto pelo WhatsApp</p>
-          <a
-            href={whatsappLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-block font-display text-[clamp(1.25rem,5.8vw,1.9rem)] whitespace-nowrap underline-offset-[6px] hover:underline"
-          >
-            {site.contact.whatsapp}
-          </a>
-          <p className="mt-2 text-sm">
-            <a href={site.contact.phoneHref} className="text-primary-fg-muted hover:text-primary-fg">
-              {site.contact.phone}
-            </a>
-          </p>
-          <address className="mt-8 text-sm leading-relaxed text-primary-fg-muted not-italic">
-            {site.address.street}
-            <br />
-            {site.address.district}, {site.address.city} — {site.address.state}
-          </address>
-        </div>
+    <footer id="contato" className="scroll-mt-(--barra-h) bg-chumbo-fundo text-primary-fg">
+      <div className="bg-chumbo">
+        <div className="container-site grid gap-16 py-24 lg:grid-cols-12 lg:gap-10 lg:py-32">
+          <div className="min-w-0 lg:col-span-5" data-revela>
+            <h2 className="max-w-[16ch] text-[clamp(2.1rem,4vw,3.6rem)] leading-[1.04]">
+              Vamos medir a sua escada.
+            </h2>
+            <p className="mt-8 max-w-[42ch] text-[1.05rem] leading-relaxed text-primary-fg-muted">
+              Conte o vão e o pé-direito da sua obra. A conversa já começa pelo tipo de escada que
+              cabe no seu espaço.
+            </p>
+            <LinkOrcamento className="btn-chanfro mt-10" />
+          </div>
 
-        <nav aria-label="Rodapé" className="lg:justify-self-center">
-          <ul className="flex flex-col gap-1 lg:items-center">
-            {ROTAS.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="inline-flex min-h-10 items-center font-label text-[0.78rem] tracking-[0.16em] text-primary-fg-muted uppercase hover:text-primary-fg"
+          <ul className="min-w-0 self-end border-t border-white/15 lg:col-span-6 lg:col-start-7" data-revela>
+            {CANAIS.map((c) => (
+              <li key={c.canal} className="border-b border-white/15">
+                <a
+                  href={c.href}
+                  {...(c.externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className="group flex min-h-20 flex-col justify-center gap-2 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-0"
                 >
-                  {item.label}
-                </Link>
+                  <span className="flex-none font-label text-[0.72rem] tracking-[0.16em] whitespace-nowrap text-primary-fg-muted uppercase">
+                    {c.canal}
+                  </span>
+                  <span className="flex min-w-0 items-center justify-between gap-4">
+                    <span className="truncate font-display text-[clamp(0.9rem,1.3vw,1.15rem)]">{c.valor}</span>
+                    <svg
+                      viewBox="0 0 16 16"
+                      className="size-4 flex-none transition-transform duration-500 ease-degrau group-hover:translate-x-1 group-hover:-translate-y-1"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" strokeWidth="1.4" />
+                    </svg>
+                  </span>
+                </a>
               </li>
             ))}
           </ul>
-        </nav>
-
-        <div className="flex flex-col lg:items-end">
-          <ul className="flex flex-col lg:items-end">
-            <li>
-              <a href={`mailto:${site.contact.email}`} className={sublinhado}>
-                {site.contact.email}
-              </a>
-            </li>
-            <li>
-              <a href={site.contact.instagramUrl} target="_blank" rel="noopener noreferrer" className={sublinhado}>
-                {site.contact.instagram}
-              </a>
-            </li>
-            <li>
-              <a href={MAPA} target="_blank" rel="noopener noreferrer" className={sublinhado}>
-                Abrir no mapa
-              </a>
-            </li>
-          </ul>
-          <ul className="mt-6 flex flex-col text-sm lg:items-end">
-            <li>
-              <Link href="/politica-de-privacidade" className={sublinhado}>
-                Política de Privacidade
-              </Link>
-            </li>
-          </ul>
-          {/* CNT-001 (razão social, CNPJ) e CNT-011 (horário) entram aqui. */}
         </div>
       </div>
 
-      {/* pr/pl: o botão flutuante de WhatsApp não pode cobrir a assinatura. */}
-      <div className="container-site mt-20 px-20 text-center text-sm leading-relaxed text-primary-fg-muted lg:mt-28">
-        <p>© {new Date().getFullYear()}</p>
-        <p>
-          {site.name} · {site.tagline}
-        </p>
-        <p>Atendemos {site.serviceArea.slice(0, 4).join(", ")} e região.</p>
-      </div>
+      <div className="container-site">
+        <div className="grid gap-12 border-b border-white/15 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:py-20">
+          <div className="lg:col-span-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/marca/munarim-marca-escuro.svg" alt={site.name} width={1049} height={248} className="h-12 w-auto" />
+            <p className="mt-6 font-label text-[0.72rem] tracking-[0.16em] text-primary-fg-muted uppercase">
+              {site.tagline}
+            </p>
+          </div>
 
-      {/* O nome como peça gráfica, cortado pela borda de baixo. Decorativo: o
-          nome da empresa já está na assinatura acima. */}
-      <p
-        aria-hidden="true"
-        className="pointer-events-none mt-10 -mb-[0.2em] text-center font-display text-[12.4vw] leading-[0.8] whitespace-nowrap text-primary-fg/[0.08] select-none lg:mt-14"
-      >
-        MUNARIM
-      </p>
+          <nav aria-label="Rodapé" className="lg:col-span-2">
+            <Coluna titulo="Navegue">
+              <ul>
+                {ROTAS.map((r) => (
+                  <li key={r.href}>
+                    <Link href={r.href} className={linkPe}>
+                      {r.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Coluna>
+          </nav>
+
+          <div className="lg:col-span-3">
+            <Coluna titulo="Os sete tipos">
+              <ul>
+                {tipos.map((t) => (
+                  <li key={t.slug}>
+                    <Link href={`/escadas/${t.slug}`} className={linkPe}>
+                      {t.nome}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Coluna>
+          </div>
+
+          <div className="lg:col-span-3">
+            <Coluna titulo="Endereço">
+              <address className="max-w-[26ch] text-[0.95rem] leading-relaxed not-italic">{addressLine}</address>
+            </Coluna>
+          </div>
+        </div>
+
+        {/* pr: o botão flutuante de WhatsApp não pode cobrir o "voltar ao topo". */}
+        <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-2 py-6 pr-20 text-[0.85rem] text-primary-fg-muted">
+          <p>
+            {site.name} © {new Date().getFullYear()}
+          </p>
+          <Link href="/politica-de-privacidade" className="inline-flex min-h-11 items-center hover:text-primary-fg">
+            Política de Privacidade
+          </Link>
+          <a
+            href="#conteudo"
+            className="inline-flex min-h-11 items-center font-label text-[0.72rem] tracking-[0.16em] uppercase hover:text-primary-fg"
+          >
+            Voltar ao topo
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }

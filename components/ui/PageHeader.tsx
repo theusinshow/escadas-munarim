@@ -1,12 +1,12 @@
 import { Breadcrumb, type Crumb } from "./Breadcrumb";
 
 /**
- * Abertura das páginas internas (DEC-061).
+ * Abertura das páginas internas (DEC-061 → DEC-067).
  *
- * O mesmo desenho dos cabeçalhos da home (DEC-060), um degrau acima: H1 em
- * escala de display nas colunas 1–7, o apoio nas 9–12, alinhados pela base, e
- * um fio fechando o bloco. `children` entra embaixo do apoio — é onde mora o
- * aviso de pendência (CNT) quando a página tem um.
+ * No idioma da referência: título enorme em caixa alta ocupando a largura, o
+ * apoio embaixo à direita, tudo entrando do desfoque (`data-revela`).
+ * `children` entra embaixo do apoio — é onde mora o aviso de pendência (CNT)
+ * quando a página tem um.
  */
 export function PageHeader({
   title,
@@ -20,18 +20,23 @@ export function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="border-b border-border pt-10 pb-14 lg:pt-16 lg:pb-20">
+    <section className="border-b border-border bg-surface pt-10 pb-16 lg:pt-14 lg:pb-24">
       <div className="container-site">
         {trail && <Breadcrumb trail={trail} />}
-        <div className="mt-14 grid gap-8 lg:mt-24 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <h1 className="entra-degrau type-display measure-display lg:col-span-7">{title}</h1>
-          {(lead || children) && (
-            <div className="entra-degrau lg:col-span-4 lg:col-start-9" style={{ "--d": 1 } as React.CSSProperties}>
+        <h1
+          data-revela
+          className="mt-16 max-w-[20ch] text-[clamp(2.3rem,5.4vw,5rem)] leading-[1.02] text-barra lg:mt-28"
+        >
+          {title}
+        </h1>
+        {(lead || children) && (
+          <div data-revela className="mt-12 grid lg:mt-16 lg:grid-cols-12">
+            <div className="lg:col-span-6 lg:col-start-7">
               {lead && <p className="measure text-lg leading-relaxed text-muted">{lead}</p>}
               {children && <div className={lead ? "mt-6" : ""}>{children}</div>}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

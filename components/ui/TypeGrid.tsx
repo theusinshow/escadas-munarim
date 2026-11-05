@@ -7,7 +7,7 @@ import { tipos } from "@/content/tipos";
  * Grid dos 7 tipos. As linhas são borda de cada célula, não fundo da grade:
  * com fundo cinza, a grade virava um bloco cinza enquanto os cards entram.
  *
- * São 7 numa grade de 4 colunas — sobra uma célula. Ela é o caminho de quem
+ * São 7 numa grade de 4 colunas (2 até o xl) — sobra uma célula. Ela é o caminho de quem
  * não sabe escolher, que é justamente o público primário deste site. Navy de
  * propósito: entre sete fotos, é a única peça que não é produto. Em vez de
  * prometer "três perguntas", ela já mostra as três (DEC-063).
@@ -20,7 +20,7 @@ export function TypeGrid({
   detalhe?: boolean;
 }) {
   return (
-    <ul className="grid border-t border-l border-border sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid border-t border-l border-border sm:grid-cols-2 xl:grid-cols-4">
       {tipos.map((tipo) => (
         <li key={tipo.slug} className="border-r border-b border-border">
           <TypeCard tipo={tipo} detalhe={detalhe} />
@@ -29,7 +29,7 @@ export function TypeGrid({
       <li className="border-r border-b border-border">
         <Link
           href={href}
-          className="group flex h-full min-h-96 flex-col bg-primary p-6 text-primary-fg lg:p-7"
+          className="group flex h-full min-h-96 flex-col bg-barra p-6 text-primary-fg lg:p-7"
         >
           <h3 className="text-[1.35rem] leading-tight">Não sei qual é o meu caso</h3>
           <p className="mt-2 text-sm text-primary-fg-muted">

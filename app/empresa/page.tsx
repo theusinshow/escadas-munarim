@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { FaixaCta } from "@/components/ui/FaixaCta";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
@@ -22,9 +21,9 @@ export const metadata: Metadata = {
    prova nada, processo prova. Tudo já está em `content/processo.ts`; prazo é
    CNT-005 e fica de fora. */
 const COMO = [
-  "Mede o vão, o pé-direito e o apoio no local.",
-  "Você aprova o desenho cotado antes da fabricação.",
-  "A escada chega pronta: concretada e polida fora da obra.",
+  "A medição é feita na obra: o vão, o pé-direito e o apoio.",
+  "Você aprova o desenho cotado antes de qualquer peça ser fabricada.",
+  "A escada chega pronta, concretada e polida fora da obra.",
 ];
 
 export default function EmpresaPage() {
@@ -32,7 +31,7 @@ export default function EmpresaPage() {
     <>
       <PageHeader
         title={`${site.yearsInMarket} anos fabricando escadas em ${site.address.city}.`}
-        lead="Escada pré-moldada em concreto polido, sob medida, para a Grande Florianópolis. A Munarim faz uma coisa só — a escada de concreto."
+        lead="Escada pré-moldada em concreto polido, sob medida, para casas da Grande Florianópolis. A Munarim faz uma coisa só: a escada de concreto."
       />
 
       <Section density="dense" className="border-t border-border">
@@ -53,13 +52,9 @@ export default function EmpresaPage() {
               própria.
             </p>
             <p>
-              Para entregar o conjunto completo — projeto, escada, revestimento e
-              corrimão — a Munarim trabalha em parceria com outras empresas. A escada é
-              fabricada por ela; o restante do acabamento vem de quem faz aquilo bem.
-            </p>
-            <p className="spec border-l border-accent pl-4">
-              ANO DE FUNDAÇÃO A CONFIRMAR (CNT-002) · ESTRUTURA DE PRODUÇÃO E QUEM
-              INSTALA A CONFIRMAR (CNT-004, CNT-014)
+              A Munarim projeta e fabrica a escada. Para entregar o conjunto completo,
+              corrimão, guarda-corpo e revestimento vêm de empresas parceiras, que fazem
+              só isso.
             </p>
           </div>
         </div>
@@ -115,7 +110,6 @@ export default function EmpresaPage() {
         </div>
       </Section>
 
-      <FaixaCta title="Vamos falar sobre a sua escada." />
     </>
   );
 }

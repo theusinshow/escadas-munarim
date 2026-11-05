@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { perguntasQueDefinem } from "@/content/escolha";
-import { FaixaCta } from "@/components/ui/FaixaCta";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { StepIn } from "@/components/motion/StepIn";
@@ -68,10 +67,6 @@ export default function EscadasPage() {
         </div>
       </Section>
 
-      <FaixaCta
-        title="Já sabe qual tipo é o seu?"
-        text="Se não souber, marque “não sei ainda” no formulário. A gente define junto."
-      />
     </>
   );
 }

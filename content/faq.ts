@@ -40,7 +40,7 @@ export const faq: GrupoFAQ[] = [
       {
         q: "O que são espelho e piso do degrau?",
         resposta:
-          "Espelho é a altura de cada degrau, a parte vertical. Piso é a profundidade, onde você apoia o pé. A relação entre os dois é o que faz uma escada ser confortável ou cansativa: espelho alto demais cansa, piso curto demais dá insegurança na descida.",
+          "Espelho é a altura de cada degrau, a parte vertical. Piso é a profundidade, onde você apoia o pé. A relação entre os dois é o que faz uma escada ser confortável ou cansativa: espelho alto demais cansa, piso curto demais dá insegurança na descida. A referência usada no Brasil é a da norma de acessibilidade (ABNT NBR 9050): espelho entre 16 e 18 cm, piso entre 28 e 32 cm, e duas vezes o espelho mais o piso entre 63 e 65 cm.",
       },
       {
         q: "Qual a largura mínima de uma escada residencial?",
@@ -92,12 +92,12 @@ export const faq: GrupoFAQ[] = [
       {
         q: "Quais opções de corrimão e guarda-corpo existem?",
         resposta:
-          "A Munarim trabalha com corrimão em inox escovado polido e em ferro galvanizado, além de guarda-corpo e sacada.",
+          "Corrimão, guarda-corpo e sacada vêm de empresas parceiras da Munarim. O corrimão pode ser em inox escovado polido ou em ferro galvanizado.",
       },
       {
         q: "Dá para revestir a escada depois?",
         resposta:
-          "Sim. A Munarim trabalha em parceria com outras empresas para entregar o conjunto completo: projeto, escada, revestimento e corrimão.",
+          "Sim. O revestimento entra por parceria com outras empresas, assim como o corrimão. O projeto e a escada são da Munarim.",
       },
       { q: "Como é o acabamento do concreto polido?", pendencia: "CNT-006" },
     ],
