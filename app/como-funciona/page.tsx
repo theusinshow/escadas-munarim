@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Figura } from "@/components/technical/Figura";
+import { comDestaque } from "@/lib/texto";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { passos } from "@/content/processo";
@@ -11,19 +12,6 @@ export const metadata: Metadata = {
     "Medição no local, projeto cotado, fabricação e instalação. Veja como uma escada de concreto pré-moldado é feita, etapa por etapa.",
   alternates: { canonical: "/como-funciona" },
 };
-
-/** Negrito por **texto** — a copy precisa destacar o termo técnico no meio da frase. */
-function comDestaque(texto: string) {
-  return texto.split(/(\*\*[^*]+\*\*)/g).map((parte, i) =>
-    parte.startsWith("**") ? (
-      <strong key={i} className="font-semibold text-text">
-        {parte.slice(2, -2)}
-      </strong>
-    ) : (
-      <span key={i}>{parte}</span>
-    ),
-  );
-}
 
 export default function ComoFuncionaPage() {
   return (
@@ -42,18 +30,12 @@ export default function ComoFuncionaPage() {
           className="border-t border-border"
           aria-labelledby={`passo-${passo.numero}`}
         >
-          <div className="grid gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-3">
+          {/* Texto à esquerda, o desenho da etapa grande à direita — um só
+              desenho por etapa em qualquer largura. */}
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-6">
               <p className="spec text-muted">Passo {passo.numero}</p>
-              <div data-revela className="mt-6 hidden lg:block">
-                <Figura nome={passo.step} titulo={`Desenho da etapa: ${passo.titulo}`} className="w-full" />
-              </div>
-            </div>
-
-            <div className="lg:col-span-9">
-              <h2
-                id={`passo-${passo.numero}`}
-              >
+              <h2 id={`passo-${passo.numero}`} className="mt-4">
                 {passo.titulo}
               </h2>
               <p className="measure mt-4 text-xl leading-relaxed text-muted">
@@ -64,10 +46,12 @@ export default function ComoFuncionaPage() {
                   <p key={j}>{comDestaque(p)}</p>
                 ))}
               </div>
+            </div>
+            <div data-revela className="lg:col-span-5 lg:col-start-8">
               <Figura
                 nome={passo.step}
                 titulo={`Desenho da etapa: ${passo.titulo}`}
-                className="mt-10 w-full max-w-md lg:hidden"
+                className="mx-auto w-full max-w-md lg:max-w-none"
               />
             </div>
           </div>

@@ -53,7 +53,7 @@
 | `/nossas-escadas/` | `/escadas` |
 | `/nossa-empresa/` | `/empresa` |
 | `/entre-em-contato/` | `/orcamento` |
-| `/blog/` e `/blog/*` | `/` |
+| `/blog/` e `/blog/*` | `/artigos` (DEC-093) |
 
 > O mapa acima cobre as rotas conhecidas. A lista completa de URLs indexadas ainda precisa ser
 > levantada antes do go-live — `CNT-007`. Cortar o blog sem esse mapa derruba SEO acumulado.

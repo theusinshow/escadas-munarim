@@ -42,7 +42,7 @@ export function ProcessoCards() {
                   <span className="flex min-h-full flex-col justify-between bg-surface p-6 text-barra">
                     <span className="flex items-start justify-between">
                       <span className="font-mono text-xs text-chrome-muted">{p.numero}</span>
-                      <span className="font-label text-[0.66rem] tracking-[0.16em] text-chrome-muted uppercase">
+                      <span className="font-label text-[0.72rem] tracking-[0.16em] text-chrome-muted uppercase">
                         Virar ↻
                       </span>
                     </span>

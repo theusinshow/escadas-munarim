@@ -41,7 +41,7 @@ export function TypeCard({
             foto={foto}
             fill
             sizes={sizes}
-            imgClassName="transition-transform duration-700 ease-degrau group-hover:scale-[1.04] motion-reduce:transition-none"
+            imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
           />
         ) : (
           <div className="absolute inset-0 flex items-center p-6">

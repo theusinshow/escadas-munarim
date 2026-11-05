@@ -20,7 +20,11 @@ const CORES = ["bg-barra", "bg-[#4a7dbb]", "bg-[#45484c]", "bg-[#182e48]"];
 
 function Estrelas({ nota, vaga, semSelo }: { nota: number; vaga?: boolean; semSelo?: boolean }) {
   return (
-    <span className="flex items-center gap-0.5" aria-label={vaga ? undefined : `${nota} de 5 estrelas`}>
+    <span
+      className="flex items-center gap-0.5"
+      role={vaga ? undefined : "img"}
+      aria-label={vaga ? undefined : `${nota} de 5 estrelas`}
+    >
       {Array.from({ length: 5 }, (_, i) => (
         <svg key={i} viewBox="0 0 20 20" className="size-[1.05rem]" aria-hidden="true">
           <path
@@ -83,7 +87,7 @@ function Cartao({ a, i }: { a: Avaliacao; i: number }) {
         <button
           type="button"
           onClick={() => setAberto(!aberto)}
-          className="mt-2 self-start text-sm text-chrome-muted underline-offset-4 hover:underline"
+          className="mt-1 inline-flex min-h-11 items-center self-start text-sm text-chrome-muted underline-offset-4 hover:underline"
         >
           {aberto ? "Ler menos" : "Ler mais"}
         </button>

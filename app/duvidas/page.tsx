@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { artigos } from "@/content/artigos";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { FAQItem } from "@/components/ui/FAQItem";
@@ -57,7 +59,7 @@ export default function DuvidasPage() {
             ))}
           </div>
 
-          <aside className="lg:col-span-4">
+          <div className="lg:col-span-4">
             <div className="border-l-2 border-border pl-6">
               <p className="rotulo">Não achou sua dúvida?</p>
               <p className="measure mt-4 text-muted">
@@ -76,7 +78,23 @@ export default function DuvidasPage() {
                 </GhostLink>
               </p>
             </div>
-          </aside>
+
+            <div className="mt-12 border-l-2 border-border pl-6">
+              <p className="rotulo">Para ler com calma</p>
+              <ul className="mt-4 space-y-1">
+                {artigos.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      href={`/artigos/${a.slug}`}
+                      className="inline-flex min-h-11 items-center text-barra underline-offset-4 hover:underline"
+                    >
+                      {a.titulo}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </Section>
 

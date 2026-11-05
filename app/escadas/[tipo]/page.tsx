@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Foto } from "@/components/media/Foto";
 import { GaleriaTipo } from "@/components/media/GaleriaTipo";
@@ -10,6 +11,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TypeCard } from "@/components/ui/TypeCard";
+import { artigos } from "@/content/artigos";
 import { fotosDo } from "@/content/galeria";
 import { getTipo, tipos } from "@/content/tipos";
 import { site } from "@/lib/site";
@@ -254,6 +256,32 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
           </div>
           <div className="mt-10">
             <GaleriaTipo fotos={galeria} nome={tipo.nome} />
+          </div>
+        </Section>
+      )}
+
+      {/* Artigos que citam este tipo (DEC-093): link interno no contexto. */}
+      {artigos.some((a) => a.tipos.includes(tipo.slug)) && (
+        <Section density="dense" className="border-t border-border">
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+            <p className="rotulo lg:col-span-4">Para ler antes de decidir</p>
+            <ul className="lg:col-span-8">
+              {artigos
+                .filter((a) => a.tipos.includes(tipo.slug))
+                .map((a) => (
+                  <li key={a.slug} className="border-b border-border first:border-t">
+                    <Link
+                      href={`/artigos/${a.slug}`}
+                      className="group flex min-h-14 items-center justify-between gap-6 py-3 text-barra"
+                    >
+                      <span className="group-hover:underline group-hover:underline-offset-4">
+                        {a.titulo}
+                      </span>
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
           </div>
         </Section>
       )}

@@ -29,6 +29,7 @@ pendente aparece como slot marcado, jamais como texto plausível inventado.
 | CNT-014 | Quem instala: equipe própria ou parceiro | sim | `/como-funciona`, `/empresa`, home, FAQ |
 | CNT-015 | Avaliações do Google | parcial (2026-11-05) | home (avaliações) |
 | CNT-016 | Número de escadas entregues | não | home (sobre) |
+| CNT-017 | Revisão técnica dos artigos | sim, para go-live | `/artigos/*` |
 
 ---
 
@@ -261,3 +262,20 @@ tipos e a nota do Google; este número entra quando existir.
 **Requirements:** quantas escadas a Munarim já entregou (pode ser aproximado para baixo, "mais de
 X"), e de onde sai a conta. Alternativa aceita: outro número verificável que a empresa prefira
 mostrar (obras no ano, cidades atendidas).
+
+---
+
+### CNT-017 — Revisão técnica dos artigos
+
+**Type:** conteúdo técnico
+**Status:** Not received
+**Impact:** os quatro artigos de `/artigos` (DEC-093) foram escritos a partir de norma pública (NBR
+9050, 9077, 9062, 6118) e de contas de exemplo marcadas como exemplo — nenhum número da Munarim.
+Mesmo assim, falam em nome da empresa e precisam do aval de quem faz escada.
+**Used in:** `content/artigos.ts`, `/artigos`, `/llms.txt`
+**Current placeholder:** texto publicado; a data de publicação é a da escrita (2026-11-05).
+**Requirements:** a Munarim (ou o responsável técnico) lê os quatro textos e confirma: (1) que a
+explicação de pré-moldada × in loco bate com o processo dela; (2) se a altura livre usada nas obras
+dela segue os 2 m da NBR 9077 ou o código de obras local; (3) se quer assinar os artigos com o nome
+de um responsável técnico (melhora a autoria para busca e IA).
+

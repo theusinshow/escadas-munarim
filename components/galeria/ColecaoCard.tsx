@@ -53,7 +53,7 @@ export function ColecaoCard({
             foto={capa}
             fill
             sizes="(min-width: 768px) 31vw, 100vw"
-            imgClassName="transition-transform duration-700 ease-degrau group-hover:scale-[1.03] motion-reduce:transition-none"
+            imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
           />
         )}
       </div>

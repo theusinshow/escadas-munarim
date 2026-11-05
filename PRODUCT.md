@@ -85,8 +85,9 @@ Nunca vende com adjetivo — vende mostrando o desenho.
   decisão do desenvolvedor. Tagline oficial: *"Segurança e Design"*.
 - **Número correto: 15 anos**, confirmado no selo do logo. A home antiga dizia 13 — está errada.
   Falta a data-base (ano de fundação) para o número não envelhecer sozinho → `CONTENT_PENDING`.
-- **Sem CMS, sem backend, sem blog** nesta fase. Conteúdo no repositório, editado pelo desenvolvedor.
-  O blog do WordPress é cortado (conteúdo placeholder) com redirects 301.
+- **Sem CMS e sem backend** nesta fase. Conteúdo no repositório, editado pelo desenvolvedor.
+  O blog do WordPress é cortado (conteúdo placeholder) com redirects 301 para `/artigos` — seção
+  de artigos educativos criada no `DEC-093`, escrita só com norma pública e conta de exemplo.
 - **Acervo fotográfico praticamente inexistente.** Imagem gerada por IA foi liberada pelo
   desenvolvedor, inclusive para seções de obra (`DEC-008`), com guardrail de legenda. Foto real
   substitui quando o cliente entregar. Ver `MEDIA_PLAN.md`.

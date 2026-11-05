@@ -57,6 +57,7 @@ const MENU: Item[] = [
 /** Só na gaveta do celular, abaixo dos itens principais. */
 const SECUNDARIOS: Link_[] = [
   { href: "/duvidas", label: "Dúvidas" },
+  { href: "/artigos", label: "Artigos" },
   { href: "/orcamento", label: "Pedir orçamento" },
 ];
 

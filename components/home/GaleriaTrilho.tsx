@@ -92,7 +92,7 @@ export function GaleriaTrilho() {
                       foto={c.foto}
                       fill
                       sizes="19rem"
-                      imgClassName="transition-transform duration-700 ease-degrau group-hover:scale-[1.04]"
+                      imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
                     />
                   )}
                 </div>

@@ -26,6 +26,7 @@ const ROTAS = [
   { href: "/obras", label: "Galeria" },
   { href: "/como-funciona", label: "Como funciona" },
   { href: "/duvidas", label: "Dúvidas" },
+  { href: "/artigos", label: "Artigos" },
   { href: "/empresa", label: "Empresa" },
   { href: "/orcamento", label: "Orçamento" },
 ];

@@ -63,7 +63,7 @@ export function GaleriaTipo({ fotos, nome }: { fotos: FotoAcervo[]; nome: string
               <Foto
                 foto={f}
                 sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-                imgClassName="transition-transform duration-700 ease-degrau group-hover:scale-[1.03] motion-reduce:transition-none"
+                imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
               />
             </button>
           </li>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
+import { artigos } from "@/content/artigos";
 import { tipos } from "@/content/tipos";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/obras", priority: 0.7 },
     { path: "/como-funciona", priority: 0.8 },
     { path: "/duvidas", priority: 0.7 },
+    { path: "/artigos", priority: 0.7 },
     { path: "/empresa", priority: 0.6 },
     { path: "/orcamento", priority: 0.9 },
   ];
@@ -21,6 +23,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...tipos.map((t) => ({
       url: `${site.url}/escadas/${t.slug}`,
       priority: 0.9,
+    })),
+    ...artigos.map((a) => ({
+      url: `${site.url}/artigos/${a.slug}`,
+      lastModified: a.publicado,
+      priority: 0.6,
     })),
   ];
 }

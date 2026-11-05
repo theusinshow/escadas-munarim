@@ -263,7 +263,7 @@ export function OrcamentoForm() {
         </p>
       </form>
 
-      <aside className="lg:col-span-5">
+      <div className="lg:col-span-5">
         {enviado ? (
           /* Fallback obrigatório: se o WhatsApp não abriu, a mensagem está aqui. */
           <div className="border-l border-accent pl-6" aria-live="polite">
@@ -301,7 +301,7 @@ export function OrcamentoForm() {
             </ol>
           </div>
         )}
-      </aside>
+      </div>
     </div>
   );
 }

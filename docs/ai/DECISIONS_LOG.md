@@ -3425,6 +3425,51 @@ conversão (tipos, galeria, processo, contato).
 
 **Affects:** `components/layout/Navbar.tsx`.
 
+## DEC-093 — Seção de artigos e llms.txt (2026-11-05)
+
+**Decisão:** o site ganha `/artigos` (índice) e `/artigos/[slug]` com quatro textos para o leigo:
+como medir vão e pé-direito; espelho e piso (NBR 9050 e fórmula de Blondel); pré-moldada × moldada
+no local; quanto espaço ocupa cada tipo. Cada artigo abre com uma **resposta curta** (o trecho que
+busca e assistente de IA citam), tem sumário, fontes, tipos citados e "leia também"; marcação
+`Article` + `BreadcrumbList`. Os artigos entram no sitemap, no rodapé, na gaveta do celular, na
+página Dúvidas e nas páginas de tipo ("Para ler antes de decidir"). `/blog` e `/blog/*` redirecionam
+para `/artigos`. `/llms.txt` resume o site para assistentes, gerado dos mesmos dados das páginas.
+
+Regra de conteúdo: só norma pública, citada pelo nome, e conta de exemplo marcada como exemplo.
+Nenhum prazo, preço, carga ou número da Munarim. A revisão da empresa fica em CNT-017.
+
+**Why:** pedido do desenvolvedor (SEO/AEO/GEO). O `PRODUCT.md` dizia "sem blog nesta fase"; a
+mudança é dele e foi atualizada lá.
+
+**Affects:** `content/artigos.ts`, `app/artigos/**`, `app/llms.txt/route.ts`, `app/sitemap.ts`,
+`next.config.ts`, `components/layout/Footer.tsx`, `components/layout/Navbar.tsx`,
+`app/duvidas/page.tsx`, `app/escadas/[tipo]/page.tsx`, `lib/texto.tsx`, `PRODUCT.md`,
+`SITE_ARCHITECTURE.md`, `CONTENT_PENDING.md`.
+
+## DEC-094 — Correções da auditoria impeccable/ui-ux (2026-11-05)
+
+**Decisão:** correções do relatório `docs/ai/AUDITORIA_2026-11-05.md`.
+
+- `.figura` perdeu o `display: block` fora de camada, que vencia o `lg:hidden` do Tailwind: em
+  `/como-funciona` cada etapa mostrava o desenho duas vezes no desktop. A etapa foi refeita com um
+  desenho só, grande, à direita do texto.
+- Cartão que vira: easing com quique (`cubic-bezier(0.25, 1.35, 0.4, 1)`) trocado por saída
+  exponencial (`0.22, 1, 0.36, 1`), 800ms.
+- Fotos: o zoom no hover (assinatura de interface gerada) virou um escurecimento discreto
+  (`brightness 0.9`) em cartões de tipo, galeria e trilho.
+- Acessibilidade: estrelas com `role="img"`; no lema que se preenche, o leitor de tela lê a camada de
+  cor e a camada apagada fica `aria-hidden`; botão do WhatsApp dentro de um `aside` próprio;
+  `aside` aninhado em Dúvidas e Orçamento virou `div`; "Ler mais" com alvo de 44px; "Virar ↻" sobe
+  para 11,5px.
+
+**Why:** auditoria pedida pelo desenvolvedor (impeccable, ui-ux-pro-max, frontend-design).
+
+**Affects:** `app/globals.css`, `app/como-funciona/page.tsx`, `components/ui/CartaoVira` (via CSS),
+`components/ui/TypeCard.tsx`, `components/galeria/ColecaoCard.tsx`, `components/media/GaleriaTipo.tsx`,
+`components/home/GaleriaTrilho.tsx`, `components/home/AvaliacoesTrilho.tsx`,
+`components/motion/Preenche.tsx`, `components/home/ProcessoCards.tsx`,
+`components/layout/WhatsAppFab.tsx`, `app/duvidas/page.tsx`, `components/orcamento/OrcamentoForm.tsx`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e
@@ -3435,3 +3480,4 @@ não dispensado aqui é um defeito, não uma escolha.
 | `MEDIA_PLAN.md` — "nenhum asset gerado representando obra do cliente" | `DEC-008`: sem acervo fotográfico, o projeto não pode aguardar material que pode não chegar. Substituído pela verificação por asset. | Desenvolvedor (Coded by M) | 2026-08-04 |
 | `agents/doc-verifier.md` — passe adversarial sobre os documentos | Modo C não usa subagents (`DEC-014`). | Desenvolvedor (Coded by M) | 2026-08-04 |
 | "Propor 3" em tipografia, cor e layout | Modo C (`DEC-014`). Escolha única justificada em `DESIGN.md`. | Desenvolvedor (Coded by M) | 2026-08-04 |
+| axe `color-contrast` na camada apagada do lema (`Preenche`, 1,7:1) | A camada é `aria-hidden` e fica sob a camada de cor, com o mesmo texto e contraste pleno; é o estado "por preencher" do efeito do `DEC-067`. | Auditoria de 2026-11-05 (`DEC-094`), sob a revisão autorizada pelo desenvolvedor | 2026-11-05 |
