@@ -34,8 +34,8 @@ function usosDe(slug: string, i: number, foto: FotoAcervo): Uso[] {
 const FOTOS = tipos.flatMap((t) => fotosDo(t.slug).map((f, i) => ({ ...f, slug: t.slug, tipo: t.nome, i })));
 
 const MARCA = [
-  { src: "/marca/munarim-marca-escuro.svg", uso: "Barra do topo (DEC-069)", escuro: true },
-  { src: "/marca/munarim-marca-claro.svg", uso: "Rodapé (DEC-069)", escuro: false },
+  { src: "/marca/munarim-marca-escuro.svg", uso: "Rodapé (DEC-069)", escuro: true },
+  { src: "/marca/munarim-marca-claro.svg", uso: "Barra do topo (DEC-097)", escuro: false },
   { src: "/marca/munarim-capa-sobre-escuro.svg", uso: "Antiga — substituída", escuro: true },
   { src: "/media/escadas-munarim-logo-mono.svg", uso: "Antiga — substituída", escuro: false },
   { src: "/media/escadas-munarim-logo.svg", uso: "Não usado no site", escuro: false },

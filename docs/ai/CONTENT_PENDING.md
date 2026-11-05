@@ -69,9 +69,10 @@ material gerado (`DEC-008`) — funciona, mas é o maior risco de credibilidade 
 público é leigo, desconfiado, e imagem sintética erra geometria estrutural.
 **Used in:** `/obras`, `/escadas/[tipo]` galeria, `/` bloco de obras
 **Current placeholder:** assets `gen-` conforme `MEDIA_PLAN.md`, todos marcados para substituição.
-**Note (2026-11-05):** a capa da home usa quatro fotos de banco (Pexels, `stock-capa-*` e
-`capa-escada-dupla`) e o aviso "foto de referência" saiu da tela (DEC-088, DEC-091). Substituir
-por obras da Munarim continua sendo a prioridade.
+**Note (2026-11-05):** o aviso "foto de referência" saiu da tela (DEC-088, DEC-091). Substituir por
+obras da Munarim continua sendo a prioridade.
+**Note (2026-11-05, DEC-097):** a capa da home abre uma foto de cada um dos sete tipos, e as sete
+são `ref-` (referência, sem licença, não são obras da Munarim). Trocar todas antes de publicar.
 **Requirements:** 12–20 fotos de escadas instaladas, identificando o tipo de cada uma. Celular serve —
 luz natural, sem flash, escada inteira no enquadramento, sem morador na foto. Confirmar autorização
 do proprietário para uso das imagens.

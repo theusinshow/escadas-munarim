@@ -3493,6 +3493,40 @@ seções em que a foto acabava e o texto seguia sozinho (a foto de 596px ao lado
 `components/home/PreMoldadaAcordeao.tsx`, `app/artigos/[slug]/page.tsx`,
 `public/media/empresa/foto-fachada-01.avif`.
 
+## DEC-096 — Logos das construtoras atendidas na página Sobre (2026-11-05)
+
+**Decisão:** substitui o último item do DEC-095. `/empresa` mostra os sete logos que a página "Nossa
+Empresa" do site anterior lista como clientes: Procave, RDO, OK Construções, Vitalle, Silva Packer,
+Jardim Continental e AVS Construções. Ficam numa faixa abaixo dos números, sob o título
+"Construtoras e empreendimentos atendidos". Os arquivos foram tirados do site antigo, recortados,
+sem fundo e numa cor só (o azul `--barra`). A altura de cada um é calculada para que todos tenham
+mais ou menos a mesma área (`alturaDoLogo` em `content/clientes.ts`).
+
+**Why:** o desenvolvedor liberou a exibição. Sete logos coloridos, cada um com o próprio fundo,
+brigariam entre si e com as fotos, por isso a cor única.
+
+**Affects:** `app/empresa/page.tsx`, `content/clientes.ts`, `public/media/empresa/clientes/`.
+
+## DEC-097 — Capa "do desenho à escada" e barra branca (2026-11-05)
+
+**Decisão:** substitui a capa de fotos (DEC-086 → DEC-091) e a barra azul. A capa passa pelos sete
+tipos sozinha: o desenho técnico se monta peça por peça em azul sobre um quadriculado de papel de
+projeto, uma frente em forma de escada (razão 18/28, filete azul) sobe e abre a foto do tipo, e segue
+subindo até revelar o próximo desenho. O título fica azul no papel e branco na foto, e troca na linha
+dos degraus. Sem setas: tocar em qualquer parte leva à página do tipo, e "Pausar" atende a WCAG 2.2.2.
+Com `reduce` ou sem JS fica o primeiro desenho parado, e com `reduce` nenhuma foto é baixada. A barra,
+a gaveta e o mega-menu ficam brancos, com o azul nos textos e no botão. O contador e a linha "Ver esta
+escada" saíram a pedido do desenvolvedor.
+
+**Why:** o desenvolvedor não gostava do azul da barra e pediu uma capa mais artística, com transição
+automática e uma foto de cada tipo. Escolheu esta entre oito propostas. Ela também põe o desenho
+técnico na abertura do site (DEC-009).
+
+**Affects:** `components/home/CapaSobe.tsx`, `app/page.tsx`, `app/globals.css`,
+`components/technical/Figura.tsx` (tema "projeto"), `components/layout/Navbar.tsx`,
+`app/revisao/page.tsx`. Saíram `components/home/CapaFoto.tsx` e `public/media/capa/stock-capa-*`.
+As sete fotos da capa são `ref-` e precisam ser trocadas antes de publicar (CNT-003).
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

@@ -13,7 +13,7 @@ export function Figura({
 }: {
   nome: string;
   titulo: string;
-  tema?: "claro" | "escuro";
+  tema?: "claro" | "escuro" | "projeto";
   className?: string;
 }) {
   const svg = FIGURAS[nome];

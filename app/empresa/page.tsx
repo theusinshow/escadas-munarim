@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { GhostLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
@@ -6,6 +7,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { TextLink } from "@/components/ui/TextLink";
 import { Foto } from "@/components/media/Foto";
 import { RESUMO_GOOGLE } from "@/content/avaliacoes";
+import { alturaDoLogo, clientes } from "@/content/clientes";
 import { FOTO_FACHADA } from "@/content/galeria";
 import { tipos } from "@/content/tipos";
 import { addressLine, site } from "@/lib/site";
@@ -113,7 +115,27 @@ export default function EmpresaPage() {
             </div>
           ))}
         </dl>
-        <p className="mt-10 flex flex-wrap gap-x-8 gap-y-2">
+
+        <div className="mt-16 border-t border-border pt-10 lg:mt-20">
+          <h2 className="spec text-muted">Construtoras e empreendimentos atendidos</h2>
+          <ul className="mt-8 flex flex-wrap items-center gap-x-12 gap-y-8 lg:justify-between lg:gap-x-8">
+            {clientes.map((c) => (
+              <li key={c.nome} data-revela>
+                <Image
+                  src={c.src}
+                  alt={c.nome}
+                  width={c.largura}
+                  height={c.altura}
+                  sizes="240px"
+                  className="h-[calc(var(--h)*0.78)] w-auto max-w-none xl:h-(--h)"
+                  style={{ "--h": `${alturaDoLogo(c)}rem` } as React.CSSProperties}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="mt-12 flex flex-wrap gap-x-8 gap-y-2">
           <TextLink alvo href="/obras">Ver as obras</TextLink>
           <TextLink alvo href="/como-funciona">Como funciona, do vão à entrega</TextLink>
         </p>
