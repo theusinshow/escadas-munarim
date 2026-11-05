@@ -59,3 +59,16 @@ export const temReferencia = Object.values(acervo).some((fotos) =>
   fotos.some((f) => f.origem === "referencia"),
 );
 
+
+/**
+ * A fachada da sede, com as vans da empresa — foto da página "Nossa Empresa"
+ * do site anterior. Só existe em 300 × 183px: entra pequena, nunca ampliada.
+ */
+export const FOTO_FACHADA: FotoAcervo = {
+  src: "/media/empresa/foto-fachada-01.avif",
+  largura: 300,
+  altura: 183,
+  origem: "cliente",
+  alt: "Fachada da sede da Escadas Munarim, com o letreiro azul da marca e três vans da empresa estacionadas na frente",
+  blur: "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoMAAcAA4BaJQBOgMVfyRvbabOAAMr1elyad8Sc8CttCR7M/51FT1b53wHcIMBgxBslriDC9AV8+9Rb8f2vihsSfAAAAA==",
+};

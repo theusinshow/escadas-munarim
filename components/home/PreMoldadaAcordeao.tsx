@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Foto } from "@/components/media/Foto";
+import { Prende } from "@/components/motion/Prende";
 import { Rotulo } from "@/components/ui/Rotulo";
 import { fotosDo } from "@/content/galeria";
 
@@ -15,7 +16,8 @@ import { fotosDo } from "@/content/galeria";
  *
  * DEC-075: a foto troca com o tema — pré-moldada mostra uma reta, no local
  * mostra um in loco; os itens de vocabulário mantêm a última. DEC-083: a foto
- * tem proporção fixa (4:5) e fica presa na rolagem; o rótulo, o título e o
+ * tem proporção fixa (4:5) e fica presa na rolagem (`Prende`, que também
+ * funciona com a rolagem suave); o rótulo, o título e o
  * acordeão ficam na coluna da direita, alinhados ao topo da foto.
  */
 
@@ -74,20 +76,19 @@ export function PreMoldadaAcordeao() {
       <div className="container-site">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-10">
           {FOTOS.length > 0 && (
-            <div
-              data-revela
-              className="relative aspect-[4/5] overflow-hidden lg:sticky lg:top-[calc(var(--barra-h)+2rem)] lg:col-span-5"
-            >
-              {FOTOS.map((f, i) => (
-                <div
-                  key={f.src}
-                  aria-hidden={i !== foto}
-                  className={`absolute inset-0 transition-opacity duration-700 ${i === foto ? "opacity-100" : "opacity-0"}`}
-                >
-                  <Foto foto={f} fill sizes="(min-width: 1024px) 40vw, 100vw" />
-                </div>
-              ))}
-            </div>
+            <Prende className="lg:sticky lg:top-[calc(var(--barra-h)+2rem)] lg:col-span-5">
+              <div data-revela className="relative aspect-[4/5] overflow-hidden">
+                {FOTOS.map((f, i) => (
+                  <div
+                    key={f.src}
+                    aria-hidden={i !== foto}
+                    className={`absolute inset-0 transition-opacity duration-700 ${i === foto ? "opacity-100" : "opacity-0"}`}
+                  >
+                    <Foto foto={f} fill sizes="(min-width: 1024px) 40vw, 100vw" />
+                  </div>
+                ))}
+              </div>
+            </Prende>
           )}
 
           <div className="lg:col-span-6 lg:col-start-7">

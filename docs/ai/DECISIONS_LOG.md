@@ -3470,6 +3470,29 @@ mudança é dele e foi atualizada lá.
 `components/motion/Preenche.tsx`, `components/home/ProcessoCards.tsx`,
 `components/layout/WhatsAppFab.tsx`, `app/duvidas/page.tsx`, `components/orcamento/OrcamentoForm.tsx`.
 
+## DEC-095 — Foto da sede na página Sobre e "sticky" que funciona com a rolagem suave (2026-11-05)
+
+**Decisão:**
+
+- `/empresa` ganha a foto da fachada da sede com as vans da empresa, a mesma da página "Nossa
+  Empresa" do site anterior (`origem: "cliente"`, `public/media/empresa/foto-fachada-01.avif`). O
+  arquivo original só existe em 300 × 183px, então a foto entra no tamanho dela, com moldura, e não
+  é ampliada. A página também ganha a faixa de números verificados (15 anos, 7 tipos, nota no
+  Google) e links para Obras e Como funciona.
+- Novo `components/motion/Prende.tsx`: dentro do ScrollSmoother o `position: sticky` não prende (o
+  conteúdo anda por `transform`). Com a rolagem suave ligada, o `Prende` desce o bloco junto com a
+  rolagem até o fim do pai; sem ela, vale o `sticky` da classe. Usado na foto de "Duas formas de
+  fazer a mesma escada" (home) e no sumário dos artigos.
+- Os logos de construtoras do site anterior não entraram: são prova social de terceiros e pedem
+  confirmação da Munarim.
+
+**Why:** pedido do desenvolvedor: atualizar a página Sobre com a imagem do site antigo e corrigir as
+seções em que a foto acabava e o texto seguia sozinho (a foto de 596px ao lado de 1141px de texto).
+
+**Affects:** `app/empresa/page.tsx`, `content/galeria.ts`, `components/motion/Prende.tsx`,
+`components/home/PreMoldadaAcordeao.tsx`, `app/artigos/[slug]/page.tsx`,
+`public/media/empresa/foto-fachada-01.avif`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

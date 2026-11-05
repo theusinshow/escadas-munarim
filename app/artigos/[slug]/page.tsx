@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Prende } from "@/components/motion/Prende";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Section } from "@/components/ui/Section";
 import { artigoPorSlug, artigos, minutosDeLeitura, type Bloco } from "@/content/artigos";
@@ -194,7 +195,7 @@ export default async function ArtigoPage({ params }: PageProps<"/artigos/[slug]"
           </article>
 
           <aside aria-label="Neste artigo" className="lg:col-span-4 lg:col-start-9">
-            <div className="lg:sticky lg:top-[calc(var(--barra-h)+2rem)]">
+            <Prende className="lg:sticky lg:top-[calc(var(--barra-h)+2rem)]">
               <p className="spec text-muted">Neste artigo</p>
               <ol className="mt-4 border-t border-border">
                 {a.secoes.map((s) => (
@@ -226,7 +227,7 @@ export default async function ArtigoPage({ params }: PageProps<"/artigos/[slug]"
                   </ul>
                 </>
               )}
-            </div>
+            </Prende>
           </aside>
         </div>
       </Section>
