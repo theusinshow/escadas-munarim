@@ -14,7 +14,7 @@ export function GET() {
   const linhas = [
     `# ${site.name}`,
     "",
-    `> Fabricante de escadas de concreto polido sob medida em ${site.address.city}/${site.address.state}, há ${site.yearsInMarket} anos, atendendo São José e a Grande Florianópolis. Projeta e fabrica a escada; corrimão, guarda-corpo e revestimento vêm de empresas parceiras.`,
+    `> Fabricante de escadas de concreto polido sob medida em ${site.address.city}/${site.address.state}, há mais de ${site.yearsInMarket} anos, atendendo São José e a Grande Florianópolis. Projeta e fabrica a escada; corrimão, guarda-corpo e revestimento vêm de empresas parceiras.`,
     "",
     `Contato: telefone ${site.contact.phone} · WhatsApp ${site.contact.whatsapp} · ${site.contact.email} · Instagram ${site.contact.instagram}`,
     `Endereço: ${addressLine}`,

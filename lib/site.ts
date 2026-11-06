@@ -14,7 +14,7 @@ export const site = {
    * trabalha por parceria. Ver DEC-017 e CNT-014.
    */
   description:
-    "Escadas pré-moldadas em concreto polido sob medida em São José/SC, há 15 anos. Cinco tipos, com o desenho e as medidas abertos para você comparar.",
+    "Escadas pré-moldadas em concreto polido sob medida em São José/SC, há mais de 15 anos. Cinco tipos, com o desenho e as medidas abertos para você comparar.",
   url: "https://escadasmunarim.com.br",
   locale: "pt-BR",
 
@@ -74,3 +74,16 @@ export function whatsappLink(message?: string): string {
 
 /** Endereço em uma linha. */
 export const addressLine = `${site.address.street}, ${site.address.district}, ${site.address.city} — ${site.address.state}`;
+
+/** O tempo de mercado como aparece na tela (DEC-103). */
+export const anosDeMercado = `+${site.yearsInMarket}`;
+
+/**
+ * Os dois links do Google Maps da página Sobre (DEC-104). Buscam o endereço, não
+ * o nome: a ficha da empresa no Google aponta para outro endereço (CNT-018).
+ */
+const destinoNoMapa = encodeURIComponent(
+  `${site.address.street}, ${site.address.district}, ${site.address.city} - ${site.address.state}`,
+);
+export const mapaUrl = `https://www.google.com/maps?q=${destinoNoMapa}&z=16&output=embed`;
+export const comoChegarUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinoNoMapa}`;

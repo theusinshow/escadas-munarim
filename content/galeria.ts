@@ -61,6 +61,19 @@ export const temReferencia = Object.values(acervo).some((fotos) =>
 
 
 /**
+ * Escada vista de cima — o banner do site anterior (1900 × 700px), recortado
+ * para tirar o logo antigo que vinha na imagem (DEC-104).
+ */
+export const FOTO_OBRA: FotoAcervo = {
+  src: "/media/empresa/foto-obra-01.avif",
+  largura: 1480,
+  altura: 700,
+  origem: "cliente",
+  alt: "Escada de degraus claros em curva, vista de cima, ao lado de uma parede de vidro",
+  blur: "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoMAAYAA4BaJZwAAqzVkxcYIAD+1/bgmYCxzCHJX7okfdQbOfQbTO0ubWYgWYjmrHQAAA==",
+};
+
+/**
  * A fachada da sede, com as vans da empresa — foto da página "Nossa Empresa"
  * do site anterior. Só existe em 300 × 183px: entra pequena, nunca ampliada.
  */

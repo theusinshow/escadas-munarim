@@ -57,7 +57,7 @@ Before making changes, read:
 - Endereço: Rua Treze de Junho, 893, Flor de Nápolis, São José — SC
 - Telefone (48) 3257-2015 · WhatsApp (48) 99981-0707 · vendas@escadasmunarim.com.br · @escadasmunarim
 - Tagline: **"Segurança e Design"** · Cor da marca: `#2C445F`
-- **15 anos** de mercado (o "13 anos" do site antigo está errado — `DEC-004`)
+- **+15 anos** de mercado (`DEC-103`; o "13 anos" do site antigo está errado — `DEC-004`)
 - 5 tipos no site: reta · caracol · leke · mista · espelho fechado (premium e in loco saíram, `DEC-098`)
 - Complementos: corrimão inox escovado polido, ferro galvanizado, guarda-corpo, sacada
 - Região: São José e Grande Florianópolis

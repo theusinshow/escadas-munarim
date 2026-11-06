@@ -281,3 +281,17 @@ explicação de pré-moldada × in loco bate com o processo dela; (2) se a altur
 dela segue os 2 m da NBR 9077 ou o código de obras local; (3) se quer assinar os artigos com o nome
 de um responsável técnico (melhora a autoria para busca e IA).
 
+---
+
+### CNT-018 — Endereço da ficha do Google
+
+**Type:** fato de negócio
+**Status:** Decidido para o site (2026-11-05); ficha do Google pendente
+**Impact:** o site antigo informa Rua Treze de Junho, 893, Flor de Nápolis. A ficha "Escadas Munarim" no
+Google, com 4,9 e 68 avaliações, informa R. Ervino Schmitt, 115, Sertão do Maruim, São José. Quem busca a
+empresa no Google pode ir para um endereço diferente do publicado no site.
+**Used in:** `lib/site.ts`, `/empresa`, rodapé, dados estruturados
+**Current placeholder:** nenhum. O desenvolvedor decidiu seguir o endereço do site: Rua Treze de Junho,
+893, e o mapa busca esse endereço.
+**Requirements:** a Munarim corrige a ficha do Google, se o endereço dela estiver desatualizado.
+

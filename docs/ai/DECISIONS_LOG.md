@@ -3611,6 +3611,47 @@ confirmou os dois casos.
 
 **Affects:** `components/layout/Navbar.tsx`, `components/motion/Suave.tsx`, `app/escadas/page.tsx`.
 
+## DEC-103 — O tempo de mercado aparece como "+15 anos" (2026-11-05)
+
+**Decisão:** ajusta a forma do `DEC-004`. Título e números mostram "+15" (`anosDeMercado` em `lib/site.ts`),
+e as frases dizem "há mais de 15 anos". O dado segue em `yearsInMarket: 15`. Na home e em `/empresa`, o
+cartão do "+15" fica em destaque: fundo azul e texto branco, invertendo os outros cartões.
+
+**Why:** pedidos do desenvolvedor: "troque para +15 anos" e "destaca o +15 para ser uma box com os textos
+invertido". O "+" também evita que o número envelheça
+enquanto o ano de fundação não chega (`CNT-002`), mas não substitui esse dado.
+
+**Affects:** `lib/site.ts`, `app/empresa/page.tsx`, `components/home/SobreBloco.tsx`,
+`app/llms.txt/route.ts`, `CLAUDE.md`.
+
+## DEC-104 — Página Sobre reestruturada, com foto grande e mapa (2026-11-05)
+
+**Decisão:** `/empresa` segue a estrutura da página Sobre da Machado Plataformas, projeto do
+desenvolvedor: abertura, o que a Munarim faz com colagem de fotos, números e construtoras, como a gente
+trabalha, missão/visão/valores e "Onde estamos".
+
+- **Colagem:** o banner do site anterior (1900 × 700px), recortado para tirar o logo antigo
+  (`foto-obra-01.avif`), com a fachada sobreposta no tamanho real (300px, `DEC-095`). O desenvolvedor
+  aprovou a foto mesmo com a escada parecendo revestida de pedra.
+- **Missão, visão e valores:** voltam à tela, revertendo o `DEC-059`, em seção chumbo. O texto é o da
+  página "Nossa Empresa" do site atual. Os valores entram só com o nome: a empresa não declara descrição
+  para eles, e a descrição que a referência tem seria texto inventado.
+- **Onde estamos:** dados em linhas (endereço, WhatsApp, telefone, e-mail, atendimento), botão "Como
+  chegar" e mapa do Google ao lado. O Instagram sai desta seção: já está no rodapé (`DEC-100`).
+- **Mapa:** `iframe` do Google Maps com carregamento adiado, sem chave de API. É o primeiro serviço de
+  terceiros do site, uma exceção pedida ao `DEC-007`. Dado geográfico real resolve o motivo do descarte do
+  `MED-008`, que era um mapa desenhado à mão. Substitui o "mapa estático" do `PAGE_BLUEPRINTS.md`. Busca
+  pelo endereço, não pelo nome da empresa (`CNT-018`).
+- **Política de privacidade:** deixa de dizer que o site não chama terceiros e explica o mapa. O novo
+  trecho também depende da aprovação de `CNT-008`.
+
+**Why:** pedidos do desenvolvedor: "melhorar e reestruturar a página sobre a empresa, colocar um mapa com
+localização, imagem da empresa" e usar a Machado como referência, com a missão, a visão e os valores do
+site atual. A foto da fachada em boa resolução continua pendente (`CNT-004`).
+
+**Affects:** `app/empresa/page.tsx`, `content/galeria.ts`, `lib/site.ts`,
+`app/politica-de-privacidade/page.tsx`, `public/media/empresa/foto-obra-01.avif`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

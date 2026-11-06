@@ -9,9 +9,10 @@ export const metadata: Metadata = {
 
 /**
  * Política de privacidade (DEC-091). Descreve só o que o código faz — e foi
- * conferido nele: site estático, sem analytics, sem cookie, sem
+ * conferido nele: site estático, sem analytics, sem cookie próprio, sem
  * armazenamento no navegador; o formulário monta a mensagem no aparelho e abre
- * o WhatsApp. Razão social e CNPJ do controlador entram quando chegarem
+ * o WhatsApp. O único serviço de terceiros é o mapa do Google em /empresa
+ * (DEC-104). Razão social e CNPJ do controlador entram quando chegarem
  * (CNT-001); o texto final passa pela revisão da empresa (CNT-008).
  */
 export default function PoliticaPage() {
@@ -23,9 +24,27 @@ export default function PoliticaPage() {
         <section>
           <h2 className="text-xl text-text">O que este site guarda</h2>
           <p className="mt-4">
-            Nada. O site da {site.name} não tem cadastro, não usa cookies e não usa
-            ferramentas de análise de visitas. As fotos e as fontes são servidas pelo
-            próprio site, sem chamar serviços de terceiros.
+            Nada. O site da {site.name} não tem cadastro, não define cookies próprios e não
+            usa ferramentas de análise de visitas. As fotos e as fontes são servidas pelo
+            próprio site. A única exceção é o mapa da página Sobre, explicado abaixo.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl text-text">O mapa da página Sobre</h2>
+          <p className="mt-4">
+            A página Sobre mostra a nossa localização em um mapa do Google. Quando o mapa
+            carrega, o seu navegador se conecta ao Google, que pode registrar dados como o
+            endereço IP e usar cookies próprios, conforme a{" "}
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link underline underline-offset-4"
+            >
+              política de privacidade do Google
+            </a>
+            . O site da {site.name} não recebe esses dados.
           </p>
         </section>
 
