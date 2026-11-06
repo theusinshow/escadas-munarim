@@ -215,7 +215,7 @@ function Espiral() {
         orientation="horizontal"
         from={[X(-rOut), Y(-40)]}
         to={[X(rOut), Y(-40)]}
-        label="Ø do vão"
+        label="diâmetro do vão"
         witnessFrom={[X(-rOut), Y(0)]}
         witnessTo={[X(rOut), Y(0)]}
       />

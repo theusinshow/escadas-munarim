@@ -3662,6 +3662,23 @@ que ocupava muito da página.
 
 **Affects:** `components/ui/PageHeader.tsx`, `app/empresa/page.tsx`.
 
+## DEC-106 — Páginas de escadas: abertura menor, medidas explicadas e galeria sem buraco (2026-11-05)
+
+**Decisão:** em `/escadas`, abertura `compacto` e menos respiro antes do grid. Em `/escadas/[tipo]`: seções
+alternando branco e cinza claro; os dois desenhos em painéis iguais com legenda em português ("Axonometria"
+saiu, "Ø" virou "diâmetro"); legenda com as quatro medidas (vão, pé-direito, espelho, piso); "Quando escolher"
+em painel claro e "Quando não escolher" em painel azul; galeria em fileiras que fecham a largura sem cortar foto
+(`fileiras`, só aqui, `/obras` continua em colunas); tipo com uma foto só fica sem galeria, porque ela já está no
+hero; "Outros tipos" mostra os quatro restantes em uma linha (duas colunas no celular, `compacto` no `TypeCard`), em
+vez de três em cards grandes.
+
+**Why:** pedido do desenvolvedor para trabalhar as páginas de escadas. O título do catálogo tomava a primeira tela
+sem nenhuma escada à vista, a página de tipo era uniforme, usava termos sem definição (`DEC-002`), deixava buraco na
+galeria e escondia um dos tipos na comparação. O bloco de `DEC-012` ganhou peso, sem mudar o texto.
+
+**Affects:** `app/escadas/page.tsx`, `app/escadas/[tipo]/page.tsx`, `components/media/GaleriaTipo.tsx`,
+`components/technical/SectionDrawing.tsx`, `components/ui/TypeCard.tsx`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

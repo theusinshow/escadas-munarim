@@ -15,8 +15,20 @@ import type { FotoAcervo } from "@/content/galeria";
  * O lightbox é `<dialog>` nativo: `showModal()` já entrega foco preso, `Esc`
  * para fechar e o resto da página inerte — nada disso reimplementado à mão.
  * Setas do teclado navegam.
+ *
+ * `fileiras` (DEC-106) é para poucas fotos, onde a coluna deixa buraco: cada
+ * fileira fecha a largura, com a mesma altura e sem cortar nenhuma foto, porque
+ * a largura de cada uma é proporcional à sua proporção.
  */
-export function GaleriaTipo({ fotos, nome }: { fotos: FotoAcervo[]; nome: string }) {
+export function GaleriaTipo({
+  fotos,
+  nome,
+  fileiras = false,
+}: {
+  fotos: FotoAcervo[];
+  nome: string;
+  fileiras?: boolean;
+}) {
   const dialogo = useRef<HTMLDialogElement>(null);
   const [atual, setAtual] = useState<number | null>(null);
 
@@ -49,26 +61,53 @@ export function GaleriaTipo({ fotos, nome }: { fotos: FotoAcervo[]; nome: string
 
   const foto = atual === null ? null : fotos[atual];
 
+  const miniatura = (f: FotoAcervo, i: number, sizes: string) => (
+    <button
+      type="button"
+      onClick={() => abrir(i)}
+      className="group relative block w-full cursor-zoom-in overflow-hidden bg-shade"
+      aria-label={`Ampliar: ${f.alt}`}
+    >
+      <Foto
+        foto={f}
+        sizes={sizes}
+        imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
+      />
+    </button>
+  );
+
+  /* Duas fotos grandes abrindo, depois de três em três. */
+  const inicio = fotos.length % 3 === 0 ? 3 : 2;
+  const cortes = [0];
+  for (let c = inicio; c < fotos.length; c += 3) cortes.push(c);
+
   return (
     <>
-      <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-        {fotos.map((f, i) => (
-          <li key={f.src} className="mb-4 break-inside-avoid">
-            <button
-              type="button"
-              onClick={() => abrir(i)}
-              className="group relative block w-full cursor-zoom-in overflow-hidden bg-shade"
-              aria-label={`Ampliar: ${f.alt}`}
-            >
-              <Foto
-                foto={f}
-                sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-                imgClassName="transition-[filter] duration-500 ease-degrau group-hover:brightness-[0.9] motion-reduce:transition-none"
-              />
-            </button>
-          </li>
-        ))}
-      </ul>
+      {fileiras ? (
+        <div className="space-y-4">
+          {cortes.map((de, n) => (
+            <ul key={de} className="flex flex-col gap-4 sm:flex-row">
+              {fotos.slice(de, cortes[n + 1]).map((f, i) => (
+                <li
+                  key={f.src}
+                  className="min-w-0 sm:[flex:var(--proporcao)_1_0%]"
+                  style={{ "--proporcao": f.largura / f.altura } as React.CSSProperties}
+                >
+                  {miniatura(f, de + i, "(min-width: 640px) 50vw, 100vw")}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      ) : (
+        <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+          {fotos.map((f, i) => (
+            <li key={f.src} className="mb-4 break-inside-avoid">
+              {miniatura(f, i, "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw")}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <dialog
         ref={dialogo}

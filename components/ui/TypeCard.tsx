@@ -15,16 +15,21 @@ import type { Tipo } from "@/content/tipos";
  * `detalhe` acrescenta o resumo de uma linha: vale em `/escadas`, onde o grid
  * é a ferramenta de comparação; na home o card fica limpo.
  *
+ * `compacto` é para grade apertada ("Outros tipos"): menos padding, e o
+ * pictograma só entra quando há largura para ele ao lado do nome.
+ *
  * Sem foto no acervo, a axonometria assume o lugar dela — nunca caixa cinza
  * (`MEDIA_PLAN.md`). O card inteiro é o link (U15).
  */
 export function TypeCard({
   tipo,
   detalhe = false,
+  compacto = false,
   sizes = "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
 }: {
   tipo: Tipo;
   detalhe?: boolean;
+  compacto?: boolean;
   sizes?: string;
 }) {
   const foto = capaDo(tipo.slug);
@@ -50,16 +55,18 @@ export function TypeCard({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col border-t border-border p-6 lg:p-7">
+      <div className={`flex flex-1 flex-col border-t border-border ${compacto ? "p-4 sm:p-6" : "p-6 lg:p-7"}`}>
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h3 className="text-[1.35rem] leading-tight">{tipo.nome}</h3>
+            <h3 className={`leading-tight ${compacto ? "text-[1.1rem] sm:text-[1.35rem]" : "text-[1.35rem]"}`}>
+              {tipo.nome}
+            </h3>
             <p className="mt-2 text-sm text-muted">{tipo.destaque}</p>
           </div>
           <Figura
             nome={tipo.slug}
             titulo={`Desenho da escada ${tipo.nome.toLowerCase()}`}
-            className="w-24 shrink-0"
+            className={`w-24 shrink-0 ${compacto ? "hidden xl:block" : ""}`}
           />
         </div>
         {detalhe && (

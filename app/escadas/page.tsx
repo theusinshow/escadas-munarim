@@ -20,20 +20,21 @@ export default function EscadasPage() {
   return (
     <>
       <PageHeader
+        compacto
         title="Cinco tipos. Um deles resolve o seu vão."
-        lead="A escolha depende de três coisas: o espaço disponível, o pé-direito — a altura de piso a piso — e quantas vezes por dia a escada vai ser usada."
+        lead="A escolha depende de três coisas: o vão (a abertura na laje por onde a escada passa), o pé-direito (a altura de piso a piso) e quantas vezes por dia a escada vai ser usada."
       />
 
-      {/* Grid comparativo: os 7 recebem tratamento idêntico DE PROPÓSITO —
+      {/* Grid comparativo: os 5 recebem tratamento idêntico DE PROPÓSITO —
           é o único lugar do site onde isso é a intenção, não descuido. */}
-      <Section density="default">
+      <Section density="dense">
         <h2 className="sr-only">Os cinco tipos</h2>
         <StepIn selector="li">
           <TypeGrid href="#nao-sei" detalhe />
         </StepIn>
       </Section>
 
-      <Section density="dense" id="nao-sei" className="scroll-mt-(--barra-h) border-t border-border">
+      <Section density="dense" id="nao-sei" className="scroll-mt-(--barra-h) bg-surface">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader
