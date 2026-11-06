@@ -1,12 +1,12 @@
 /**
- * Figuras técnicas do site (DEC-070): os sete tipos e as quatro etapas do
+ * Figuras técnicas do site (DEC-070): os cinco tipos e as quatro etapas do
  * processo como sólidos isométricos, no método da skill Anatomy
  * (https://skills.wheresryan.sh/anatomy, MIT — `kit/LICENSE`).
  *
  * - Sólidos, não arame: toda face é pintada em ordem, de trás para frente.
  * - Quatro tons por orientação + topo claro; o assunto (a escada) tem o traço
  *   mais forte, o contexto (laje, parede, chão) recua.
- * - Uma câmera e uma escala para os sete tipos: comparação honesta (DEC-009).
+ * - Uma câmera e uma escala para os cinco tipos: comparação honesta (DEC-009).
  * - Degrau na razão real, espelho 18 / piso 28 (cm). Medidas de desenho, não
  *   especificação da Munarim (CNT-009).
  *
@@ -301,28 +301,6 @@ const TIPOS = {
     return [...contexto(P, { xs }), { svg: sombra(P, { x: 0, y: 0, w: xs, d: W, r: 4 }) }, pilar, consolo, lance];
   },
 
-  premium(P) {
-    const xs = 196;
-    const yc = W - 7;
-    const postes = [0, 2, 4, 6].map((i) => [i * T + T / 2, (i + 1) * R]);
-    const lance = {
-      faces: prismaY(perfilPreMoldado(RETA), 0, W, "s", { topo: "l" }),
-      depois: [
-        detalheLance(P, RETA, { tom: "acc" }),
-      ].join(""),
-    };
-    // corrimão de parceiro (não é produto Munarim): montantes e tubo inclinado, em estrutura
-    const montantes = postes.map(([x, z]) => ({
-      faces: cilindro(x, yc, 1.4, z, z + 88, "m", 16),
-      depois: k.solidSvg(k.cylinder(x, yc, 3, z, 0.8, P, 20), { tone: "mid", crease: "none" }),
-    }));
-    const [xa, za] = [postes[0][0] - 8, postes[0][1] + 88 - (8 * R) / T];
-    const [xb, zb] = [postes[3][0] + 12, postes[3][1] + 88 + (12 * R) / T];
-    const tubo = { faces: prismaY([[xa, za], [xb, zb], [xb, zb + 3], [xa, za + 3]], yc - 1.6, yc + 1.6, "m") };
-    const consolo = { faces: caixa(xs - 12, 10, 92, xs, W - 10, 108, "m"), chave: -2e6 };
-    return [...contexto(P, { xs }), { svg: sombra(P, { x: 0, y: 0, w: xs, d: W, r: 4 }) }, consolo, lance, ...montantes, tubo];
-  },
-
   "espelho-fechado"(P) {
     const xs = 196;
     const perfil = [...degraus(RETA), [xs, 0]];
@@ -330,19 +308,6 @@ const TIPOS = {
     return [...contexto(P, { xs }), lance];
   },
 
-  "in-loco"(P) {
-    const xs = 196;
-    const e = 12;
-    const topo = degraus(RETA);
-    const fundo = [[e, 0]];
-    for (let i = 0; i < N - 1; i++) {
-      fundo.push([i * T + e, (i + 1) * R - e]);
-      if (i < N - 2) fundo.push([(i + 1) * T + e, (i + 1) * R - e]);
-    }
-    fundo.push([xs, (N - 1) * R - e]);
-    const placa = { faces: prismaY([...topo, ...fundo.reverse()], 0, W, "s"), depois: detalheLance(P, RETA, { alcas: [] }) };
-    return [...contexto(P, { xs }), placa];
-  },
 };
 
 /* --------------------------------------------------------------- processo */
@@ -435,7 +400,7 @@ const caixaCena = (x0, x1, y0, y1, z0, z1) => [x0, x1].flatMap((x) => [y0, y1].f
 const pontosDe = (fn) => fn(projecao(caixaCena(0, 1, 0, 1, 0, 1))).flatMap((s) => (s.faces ?? []).flatMap((f) => f.pts));
 void caixaCena;
 
-// Uma projeção para os sete tipos — mesma escala, comparação honesta (DEC-009).
+// Uma projeção para os cinco tipos — mesma escala, comparação honesta (DEC-009).
 // As etapas do processo enquadram cada uma a sua cena.
 const P_TIPOS = projecao(Object.values(TIPOS).flatMap(pontosDe));
 

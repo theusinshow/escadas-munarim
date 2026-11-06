@@ -33,7 +33,7 @@ export default function ObrasPage() {
         title={temReferencia ? "Escadas de concreto, por tipo." : "Escadas instaladas."}
         lead={
           temReferencia
-            ? "Fotos organizadas pelos sete tipos do catálogo. Toque em uma foto para ampliar."
+            ? "Fotos organizadas pelos cinco tipos do catálogo. Toque em uma foto para ampliar."
             : "Projetos entregues na Grande Florianópolis, organizados por tipo de escada."
         }
       />

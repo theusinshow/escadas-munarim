@@ -14,7 +14,7 @@ export const site = {
    * trabalha por parceria. Ver DEC-017 e CNT-014.
    */
   description:
-    "Escadas pré-moldadas em concreto polido sob medida em São José/SC, há 15 anos. Sete tipos, com o desenho e as medidas abertos para você comparar.",
+    "Escadas pré-moldadas em concreto polido sob medida em São José/SC, há 15 anos. Cinco tipos, com o desenho e as medidas abertos para você comparar.",
   url: "https://escadasmunarim.com.br",
   locale: "pt-BR",
 
@@ -31,6 +31,10 @@ export const site = {
     email: "vendas@escadasmunarim.com.br",
     instagram: "@escadasmunarim",
     instagramUrl: "https://instagram.com/escadasmunarim",
+    /** Perfis conferidos em 2026-11-05 (DEC-100). O LinkedIn não pôde ser conferido e ficou de fora. */
+    facebookUrl: "https://www.facebook.com/escadasmunarim/",
+    youtubeUrl: "https://www.youtube.com/channel/UCdg7zDl8sQ_RrHIXhOH3tbg",
+    pinterestUrl: "https://br.pinterest.com/emunarim/",
   },
 
   address: {

@@ -11,12 +11,12 @@ import { site } from "@/lib/site";
  * números com a legenda no pé. Sem frase grande e sem texto corrido: os
  * números falam pela empresa.
  *
- * Só número verificado: 15 anos (DEC-004), 7 tipos e a nota pública no Google
+ * Só número verificado: 15 anos (DEC-004), os tipos do catálogo e a nota pública no Google
  * (conferida na data de RESUMO_GOOGLE). O de escadas entregues fica para
  * quando a Munarim informar (CNT-016) — a vaga "00+" saiu da tela no DEC-091.
  */
 
-const FOTO = fotosDo("premium")[1];
+const FOTO = fotosDo("reta")[5];
 
 const NUMEROS: { valor: string; legenda: string }[] = [
   { valor: `${site.yearsInMarket}`, legenda: "Anos de mercado em São José" },

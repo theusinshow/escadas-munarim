@@ -3527,6 +3527,65 @@ técnico na abertura do site (DEC-009).
 `app/revisao/page.tsx`. Saíram `components/home/CapaFoto.tsx` e `public/media/capa/stock-capa-*`.
 As sete fotos da capa são `ref-` e precisam ser trocadas antes de publicar (CNT-003).
 
+## DEC-098 — Premium e in loco saem do catálogo: o site fica com cinco tipos (2026-11-05)
+
+**Decisão:** o site passa a ter cinco tipos: reta, caracol, leke, mista e espelho fechado. Saem as
+páginas, as figuras, as fotos e os textos de premium e in loco, e `/escadas/premium` e
+`/escadas/in-loco` redirecionam para `/escadas`. A comparação "pré-moldada ou no local" continua na
+home e no artigo, porque explica a pré-moldada, mas sem link nem menção a um tipo in loco. Substitui
+o "7 tipos" de `CLAUDE.md`, `PROJECT.md`, `SITE_ARCHITECTURE.md`, `PAGE_BLUEPRINTS.md` e demais
+documentos de planejamento, que ficam como registro histórico.
+
+**Why:** decisão do desenvolvedor, depois de comparar desenhos, textos e fotos da Munarim. Premium
+tinha desenho igual ao da reta e nenhum critério de escolha, e in loco é um modo de fazer, não uma
+forma, com desenho também igual ao da reta. A Munarim ainda não confirmou os textos dos tipos que
+ficam (CNT-009).
+
+**Affects:** `content/tipos.ts`, `content/galeria.generated.ts`, `content/artigos.ts`,
+`components/technical/figuras.generated.ts`, `lib/geometry/stairs.ts`, `scripts/media.mjs`,
+`scripts/figuras/build.mjs`, `components/ui/TypeGrid.tsx` (grade de 3 colunas no xl),
+`next.config.ts`, textos com "sete" em páginas e componentes. Fotos novas no lugar das removidas: Sobre
+(`ref-reta-06`), card do menu (`ref-leke-01`), item "no local" (`ref-espelho-fechado-01`).
+
+## DEC-099 — Barra azul de volta e capa sem o nome do tipo (2026-11-05)
+
+**Decisão:** substitui dois pontos do DEC-097. A barra, a gaveta e o mega-menu voltam ao azul `--barra`,
+com o logo branco. A capa perde o nome grande do tipo: fica só o título "Escadas de concreto sob
+medida", e o desenho cresce no espaço livre. O escuro sobre a foto fica só no topo, onde está o título.
+O quadriculado de papel de projeto atrás do desenho também sai: o fundo é branco. E a capa para enquanto
+o painel ou a gaveta da barra estão abertos, e retoma ao fechar, sem desfazer o "Pausar" do leitor.
+
+**Why:** pedidos do desenvolvedor, ao ver a capa no computador: o texto estava grande demais, o
+quadriculado não agradou, e a troca de tipo não deve correr atrás do menu aberto. O link de cada tipo
+continua, com o nome no `aria-label`.
+
+**Affects:** `components/layout/Navbar.tsx`, `components/home/CapaSobe.tsx`, `app/globals.css`,
+`app/revisao/page.tsx`.
+
+## DEC-100 — Sanfona cheia, comparação enxuta, contato em grade e redes no rodapé (2026-11-05)
+
+**Decisão:** quatro ajustes na home e no rodapé.
+
+- **Sanfona dos tipos:** o conteúdo do painel aberto ocupa toda a largura do painel, em vez de parar nos
+  30rem.
+- **Pré-moldada ou no local:** substitui o acordeão de seis itens do `DEC-067` e a foto presa do
+  `DEC-083`. As duas formas ficam lado a lado, cada uma com foto, nome e duas frases. "Obra parada e
+  sujeira" entrou no texto do "no local". O vocabulário sai da seção e fica em `/duvidas`, com um link no
+  fim. O pé-direito continua definido no lema, e o vão, no verso do primeiro cartão de "Como funciona".
+- **Chamada do rodapé:** substitui a divisão do `DEC-083`. Título à esquerda, apoio e botão na coluna da
+  direita, e os canais embaixo em três colunas da mesma grade.
+- **Redes sociais:** botões de Instagram, Facebook, YouTube e Pinterest abaixo da marca. O Instagram sai
+  da lista de canais para não aparecer duas vezes. Corrige a afirmação da entrada do menu ("A Munarim tem
+  Instagram e só"): os perfis estão em `SITE_ANTIGO.md` e, em 2026-11-05, abriram com o nome da empresa.
+  O LinkedIn ficou de fora porque bloqueia a conferência automática.
+
+**Why:** feedback do desenvolvedor sobre a home: espaço grande à direita nos cards, muita informação na
+seção de pré-moldada, texto mal posicionado na chamada e falta de botões de redes sociais.
+
+**Affects:** `components/home/TiposSanfona.tsx`, `components/home/PreMoldadaComparacao.tsx` (era
+`PreMoldadaAcordeao.tsx`), `app/page.tsx`, `components/layout/Footer.tsx`, `lib/site.ts`,
+`docs/ai/SITE_ANTIGO.md`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

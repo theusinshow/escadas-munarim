@@ -5,7 +5,7 @@ import { DimensionLine } from "./DimensionLine";
  * Corte cotado — o bloco de autoridade das páginas de tipo.
  *
  * A variante muda com a estrutura real da peça: perfil aberto, massa fechada até
- * o piso, laje inclinada, ou espiral em torno do eixo. É o desenho que mostra a
+ * o piso, ou espiral em torno do eixo. É o desenho que mostra a
  * diferença entre os tipos para quem não é da área.
  *
  * Os valores são ILUSTRATIVOS até `CNT-009`. A interface diz isso ao lado.
@@ -17,15 +17,13 @@ const VIEW = { width: 340, height: 260 } as const;
 const PAD_LEFT = 74;
 const PAD_BOTTOM = 62;
 
-type Variant = "aberto" | "solido" | "laje" | "espiral";
+type Variant = "aberto" | "solido" | "espiral";
 
 const VARIANT_BY_SLUG: Record<string, Variant> = {
   reta: "aberto",
   leke: "aberto",
-  premium: "aberto",
   mista: "aberto",
   "espelho-fechado": "solido",
-  "in-loco": "laje",
   caracol: "espiral",
 };
 
@@ -76,12 +74,6 @@ function Reta({ variant }: { variant: Exclude<Variant, "espiral"> }) {
   let profile = steps.join("");
   if (variant === "solido") {
     profile += `L${X(n * T)} ${Y(0)}Z`;
-  } else if (variant === "laje") {
-    const hyp = Math.hypot(T, R);
-    const th = 15;
-    const ox = (R / hyp) * th;
-    const oy = (-T / hyp) * th;
-    profile += `L${X(n * T + ox)} ${Y(n * R + oy)}L${X(ox)} ${Y(oy)}Z`;
   }
 
   return (

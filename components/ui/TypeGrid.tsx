@@ -4,12 +4,12 @@ import { perguntasQueDefinem } from "@/content/escolha";
 import { tipos } from "@/content/tipos";
 
 /**
- * Grid dos 7 tipos. As linhas são borda de cada célula, não fundo da grade:
+ * Grid dos 5 tipos. As linhas são borda de cada célula, não fundo da grade:
  * com fundo cinza, a grade virava um bloco cinza enquanto os cards entram.
  *
- * São 7 numa grade de 4 colunas (2 até o xl) — sobra uma célula. Ela é o caminho de quem
+ * São 5 numa grade de 3 colunas (2 até o xl) — sobra uma célula. Ela é o caminho de quem
  * não sabe escolher, que é justamente o público primário deste site. Navy de
- * propósito: entre sete fotos, é a única peça que não é produto. Em vez de
+ * propósito: entre as fotos, é a única peça que não é produto. Em vez de
  * prometer "três perguntas", ela já mostra as três (DEC-063).
  */
 export function TypeGrid({
@@ -20,7 +20,7 @@ export function TypeGrid({
   detalhe?: boolean;
 }) {
   return (
-    <ul className="grid border-t border-l border-border sm:grid-cols-2 xl:grid-cols-4">
+    <ul className="grid border-t border-l border-border sm:grid-cols-2 xl:grid-cols-3">
       {tipos.map((tipo) => (
         <li key={tipo.slug} className="border-r border-b border-border">
           <TypeCard tipo={tipo} detalhe={detalhe} />

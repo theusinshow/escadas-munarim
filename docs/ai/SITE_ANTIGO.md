@@ -85,5 +85,5 @@ São José - SC
 | Pinterest | https://br.pinterest.com/emunarim/ |
 | LinkedIn | https://www.linkedin.com/in/escadas-munarim-14452314a/ |
 
-O site novo só usa o Instagram (`lib/site.ts`). As outras quatro estão aqui caso entrem no rodapé;
-não foi verificado se os perfis estão ativos.
+O rodapé do site novo usa Instagram, Facebook, YouTube e Pinterest (`lib/site.ts`, `DEC-100`). O LinkedIn ficou de fora porque bloqueia a conferência automática;
+em 2026-11-05 os outros quatro abriram com o nome da empresa, mas não foi verificado se seguem em uso.

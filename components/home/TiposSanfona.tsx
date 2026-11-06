@@ -7,14 +7,14 @@ import { capaDo } from "@/content/galeria";
 import { tipos } from "@/content/tipos";
 
 /**
- * Os sete tipos em sanfona (DEC-067). A estrutura de "projetos" da
+ * Os cinco tipos em sanfona (DEC-067). A estrutura de "projetos" da
  * referência: painéis estreitos com o nome na vertical e o número no pé; o
  * painel ativo abre e mostra a foto e o botão (a frase de destaque saiu no
  * DEC-084). Hover,
  * foco ou clique ativam. No celular vira sanfona vertical.
  *
- * Os sete continuam com o mesmo tratamento — é comparação (DEC-009).
- * DEC-083: sem rótulo, sem "comparar os sete" e sem o aviso de referência;
+ * Os cinco continuam com o mesmo tratamento — é comparação (DEC-009).
+ * DEC-083: sem rótulo, sem "comparar os tipos" e sem o aviso de referência;
  * a seção começa direto na sanfona.
  */
 
@@ -30,7 +30,7 @@ export function TiposSanfona() {
   return (
     <section className="bg-barra py-28 text-primary-fg lg:py-40">
       <div className="container-site">
-        <h2 className="sr-only">Os sete tipos de escada</h2>
+        <h2 className="sr-only">Os cinco tipos de escada</h2>
 
         {/* Desktop */}
         <ul className="sanfona-h hidden border-l border-white/25 lg:flex" data-revela>
@@ -52,20 +52,19 @@ export function TiposSanfona() {
                   onFocus={() => setAtivo(i)}
                   className="flex h-full w-[4.5rem] flex-none flex-col items-center justify-between py-1 xl:w-[5.5rem]"
                 >
-                  {/* Sem o parêntese: "In loco (cascata)" na vertical não cabe na altura. */}
                   <span className="titulo-vertical font-display text-[1.2rem] whitespace-nowrap uppercase xl:text-[1.35rem]">
-                    {t.nome.replace(/\s*\(.*\)/, "")}
+                    {t.nome}
                   </span>
                   <span className="titulo-vertical font-display text-[1.2rem] xl:text-[1.35rem]">{t.n}</span>
                 </button>
                 <div
                   id={id}
                   inert={!aberto}
-                  className="sanfona-corpo flex w-[clamp(18rem,32vw,30rem)] flex-none flex-col gap-6 pr-8"
+                  className="sanfona-corpo flex min-w-0 flex-1 flex-col gap-6 pr-6"
                 >
-                  {/* A foto ocupa a altura que sobra: retrato, como as fotos são. */}
+                  {/* A foto ocupa toda a largura do painel aberto e a altura que sobra. */}
                   <div className="relative min-h-0 w-full flex-1 overflow-hidden bg-white/5">
-                    {t.foto && <Foto foto={t.foto} fill sizes="30rem" />}
+                    {t.foto && <Foto foto={t.foto} fill sizes="(min-width: 1280px) 46rem, 60vw" />}
                   </div>
                   <div>
                     <Link href={`/escadas/${t.slug}`} className="btn-chanfro">

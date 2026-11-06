@@ -299,11 +299,6 @@ export const artigos: Artigo[] = [
             texto:
               "Quando a geometria não comporta uma peça pronta: formatos muito específicos, encaixes que só se resolvem no lugar, ou um acesso por onde a peça não passaria. Nesses casos, concretar no local é a solução, não a segunda opção.",
           },
-          {
-            tipo: "p",
-            texto:
-              "No catálogo da Munarim, esse é o tipo in loco (cascata).",
-          },
         ],
       },
       {
@@ -322,7 +317,7 @@ export const artigos: Artigo[] = [
       "ABNT NBR 9062 — Projeto e execução de estruturas de concreto pré-moldado.",
       "ABNT NBR 6118 — Projeto de estruturas de concreto.",
     ],
-    tipos: ["in-loco", "reta", "mista"],
+    tipos: ["reta", "mista"],
   },
   {
     slug: "quanto-espaco-ocupa-cada-escada",

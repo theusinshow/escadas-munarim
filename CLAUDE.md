@@ -43,8 +43,8 @@ Before making changes, read:
    bloco de prova na mesma página (`DEC-001`).
 2. **O leitor é leigo.** Todo termo técnico (vão, pé-direito, espelho, piso) é definido no primeiro
    uso. Escrever para especificador é erro de público (`DEC-002`).
-3. **O desenho técnico é o conteúdo, não a decoração.** Os SVGs dos 7 tipos são a espinha do site;
-   os 7 precisam ter a mesma escala, ângulo e peso de traço para serem comparáveis (`DEC-009`).
+3. **O desenho técnico é o conteúdo, não a decoração.** Os SVGs dos 5 tipos são a espinha do site;
+   os 5 precisam ter a mesma escala, ângulo e peso de traço para serem comparáveis (`DEC-009`).
 4. **Motion segue a referência adotada (`DEC-067`).** Rolagem suave, revelação por
    desfoque (`data-revela`), título preenchido por scroll, sanfona e paralaxe. Sempre com `reduce`
    respeitado e estado inicial aplicado por JS (`DEC-010` foi substituído em parte).
@@ -58,6 +58,6 @@ Before making changes, read:
 - Telefone (48) 3257-2015 · WhatsApp (48) 99981-0707 · vendas@escadasmunarim.com.br · @escadasmunarim
 - Tagline: **"Segurança e Design"** · Cor da marca: `#2C445F`
 - **15 anos** de mercado (o "13 anos" do site antigo está errado — `DEC-004`)
-- 7 tipos: reta · caracol · leke · mista · premium · espelho fechado · in loco
+- 5 tipos no site: reta · caracol · leke · mista · espelho fechado (premium e in loco saíram, `DEC-098`)
 - Complementos: corrimão inox escovado polido, ferro galvanizado, guarda-corpo, sacada
 - Região: São José e Grande Florianópolis

@@ -28,8 +28,8 @@ export async function generateMetadata({
   if (!tipo) return {};
 
   return {
-    /* Absoluto: com o sufixo do template, "Espelho fechado" e "In loco (cascata)"
-       passavam de 60 caracteres e o Google truncava. */
+    /* Absoluto: com o sufixo do template, "Espelho fechado"
+       passava de 60 caracteres e o Google truncava. */
     title: {
       absolute: `Escada ${tipo.nome} de concreto pré-moldado | Munarim`,
     },
@@ -70,7 +70,7 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
     category: "Escada pré-moldada de concreto",
   };
 
-  /* A figura sólida do tipo (DEC-070): mesma câmera e escala nos sete. */
+  /* A figura sólida do tipo (DEC-070): mesma câmera e escala em todos. */
   const desenho = (
     <div data-revela>
       <Figura nome={tipo.slug} titulo={`Desenho da escada ${tipo.nome.toLowerCase()}`} className="w-full" />
@@ -186,38 +186,34 @@ export default async function TipoPage({ params }: PageProps<"/escadas/[tipo]">)
         </div>
       </Section>
 
-      {/* Premium ainda não tem os critérios da empresa (CNT-009): sem eles, a
-          seção não aparece em vez de mostrar "pendente" (DEC-091). */}
-      {tipo.quandoEscolher.length > 0 && (
-        <Section
-          density="default"
-          id="escolher"
-          className="scroll-mt-(--barra-h) border-t border-border"
-        >
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div>
-              <h2>Quando escolher</h2>
-              <ul className="measure mt-5 space-y-3 text-muted">
-                {tipo.quandoEscolher.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Bloco obrigatório — DEC-012. Não remover, não suavizar. */}
-            <div>
-              <h2>
-                Quando <em className="not-italic text-accent">não</em> escolher
-              </h2>
-              <ul className="measure mt-5 space-y-3 text-muted">
-                {tipo.quandoNaoEscolher.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+      <Section
+        density="default"
+        id="escolher"
+        className="scroll-mt-(--barra-h) border-t border-border"
+      >
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <h2>Quando escolher</h2>
+            <ul className="measure mt-5 space-y-3 text-muted">
+              {tipo.quandoEscolher.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
-        </Section>
-      )}
+
+          {/* Bloco obrigatório — DEC-012. Não remover, não suavizar. */}
+          <div>
+            <h2>
+              Quando <em className="not-italic text-accent">não</em> escolher
+            </h2>
+            <ul className="measure mt-5 space-y-3 text-muted">
+              {tipo.quandoNaoEscolher.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
 
       {/* Acabamentos — lista declarada pela própria empresa. */}
       <Section density="dense" className="border-t border-border">

@@ -1,7 +1,7 @@
 import type { V3 } from "./iso";
 
 /**
- * Geometria dos 7 tipos de escada.
+ * Geometria dos 5 tipos de escada.
  *
  * Unidade = centímetro. A razão do degrau é a mesma que governa o motion
  * (espelho 18 / piso 28 — DEC-010): o número existe fora do site.
@@ -312,56 +312,6 @@ function mista(n1 = 3, n2 = 3): Drawing {
   };
 }
 
-/* ------------------------------------------------------------- in loco ---- */
-
-function inLoco(n = N): Drawing {
-  /* Laje inclinada sob os degraus — o corte que diferencia a peça concretada
-     no local da peça pré-moldada com espelho fechado. */
-  const hyp = Math.hypot(T, R);
-  const th = 16;
-  const ox = (R / hyp) * th;
-  const oy = (-T / hyp) * th;
-
-  const solid = (z: number): V3[] => [
-    ...profileX(n, z),
-    [n * T + ox, n * R + oy, z],
-    [ox, oy, z],
-    [0, 0, z],
-  ];
-
-  return {
-    estrutura: [
-      solid(0),
-      solid(W),
-      [
-        [0, 0, 0],
-        [0, 0, W],
-      ],
-      [
-        [n * T, n * R, 0],
-        [n * T, n * R, W],
-      ],
-      [
-        [n * T + ox, n * R + oy, 0],
-        [n * T + ox, n * R + oy, W],
-      ],
-    ],
-    degraus: treadEdgesX(n),
-    corrimao: handrailX(n, W),
-    contexto: floorX(n),
-  };
-}
-
-/* ------------------------------------------------------------- premium ---- */
-
-function premium(n = N): Drawing {
-  /* CNT-009: a linha Premium é definida por acabamento, não por geometria.
-     Até a empresa definir o que a caracteriza, o desenho mostra o lance reto
-     com guarda-corpo nos dois lados — e a interface diz que é ilustrativo. */
-  const base = reta(n);
-  return { ...base, corrimao: [...handrailX(n, W), ...handrailX(n, 0)] };
-}
-
 /* ------------------------------------------------------------- registro --- */
 
 export const drawings: Record<string, Drawing> = {
@@ -369,7 +319,5 @@ export const drawings: Record<string, Drawing> = {
   caracol: caracol(),
   leke: leke(),
   mista: mista(),
-  premium: premium(),
   "espelho-fechado": espelhoFechado(),
-  "in-loco": inLoco(),
 };

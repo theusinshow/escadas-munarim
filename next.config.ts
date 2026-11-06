@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       { source: "/nossas-escadas", destination: "/escadas", permanent: true },
       { source: "/nossa-empresa", destination: "/empresa", permanent: true },
       { source: "/entre-em-contato", destination: "/orcamento", permanent: true },
+      // Tipos que saíram do catálogo (DEC-098).
+      { source: "/escadas/premium", destination: "/escadas", permanent: true },
+      { source: "/escadas/in-loco", destination: "/escadas", permanent: true },
       // O blog antigo era placeholder; o assunto agora mora em /artigos (DEC-093).
       { source: "/blog", destination: "/artigos", permanent: true },
       { source: "/blog/:path*", destination: "/artigos", permanent: true },

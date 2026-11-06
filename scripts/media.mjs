@@ -41,9 +41,7 @@ const TIPOS = {
   caracol: "Caracol",
   leke: "Leke",
   mista: "Mista",
-  premium: "Premium",
   "espelho-fechado": "Espelho fechado",
-  "in-loco": "In loco",
 };
 
 const PROCEDENCIA = [

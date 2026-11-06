@@ -1,7 +1,7 @@
 # media-src — onde você solta as fotos
 
 1. Solte a imagem (PNG, JPG, WEBP, AVIF) na pasta do tipo: `reta/`, `caracol/`, `leke/`, `mista/`,
-   `premium/`, `espelho-fechado/`, `in-loco/`.
+   `espelho-fechado/`. As pastas `premium/` e `in-loco/` saíram do catálogo (DEC-098): o script não as lê.
 2. Rode `npm run media`.
 3. Pronto: ela aparece na capa da home, no catálogo, na página do tipo e no menu.
 

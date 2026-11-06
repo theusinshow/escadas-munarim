@@ -241,7 +241,7 @@ sombra empilhada (U2/U3/U7); assimetria 7/5 em vez do hero shadcn (U4); grid de 
   entregar (`MEDIA_PLAN.md`).
 
 **Teste do transplante:** o stagger cuja razão de offset é a proporção 18/28 do degrau, o sistema de
-cotas em DM Mono sobreposto às axonometrias dos 7 tipos Munarim, e a paleta cujos tokens são os
+cotas em DM Mono sobreposto às axonometrias dos 5 tipos Munarim, e a paleta cujos tokens são os
 materiais que a fábrica manipula — inclusive o azulão da linha de giz, que só faz sentido em quem
 instala peça pré-moldada num vão medido. Nada disso cai
 no site de um concorrente sem edição — o site do concorrente teria que fabricar as mesmas escadas.

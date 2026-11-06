@@ -9,7 +9,7 @@ import type { Tipo } from "@/content/tipos";
  *
  * A foto vertical vende, o pictograma explica. Embaixo dela, só o que separa
  * um tipo do outro: o nome, a diferença em três palavras e o pictograma em
- * oblíqua, no mesmo quadro nos sete. Sem numeração de prancha — "01 / 07" não
+ * oblíqua, no mesmo quadro em todos. Sem numeração de prancha — "01 / 05" não
  * informava nada (DEC-063).
  *
  * `detalhe` acrescenta o resumo de uma linha: vale em `/escadas`, onde o grid

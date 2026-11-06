@@ -22,20 +22,21 @@ type Uso = string;
 /** Onde cada foto do acervo aparece. Espelha as escolhas dos componentes. */
 function usosDe(slug: string, i: number, foto: FotoAcervo): Uso[] {
   const usos: Uso[] = [`/escadas/${slug}`, "/obras"];
-  if (i === 0) usos.unshift("Home · sete tipos", "/escadas (cartão)", "/obras (coleção)");
+  if (i === 0) usos.unshift("Home · tipos", "/escadas (cartão)", "/obras (coleção)");
   const trilho = fotosDo(slug)[1] ?? capaDo(slug);
   if (trilho?.src === foto.src) usos.unshift("Home · galeria");
-  if (slug === "premium" && i === 1) usos.unshift("Home · sobre");
+  if (slug === "reta" && i === 5) usos.unshift("Home · sobre");
   if (slug === "reta" && i === 3) usos.unshift("Home · pré-moldada");
-  if (foto.src.includes("in-loco-07")) usos.unshift("Home · foto cheia", "Menu · card Escadas");
+  if (foto.src.includes("leke-01")) usos.unshift("Menu · card Escadas");
+  if (slug === "espelho-fechado" && i === 0) usos.unshift("Home · no local");
   return usos;
 }
 
 const FOTOS = tipos.flatMap((t) => fotosDo(t.slug).map((f, i) => ({ ...f, slug: t.slug, tipo: t.nome, i })));
 
 const MARCA = [
-  { src: "/marca/munarim-marca-escuro.svg", uso: "Rodapé (DEC-069)", escuro: true },
-  { src: "/marca/munarim-marca-claro.svg", uso: "Barra do topo (DEC-097)", escuro: false },
+  { src: "/marca/munarim-marca-escuro.svg", uso: "Barra do topo e rodapé (DEC-099)", escuro: true },
+  { src: "/marca/munarim-marca-claro.svg", uso: "Não usado no site", escuro: false },
   { src: "/marca/munarim-capa-sobre-escuro.svg", uso: "Antiga — substituída", escuro: true },
   { src: "/media/escadas-munarim-logo-mono.svg", uso: "Antiga — substituída", escuro: false },
   { src: "/media/escadas-munarim-logo.svg", uso: "Não usado no site", escuro: false },
@@ -144,7 +145,7 @@ export default function Revisao() {
 
         <Grupo
           titulo="Desenhos"
-          texto="As figuras sólidas (DEC-070): quatro etapas do processo e os sete tipos, todos na mesma câmera."
+          texto="As figuras sólidas (DEC-070): quatro etapas do processo e os cinco tipos, todos na mesma câmera."
         >
           {PASSOS.map((p, i) => (
             <figure key={p}>

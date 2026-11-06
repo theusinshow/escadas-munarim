@@ -156,7 +156,8 @@ traz nenhum texto descritivo**, só fotos. Cota apresentada como especificação
 **Current placeholder:** descrições marcadas como provisórias; cotas marcadas como ilustrativas.
 **Requirements:** por tipo — o que é em uma frase, quando é indicado, **quando não é indicado**,
 vão mínimo, pé-direito típico, largura usual, acabamentos disponíveis. Confirmar também o que
-significa exatamente a linha "Premium" e o que diferencia "Leke" na nomenclatura da casa.
+diferencia "Leke" na nomenclatura da casa (as fotos da Munarim sugerem "leque": degraus que abrem
+em curva, e não degraus presos na parede como o site diz hoje). Premium e in loco saíram (DEC-098).
 
 ---
 

@@ -18,10 +18,10 @@ Site multi-páginas da **Escadas Munarim** — fabricante de escadas pré-moldad
 sob medida, em São José/SC, atendendo a Grande Florianópolis há 15 anos.
 
 O trabalho central do site é **traduzir um produto estrutural para quem não é da área**: mostrar os
-7 tipos de escada com desenho técnico compreensível, explicar como o processo funciona da medição à
+5 tipos de escada com desenho técnico compreensível, explicar como o processo funciona da medição à
 instalação, e converter isso em pedido de orçamento pelo WhatsApp.
 
-Substitui um WordPress + Elementor genérico onde os 7 tipos de produto viviam escondidos numa única
+Substitui um WordPress + Elementor genérico onde os tipos de produto viviam escondidos numa única
 galeria de lightbox, sem página, sem texto e sem SEO.
 
 ## Audience
@@ -50,7 +50,7 @@ depoimento, sem logo de cliente, sem certificação), a credibilidade precisa se
 páginas por tipo, o "Como Funciona" e o FAQ técnico.
 
 **Secundários:**
-1. Fazer o leigo entender a diferença entre os 7 tipos antes de pedir orçamento (lead qualificado).
+1. Fazer o leigo entender a diferença entre os 5 tipos antes de pedir orçamento (lead qualificado).
 2. Ganhar busca local — 7 páginas de tipo × Grande Florianópolis.
 3. Reduzir objeção pré-contato: prazo, peso, instalação, acabamento respondidos antes da conversa.
 

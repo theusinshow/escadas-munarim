@@ -495,7 +495,7 @@
     color: var(--preenche, var(--primary-fg));
   }
 
-  /* Sete tipos em sanfona horizontal. */
+  /* Os tipos em sanfona horizontal. */
   .sanfona-h {
     display: flex;
     /* alto o bastante para a foto (quase toda 2:3) não virar faixa (DEC-075) */
@@ -1203,44 +1203,20 @@
 .figura .iso-top { fill: var(--fg-c-t); }
 .figura .iso-line { fill: none; stroke: var(--fg-edge-c); stroke-width: 0.6; }
 
-/* Quadriculado de papel de projeto, em azul bem fraco (capa, DEC-097). */
-.capa-planta {
-  background-image:
-    linear-gradient(rgb(33 58 88 / 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(33 58 88 / 0.07) 1px, transparent 1px),
-    linear-gradient(rgb(33 58 88 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(33 58 88 / 0.035) 1px, transparent 1px);
-  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
-  background-position: -1px -1px;
-}
-
-/* Capa "do desenho à escada" (DEC-097). O nome do tipo ocupa a largura: o tamanho
-   sai do número de letras, com teto para os nomes curtos. No celular pode
-   quebrar, então conta a palavra mais longa. */
-.capa-sobe-nome {
-  font-size: min(15vw, calc((100vw - 3rem) / (var(--palavra) * 1.04)));
-}
-@media (min-width: 1024px) {
-  .capa-sobe-nome {
-    font-size: min(11.5vw, 11rem, calc((min(100vw, var(--container)) - 5rem) / (var(--letras) * 1.04)));
-    white-space: nowrap;
-  }
-}
-
-/* Onde o desenho fica. No celular, entre o título e o nome, passando um pouco
-   das margens; no desktop, grande à direita. */
+/* Capa "do desenho à escada" (DEC-097). Onde o desenho fica: no celular, abaixo
+   do título, passando um pouco das margens; no desktop, grande à direita. */
 .capa-sobe-palco {
   left: -7%;
   right: -7%;
-  top: 25%;
+  top: 32%;
   aspect-ratio: 640 / 460;
 }
 @media (min-width: 640px) {
   .capa-sobe-palco {
     left: 50%;
     right: auto;
-    top: 20%;
-    height: 56%;
+    top: 24%;
+    height: 66%;
     translate: -50% 0;
   }
 }
@@ -1248,8 +1224,8 @@
   .capa-sobe-palco {
     left: auto;
     right: 2%;
-    top: 2%;
-    height: 74%;
+    top: 7%;
+    height: 86%;
     translate: none;
   }
 }

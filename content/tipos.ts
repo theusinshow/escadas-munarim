@@ -1,5 +1,5 @@
 /**
- * Os 7 tipos de escada — uma rota dinâmica, não 7 componentes (DEC-003).
+ * Os 5 tipos de escada (DEC-098) — uma rota dinâmica, não 5 componentes (DEC-003).
  *
  * ATENÇÃO: as descrições abaixo são interpretação técnica a partir dos nomes usados
  * pela empresa. O site atual não traz nenhum texto descritivo, só fotos.
@@ -94,17 +94,6 @@ export const tipos: Tipo[] = [
     validado: false,
   },
   {
-    slug: "premium",
-    nome: "Premium",
-    resumo:
-      "Linha de acabamento superior da Munarim. Os detalhes de cada peça são definidos no projeto, junto com você.",
-    destaque: "Acabamento superior",
-    quandoEscolher: [],
-    quandoNaoEscolher: [],
-    cotas: null,
-    validado: false,
-  },
-  {
     slug: "espelho-fechado",
     nome: "Espelho fechado",
     resumo:
@@ -117,23 +106,6 @@ export const tipos: Tipo[] = [
     ],
     quandoNaoEscolher: [
       "Quer passagem de luz sob o lance",
-    ],
-    cotas: null,
-    validado: false,
-  },
-  {
-    slug: "in-loco",
-    nome: "In loco (cascata)",
-    resumo:
-      "Concretada no próprio local, para geometria que não comporta peça pré-moldada.",
-    destaque: "Concretada no local",
-    quandoEscolher: [
-      "A geometria do vão é irregular ou fora de padrão",
-      "O acesso não permite a entrada de peça pré-moldada",
-    ],
-    quandoNaoEscolher: [
-      "Precisa do prazo curto e da previsibilidade da peça pré-moldada",
-      "A obra não comporta a sujeira e o tempo de cura da concretagem no local",
     ],
     cotas: null,
     validado: false,

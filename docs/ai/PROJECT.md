@@ -33,7 +33,7 @@ uma sólida parceria, a MUNARIM conta com profissionais qualificados"* — o con
 
 ## Offer
 
-**Produto principal — 7 tipos de escada pré-moldada em concreto polido:**
+**Produto principal — tipos de escada pré-moldada em concreto polido (o site mostra 5: premium e in loco saíram no `DEC-098`):**
 
 | Tipo | Slug | Em uma linha |
 | --- | --- | --- |
@@ -41,9 +41,7 @@ uma sólida parceria, a MUNARIM conta com profissionais qualificados"* — o con
 | Caracol | `caracol` | Giro em torno de um eixo central; resolve o menor vão possível |
 | Leke | `leke` | Degraus em balanço, sem viga aparente sob o lance |
 | Mista | `mista` | Combina lances retos com curva ou patamar para vencer o desnível |
-| Premium | `premium` | Linha de acabamento superior |
 | Espelho fechado | `espelho-fechado` | Contra-degrau fechado; lance sólido, sem vazado |
-| In loco (cascata) | `in-loco` | Concretada no local, para geometria que não comporta pré-moldado |
 
 > As descrições acima são interpretação técnica a validar com o cliente (`CNT-009`). O site atual não
 > traz texto descritivo de nenhum tipo — só fotos.
@@ -119,7 +117,7 @@ um bloco de prova. CTA nunca aparece antes de prova na mesma página.
 **Estruturar tudo do zero.** O site atual não tem copy aproveitável além dos fatos de negócio
 (produtos, endereço, região, valores declarados). Toda a copy das 8 rotas é entregável deste projeto.
 
-- **Fatos confirmados:** endereço, telefones, e-mail, Instagram, 7 tipos, complementos, região,
+- **Fatos confirmados:** endereço, telefones, e-mail, Instagram, tipos, complementos, região,
   valores declarados, 15 anos, tagline "Segurança e Design", navy `#2C445F`.
 - **Provas disponíveis:** apenas tempo de mercado. Sem depoimento, sem logo de cliente, sem
   certificação. **Nada disso será fabricado.**

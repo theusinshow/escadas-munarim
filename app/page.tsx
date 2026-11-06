@@ -2,7 +2,7 @@ import { AvaliacoesTrilho } from "@/components/home/AvaliacoesTrilho";
 import { CapaSobe } from "@/components/home/CapaSobe";
 import { GaleriaTrilho } from "@/components/home/GaleriaTrilho";
 import { LemaBloco } from "@/components/home/LemaBloco";
-import { PreMoldadaAcordeao } from "@/components/home/PreMoldadaAcordeao";
+import { PreMoldadaComparacao } from "@/components/home/PreMoldadaComparacao";
 import { ProcessoCards } from "@/components/home/ProcessoCards";
 import { SobreBloco } from "@/components/home/SobreBloco";
 import { TiposSanfona } from "@/components/home/TiposSanfona";
@@ -14,8 +14,8 @@ import { TiposSanfona } from "@/components/home/TiposSanfona";
  * com o conteúdo da Munarim em cada uma. Escuro → claro → branco → escuro,
  * como lá:
  *
- * capa (DEC-097) → sobre → lema que se preenche → os sete tipos em sanfona → galeria em
- * trilho → como funciona em cartões → pré-moldada ou no local em acordeão →
+ * capa (DEC-097) → sobre → lema que se preenche → os cinco tipos em sanfona → galeria em
+ * trilho → como funciona em cartões → pré-moldada ou no local lado a lado →
  * avaliações → rodapé com os contatos. As dúvidas saíram da home (DEC-077),
  * e "quem faz o quê" e a foto de ponta a ponta saíram no DEC-083.
  *
@@ -33,7 +33,7 @@ export default function Home() {
       <TiposSanfona />
       <GaleriaTrilho />
       <ProcessoCards />
-      <PreMoldadaAcordeao />
+      <PreMoldadaComparacao />
       <AvaliacoesTrilho />
     </>
   );

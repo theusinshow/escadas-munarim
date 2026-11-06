@@ -1,7 +1,7 @@
 import { FIGURA_VIEWBOX, FIGURAS } from "./figuras.generated";
 
 /**
- * Figura técnica sólida (DEC-070): um dos sete tipos ou uma das quatro etapas
+ * Figura técnica sólida (DEC-070): um dos cinco tipos ou uma das quatro etapas
  * do processo, gerada por `scripts/figuras/build.mjs` no método Anatomy.
  * Os tons vêm de `.figura` no CSS; `tema="escuro"` é para fundo grafite.
  */

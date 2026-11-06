@@ -5,7 +5,7 @@ export type Crumb = { label: string; href?: string };
 
 /**
  * Trilha para as rotas aninhadas.
- * O visitante precisa saber onde está dentro de um catálogo de 7 tipos.
+ * O visitante precisa saber onde está dentro de um catálogo de 5 tipos.
  * Emite `BreadcrumbList` em JSON-LD a partir dos mesmos dados que mostra —
  * marcação e tela nunca divergem.
  */

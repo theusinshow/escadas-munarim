@@ -11,7 +11,7 @@ import { tipos } from "@/content/tipos";
 /**
  * Capa "do desenho à escada" (DEC-097).
  *
- * Os sete tipos passam sozinhos, em três tempos: o desenho se monta peça por
+ * Os cinco tipos passam sozinhos, em três tempos: o desenho se monta peça por
  * peça, uma frente em forma de escada sobe pela tela abrindo a foto do tipo, e
  * a mesma frente segue subindo, tirando a foto e revelando o próximo desenho.
  * A frente é uma escada de verdade: espelho e piso na razão 18/28 do site
@@ -24,26 +24,20 @@ import { tipos } from "@/content/tipos";
  * Sem JS ou com `reduce`, fica o primeiro desenho parado e nada passa sozinho.
  * Com movimento, o desenho só aparece quando o JS assume (`.capa-sobe-peca` em
  * globals.css), senão ele piscaria antes de se montar. "Pausar" atende a WCAG
- * 2.2.2, e o ciclo também para fora da tela.
+ * 2.2.2, e o ciclo também para fora da tela e com o menu da barra aberto.
  */
 
-/** Qual foto do acervo cada tipo abre. A primeira, se não estiver aqui. */
-const FOTO_DO_TIPO: Record<string, number> = { reta: 1, premium: 2 };
+/** A barra marca o <html> enquanto o painel ou a gaveta estão abertos. */
+const menuAberto = () => document.documentElement.hasAttribute("data-menu-aberto");
 
-const ITENS = tipos.map((t) => {
-  /* "In loco (cascata)" fica "In loco" no nome grande. */
-  const curto = t.nome.replace(/\s*\(.*\)/, "");
-  return {
-    slug: t.slug,
-    nome: t.nome,
-    curto,
-    foto: fotosDo(t.slug)[FOTO_DO_TIPO[t.slug] ?? 0],
-    /* Para o nome grande caber na largura: a frase inteira numa linha no
-       desktop, a palavra mais longa no celular, onde ele pode quebrar. */
-    letras: curto.length,
-    maiorPalavra: Math.max(...curto.split(" ").map((p) => p.length)),
-  };
-});
+/** Qual foto do acervo cada tipo abre. A primeira, se não estiver aqui. */
+const FOTO_DO_TIPO: Record<string, number> = { reta: 1 };
+
+const ITENS = tipos.map((t) => ({
+  slug: t.slug,
+  nome: t.nome,
+  foto: fotosDo(t.slug)[FOTO_DO_TIPO[t.slug] ?? 0],
+}));
 
 const CLASSE_TITULO =
   "font-display max-w-[14ch] text-[clamp(1.9rem,3.6vw,3.4rem)] leading-[0.98] tracking-[-0.01em] uppercase [text-wrap:balance]";
@@ -77,14 +71,11 @@ function poligono(
   return `polygon(0px ${borda}px, ${pontos.join(", ")}, ${largura}px ${borda}px)`;
 }
 
-function Textos({ i, tom }: { i: number; tom: "papel" | "foto" }) {
-  const item = ITENS[i];
+function Textos({ tom }: { tom: "papel" | "foto" }) {
   const claro = tom === "foto";
   return (
     <div
-      className={`container-site relative flex h-full flex-col justify-between pt-8 pb-4 lg:pt-12 lg:pb-5 ${
-        claro ? "text-primary-fg" : "text-barra"
-      }`}
+      className={`container-site relative pt-8 lg:pt-12 ${claro ? "text-primary-fg" : "text-barra"}`}
     >
       {claro ? (
         <p className={CLASSE_TITULO}>Escadas de concreto sob medida</p>
@@ -93,28 +84,11 @@ function Textos({ i, tom }: { i: number; tom: "papel" | "foto" }) {
           Escadas de concreto sob medida
         </h1>
       )}
-
-      <div>
-        <p
-          className="capa-sobe-nome font-display leading-[0.95] uppercase"
-          style={
-            {
-              "--letras": item.letras,
-              "--palavra": item.maiorPalavra,
-            } as React.CSSProperties
-          }
-        >
-          {item.curto}
-        </p>
-        {/* Reserva o lugar do "Pausar", para o nome longo não passar por baixo. */}
-        <div className="mt-3 h-11 motion-reduce:hidden lg:mt-4" />
-      </div>
     </div>
   );
 }
 
 export function CapaSobe() {
-  const [iPapel, setIPapel] = useState(0);
   const [iFoto, setIFoto] = useState(0);
   /* Foto só entra no DOM no ciclo anterior ao dela, e nenhuma entra com
      `reduce`: quem não vai ver a animação não baixa as fotos. */
@@ -138,6 +112,8 @@ export function CapaSobe() {
     const frente = { p: 0 };
     let lado: "sob" | "sobre" = "sob";
     let visivel = true;
+
+    const parada = () => pausadoRef.current || !visivel || menuAberto();
 
     const pinta = () => {
       const largura = raiz.clientWidth;
@@ -208,14 +184,7 @@ export function CapaSobe() {
       if (imagem) tl.fromTo(imagem, { scale: 1.1 }, { scale: 1, duration: 5, ease: "sine.out" }, 0.9);
 
       /* Foto inteira. O papel troca escondido embaixo dela. */
-      tl.call(
-        () => {
-          trocaDesenho(i, proximo);
-          setIPapel(proximo);
-        },
-        undefined,
-        4.6,
-      );
+      tl.call(() => trocaDesenho(i, proximo), undefined, 4.6);
 
       /* Segue subindo: tira a foto e revela o próximo desenho. */
       tl.call(
@@ -244,7 +213,7 @@ export function CapaSobe() {
       tl.to({}, { duration: 0.6 }, 6.1);
 
       linhaAtual.current = tl;
-      if (pausadoRef.current || !visivel) tl.pause();
+      if (parada()) tl.pause();
     };
 
     gsap.set(desenho(0), { visibility: "visible" });
@@ -253,12 +222,22 @@ export function CapaSobe() {
     entrada.add(montar(0), 0.15);
     linhaAtual.current = entrada;
 
+    const atualiza = () => {
+      if (parada()) linhaAtual.current?.pause();
+      else linhaAtual.current?.play();
+    };
+
     const observador = new IntersectionObserver(([e]) => {
       visivel = e.isIntersecting;
-      if (visivel && !pausadoRef.current) linhaAtual.current?.play();
-      else linhaAtual.current?.pause();
+      atualiza();
     });
     observador.observe(raiz);
+
+    const observaMenu = new MutationObserver(atualiza);
+    observaMenu.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-menu-aberto"],
+    });
 
     const aoRedimensionar = () => {
       if (foto.style.visibility === "visible") pinta();
@@ -267,6 +246,7 @@ export function CapaSobe() {
 
     return () => {
       observador.disconnect();
+      observaMenu.disconnect();
       window.removeEventListener("resize", aoRedimensionar);
       linhaAtual.current?.kill();
       linhaAtual.current = null;
@@ -281,18 +261,18 @@ export function CapaSobe() {
     pausadoRef.current = p;
     setPausado(p);
     if (p) linhaAtual.current?.pause();
-    else linhaAtual.current?.play();
+    else if (!menuAberto()) linhaAtual.current?.play();
   };
 
   return (
     <section
       ref={palco}
       aria-labelledby="capa-titulo"
-      className="capa-planta relative h-[calc(100svh-var(--barra-h))] min-h-[36rem] overflow-hidden bg-surface"
+      className="relative h-[calc(100svh-var(--barra-h))] min-h-[36rem] overflow-hidden bg-surface"
     >
-      {/* Papel: nome e título atrás do desenho, para o desenho passar por cima. */}
+      {/* Papel: título atrás do desenho, para o desenho passar por cima. */}
       <div className="absolute inset-0">
-        <Textos i={iPapel} tom="papel" />
+        <Textos tom="papel" />
         <div className="capa-sobe-palco pointer-events-none absolute">
           {ITENS.map((t, i) => (
             <div
@@ -340,13 +320,13 @@ export function CapaSobe() {
             </div>
           );
         })}
-        {/* Mesmo escuro neutro da capa de foto: só onde há texto (DEC-074). */}
+        {/* Escuro neutro só onde há texto (DEC-074): o título, no topo. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(to_top,rgb(8_10_14/0.78)_0%,rgb(8_10_14/0.4)_26%,transparent_50%),linear-gradient(to_bottom,rgb(8_10_14/0.62)_0%,rgb(8_10_14/0.2)_30%,transparent_44%)]"
+          className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(8_10_14/0.62)_0%,rgb(8_10_14/0.2)_30%,transparent_44%)]"
         />
         <div className="absolute inset-0">
-          <Textos i={iFoto} tom="foto" />
+          <Textos tom="foto" />
         </div>
       </div>
 

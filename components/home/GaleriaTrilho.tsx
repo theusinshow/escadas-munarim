@@ -56,7 +56,7 @@ export function GaleriaTrilho() {
               Cada tipo pronto, em concreto
             </h2>
             <p data-revela className="mt-6 max-w-[40ch] text-[1.02rem] leading-relaxed text-muted">
-              Reta, caracol, leke, mista, premium, espelho fechado e in loco: veja como cada uma
+              Reta, caracol, leke, mista e espelho fechado: veja como cada uma
               fica no lugar antes de escolher a sua.
             </p>
             <div className="mt-10 flex gap-3" data-revela>
