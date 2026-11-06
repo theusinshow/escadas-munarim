@@ -12,7 +12,8 @@ import { addressLine, site, whatsappLink } from "@/lib/site";
  * Barra fixa (DEC-066 → DEC-091). Simplificada sobre a effortel.com, trazida
  * pelo desenvolvedor: poucos itens, um único menu rico e um botão. Marca à
  * esquerda; Escadas (o único com painel), Galeria, Como funciona e Empresa
- * em links diretos; "Contato" à direita.
+ * em links diretos; "Contato" à direita. DEC-102: o nome "Escadas" também é
+ * link para /escadas; o painel abre no hover e pela seta ao lado.
  *
  * O painel de Escadas tem duas colunas: os cinco tipos numerados e, ao lado,
  * o cartão com foto para quem ainda não sabe o próprio caso. Dúvidas sai da
@@ -169,17 +170,27 @@ export function Navbar() {
                   onMouseEnter={() => setAberto(item.mega ? item.label : null)}
                 >
                   {item.mega ? (
-                    <button
-                      id={`${id}-btn`}
-                      type="button"
-                      aria-expanded={estaAberto}
-                      aria-controls={`${id}-painel`}
-                      onClick={() => setAberto(estaAberto ? null : item.label)}
-                      className={classe}
-                    >
-                      {item.label}
-                      <Seta aberta={estaAberto} />
-                    </button>
+                    <>
+                      <Link
+                        href={item.href}
+                        aria-current={atual(item.href) ? "page" : undefined}
+                        onClick={() => setAberto(null)}
+                        className={classe}
+                      >
+                        {item.label}
+                      </Link>
+                      <button
+                        id={`${id}-btn`}
+                        type="button"
+                        aria-label={`${estaAberto ? "Fechar" : "Abrir"} os tipos de escada`}
+                        aria-expanded={estaAberto}
+                        aria-controls={`${id}-painel`}
+                        onClick={() => setAberto(estaAberto ? null : item.label)}
+                        className="flex h-11 w-7 items-center justify-center"
+                      >
+                        <Seta aberta={estaAberto} />
+                      </button>
+                    </>
                   ) : (
                     <Link
                       href={item.href}

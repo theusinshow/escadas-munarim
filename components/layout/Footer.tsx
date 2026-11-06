@@ -12,6 +12,8 @@ import { addressLine, site, whatsappLink } from "@/lib/site";
  * DEC-100: a chamada tem o título à esquerda e, na coluna da direita, a linha
  * de apoio com o botão de orçamento; embaixo, os canais diretos (WhatsApp,
  * telefone, e-mail) em três colunas da mesma grade, cada um inteiro clicável.
+ * DEC-101: os canais são cartões brancos com tinta azul, o ponto mais claro da
+ * faixa; no hover o cartão fica azul.
  * O pé tem quatro colunas: a marca com a tagline e as redes sociais, a
  * navegação, os cinco tipos e o endereço; embaixo, o fecho.
  *
@@ -96,19 +98,18 @@ export function Footer() {
             </div>
           </div>
 
-          <ul className="mt-16 grid gap-x-10 border-b border-white/15 lg:mt-24 xl:grid-cols-3 xl:border-b-0" data-revela>
+          <ul className="mt-16 grid gap-4 lg:mt-24 xl:grid-cols-3 xl:gap-10" data-revela>
             {CANAIS.map((c) => (
-              <li key={c.canal} className="min-w-0 border-t border-white/15 xl:border-b xl:border-white/15">
+              <li key={c.canal} className="min-w-0">
                 <a
                   href={c.href}
                   {...(c.externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex min-h-24 flex-col justify-center gap-3 py-5"
+                  className="group flex min-h-32 flex-col justify-between gap-6 bg-surface p-4 text-barra transition-colors duration-300 hover:bg-barra hover:text-primary-fg sm:p-6 xl:p-5"
                 >
-                  <span className="font-label text-[0.72rem] tracking-[0.16em] text-primary-fg-muted uppercase">
-                    {c.canal}
-                  </span>
                   <span className="flex items-center justify-between gap-4">
-                    <span className="min-w-0 font-display text-[clamp(0.72rem,3.4vw,0.9rem)] xl:text-[1.02rem]">{c.valor}</span>
+                    <span className="font-label text-[0.72rem] tracking-[0.16em] text-chrome-muted uppercase transition-colors duration-300 group-hover:text-primary-fg-muted">
+                      {c.canal}
+                    </span>
                     <svg
                       viewBox="0 0 16 16"
                       className="size-4 flex-none transition-transform duration-500 ease-degrau group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -116,6 +117,9 @@ export function Footer() {
                     >
                       <path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" strokeWidth="1.4" />
                     </svg>
+                  </span>
+                  <span className="font-display text-[clamp(0.72rem,3.4vw,1.1rem)] [overflow-wrap:anywhere] xl:text-[0.95rem]">
+                    {c.valor}
                   </span>
                 </a>
               </li>

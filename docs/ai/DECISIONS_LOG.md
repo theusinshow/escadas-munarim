@@ -3586,6 +3586,31 @@ seção de pré-moldada, texto mal posicionado na chamada e falta de botões de 
 `PreMoldadaAcordeao.tsx`), `app/page.tsx`, `components/layout/Footer.tsx`, `lib/site.ts`,
 `docs/ai/SITE_ANTIGO.md`.
 
+## DEC-101 — Contatos do rodapé em cartões brancos (2026-11-05)
+
+**Decisão:** ajusta a chamada do `DEC-100`. WhatsApp, telefone e e-mail deixam de ser linhas com fio e
+viram cartões brancos com tinta azul sobre a faixa chumbo. No hover, o cartão fica azul com texto branco.
+A faixa continua chumbo: o azul segue na tinta e não vira mais um fundo grande.
+
+**Why:** pedido do desenvolvedor: "Dar mais destaque para os contatos, talvez uma cor diferente."
+
+**Affects:** `components/layout/Footer.tsx`.
+
+## DEC-102 — "Escadas" navega e as âncoras passam pela rolagem suave (2026-11-05)
+
+**Decisão:** corrige dois cliques sem efeito.
+
+- **Barra:** o nome "Escadas" vira link para `/escadas`, com uma seta separada que abre e fecha o painel.
+  O hover continua abrindo. Antes, o nome era só um botão: o hover abria e o clique fechava o painel.
+- **Âncoras:** com o `ScrollSmoother` ativo, o clique em link `#` da mesma página e a chegada de outra
+  página com `#` usam `smoother.scrollTo`, parando abaixo da barra. A âncora nativa rolava a moldura fixa,
+  e "Voltar ao topo" não subia. Sem o `ScrollSmoother` (toque e `reduce`), segue a rolagem nativa.
+
+**Why:** o desenvolvedor relatou cliques que "não levam a lugar nenhum". O teste de cliques no navegador
+confirmou os dois casos.
+
+**Affects:** `components/layout/Navbar.tsx`, `components/motion/Suave.tsx`, `app/escadas/page.tsx`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e

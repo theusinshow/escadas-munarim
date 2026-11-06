@@ -33,7 +33,7 @@ export default function EscadasPage() {
         </StepIn>
       </Section>
 
-      <Section density="dense" id="nao-sei" className="border-t border-border">
+      <Section density="dense" id="nao-sei" className="scroll-mt-(--barra-h) border-t border-border">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader
