@@ -62,7 +62,13 @@ export default function EmpresaPage() {
   return (
     <>
       <PageHeader
-        title={`${anosDeMercado} anos fabricando escadas em ${site.address.city}.`}
+        compacto
+        title={
+          <>
+            <span className="inline-block bg-barra px-[0.3em] text-primary-fg">{anosDeMercado}</span> anos
+            fabricando escadas em {site.address.city}.
+          </>
+        }
         lead="Escada pré-moldada em concreto polido, sob medida, para casas da Grande Florianópolis. A Munarim faz uma coisa só: a escada de concreto."
       />
 

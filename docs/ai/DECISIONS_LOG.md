@@ -3652,6 +3652,16 @@ site atual. A foto da fachada em boa resolução continua pendente (`CNT-004`).
 **Affects:** `app/empresa/page.tsx`, `content/galeria.ts`, `lib/site.ts`,
 `app/politica-de-privacidade/page.tsx`, `public/media/empresa/foto-obra-01.avif`.
 
+## DEC-105 — Abertura da página Sobre menor, com o "+15" em destaque (2026-11-05)
+
+**Decisão:** o título de `/empresa` fica menor, com menos respiro (`compacto` no `PageHeader`), e o "+15"
+ganha um retângulo azul com texto branco. As outras páginas mantêm a abertura grande.
+
+**Why:** feedback do desenvolvedor: destacar o "+15" com retângulo azul e texto branco e diminuir a frase,
+que ocupava muito da página.
+
+**Affects:** `components/ui/PageHeader.tsx`, `app/empresa/page.tsx`.
+
 ## Waivers
 
 Itens do `QA_CHECKLIST.md` e das regras do sistema dispensados conscientemente. Um item não checado e
