@@ -58,3 +58,5 @@ media-src/*
 
 # Logs e capturas do Playwright MCP — saída de ferramenta, não código.
 .playwright-mcp/
+
+.vercel
